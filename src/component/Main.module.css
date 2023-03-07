@@ -1,0 +1,33 @@
+.box{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+    height: 32px;
+    margin: 14px 24px;
+    box-sizing: border-box;
+}
+
+
+.body{
+    display: flex;
+    min-height: calc(var(--vh, 1vh) * 100 - 123px);
+    max-height: calc(var(--vh, 1vh) * 100 - 123px);
+    box-sizing: border-box;
+    position: relative;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.footer{
+    min-height: 63px;
+    height: 63px;
+    box-sizing: border-box;
+}

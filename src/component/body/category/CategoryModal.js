@@ -16,7 +16,7 @@ function CategoryModal(){
     const handleIndexChange = (index) => {
         setIndex(index);
     };
-
+  
     const categoryClickEvt = (index) => {
         setIndex(index);
     }

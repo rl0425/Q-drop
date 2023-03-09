@@ -1,0 +1,64 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+.box{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100%;
+    gap: 24px;
+    box-sizing: border-box;
+}
+
+.contents{
+    display: flex;
+    max-width: 90%;
+    width: 90%;
+    height: fit-content;
+    overflow: auto;
+}
+
+.setting{
+    display: flex;
+    justify-content: right;
+    height: 40px;
+    min-height: 40px;
+    width: 10%;
+    min-width: 40px;
+}
+
+.setting > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #2B2C31;
+    border-radius: 30px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+
+.categoryBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 79px;
+    width: 79px;
+    height: 40px;
+    border: 0.75px solid #373C42;
+    border-radius: 30px;
+    box-sizing: border-box;
+    color: #9C9EA7;
+    font-weight: 600;
+    transition: all 0.2s linear;
+}
+
+.categoryBox.active{
+    background: #48BAFB;
+    color: #1A1B1E;
+    transition: all 0.2s linear;
+}

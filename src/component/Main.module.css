@@ -18,11 +18,12 @@
 
 .body{
     display: flex;
+    flex-direction: column;
     min-height: calc(var(--vh, 1vh) * 100 - 123px);
     max-height: calc(var(--vh, 1vh) * 100 - 123px);
     box-sizing: border-box;
     position: relative;
-    overflow: scroll;
+    overflow: hidden;
     overflow-x: hidden;
 }
 

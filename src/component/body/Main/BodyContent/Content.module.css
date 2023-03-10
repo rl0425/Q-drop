@@ -1,0 +1,73 @@
+.box{
+    display: flex;
+    overflow: hidden;
+    width: calc(var(--vw, 1vw) - 20px);
+    max-width: calc(var(--vw, 1vw) - 20px);
+    padding: 20px 20px;
+    border-bottom: 1px solid #26282C;
+    box-sizing: border-box;
+}
+
+.loadBox.load{
+    opacity: 1;
+    transition: all 0.3s linear;
+}
+
+.loadBox{
+    opacity: 0;
+    transition: all 0.3s linear;
+}
+
+.qSpanBox{
+    margin-right: 8px;
+}
+
+.contentBox{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 17px);
+    overflow: hidden;
+}
+
+.qSpan{
+    font-size: 18px;
+    font-weight: bold;
+    color: #48BAFB
+}
+
+.questionBox{
+    font-size: 18px;
+    font-weight: bold;
+    color: #DADCE1;
+    margin-bottom: 10px;
+}
+
+.answerBox{
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    height: 57px;
+
+    /*white-space: nowrap; !* 텍스트가 줄바꿈되지 않도록 설정 *!*/
+    overflow: hidden; /* 넘치는 부분을 숨김 */
+    /*text-overflow: ellipsis;*/
+    font-weight: 400;
+    font-size: 16px;
+    color: #9C9EA7;
+    margin-bottom: 24px;
+}
+
+.optBox{
+    display: flex;
+    justify-content: right;
+    gap: 24px;
+}
+
+.optBox > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}

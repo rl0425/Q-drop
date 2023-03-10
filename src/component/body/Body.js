@@ -1,7 +1,6 @@
-import classses from "./Body.module.css"
 import {Fragment, useEffect, useState} from "react";
 import BodyHead from "./Main/BodyHead";
-import BodyContents from "./Main/BodyContents";
+import BodyContents from "./Main/BodyContent/BodyContents";
 import useHttp from "../../hooks/use-http";
 
 function Body(){
@@ -31,7 +30,7 @@ function Body(){
         return (
             <Fragment>
                 <BodyHead data={tasks}/>
-                <BodyContents/>
+                <BodyContents data={tasks}/>
             </Fragment>
         )
     }

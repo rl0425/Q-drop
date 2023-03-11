@@ -1,0 +1,27 @@
+.box{
+    display: flex;
+    align-items: center;
+    height: 52px;
+    min-height: 52px;
+    max-height: 52px;
+    padding: 0 20px;
+    color: #E4E5E7;
+    background: #212225;
+    gap: 8px;
+    transition: all 0.2s linear;
+}
+
+.box.active{
+    background: #3E414A;
+    transition: all 0.2s linear;
+}
+
+.box > img{
+    width: 20px;
+    height: 20px;
+}
+
+.box > span{
+    font-size: 14px;
+    font-weight: 500;
+}

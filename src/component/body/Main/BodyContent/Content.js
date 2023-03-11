@@ -5,6 +5,7 @@ import classes from "./Content.module.css"
 import useHttp from "../../../../hooks/use-http";
 import {useSelector, useDispatch} from "react-redux";
 import {categoryActions} from "../../../../store/category-slice";
+import {modalActions} from "../../../../store/modal-slice";
 
 function Content(props){
     const [tasks, setTasks] = useState([]);
@@ -26,8 +27,9 @@ function Content(props){
         setPageNumber(pageNumber + 1);
     };
 
-    const optClickEvt = () => {
-
+    const optClickEvt = (ele) => {
+        console.log("asd")
+        dispatch(modalActions.changePostOpen({open: true, id: ele}))
     }
 
     useEffect(() => {
@@ -40,7 +42,7 @@ function Content(props){
 
         if(!data){
             fetchTasks(
-                {url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/post/1'},
+                {url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/post/1?count=10&page=1'},
                 transformTasks
             );
         }
@@ -77,9 +79,9 @@ function Content(props){
         return <div>asdas</div>
     }
 
-    else if(error){
-        return <div>error</div>
-    }
+    // else if(error){
+    //     return <div>error</div>
+    // }
 
     else {
         return (

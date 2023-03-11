@@ -1,0 +1,110 @@
+.box, .unBox{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    transition: all 0.2s linear;
+}
+
+
+.blackBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.contentBox, .unContentBox{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    background: #212225;
+    width: 100%;
+    min-height: 187px;
+    height: 187px;
+    border-radius: 10px 10px 0px 0px;
+    transition: all 0.25s ease;
+}
+
+.unContentBox{
+    bottom: -50%;
+    transition: all 0.25s ease;
+}
+
+
+.contentBox > div,
+.unContentBox > div{
+    display: flex;
+    align-items: center;
+    min-height: 33%;
+    padding: 0 20px;
+    font-weight: 500;
+}
+
+.deleteBox{
+    color: #E35131;
+}
+
+.linkBox{
+    border-top: 1px solid #373C42;
+}
+
+.deleteDiv, .unDeleteDiv{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    background: #212225;
+    width: 100%;
+    min-height: 157px;
+    height: 157px;
+    border-radius: 10px 10px 0px 0px;
+    transition: all 0.25s ease;
+}
+
+.unDeleteDiv{
+    bottom: -50%;
+    transition: all 0.25s ease;
+}
+
+.deleteSpan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 64px;
+}
+
+.deleteCheck{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.deleteCheck > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border-radius: 10px;
+}
+
+.deleteCheck span{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.deleteCancel{
+    width: 45%;
+    background: #43464F;
+}
+
+.deleteBtn{
+    width: 45%;
+    background: #48BAFB;
+    color: #1A1B1E;
+}
+

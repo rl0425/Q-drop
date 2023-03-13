@@ -56,7 +56,7 @@
 }
 
 .body div {
-    max-height: 100%
+    /*max-height: 100%*/
 }
 
 .footer{
@@ -108,4 +108,12 @@
 .noSelect{
     color: #7D818E;
     transition: all 0.15s linear;
+}
+
+.swiper-backface-hidden swiper-slide{
+    height: fit-content;
+}
+
+.swiper-slide, swiper-slide{
+    height: fit-content !important;
 }

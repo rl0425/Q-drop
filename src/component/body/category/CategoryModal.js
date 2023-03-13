@@ -10,6 +10,9 @@ import Content from "./Content";
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+
 function CategoryModal(){
     const open = useSelector((state) => state.category.open)
     const [openAnimation, setOpenAnimation] = useState(false);
@@ -21,6 +24,9 @@ function CategoryModal(){
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const swiperContainer = useRef(null);
+    const [allowTouchMove, setAllowTouchMove] = useState(false);
+
+    register();
 
     useEffect(() => {
         const transformTasks = (tasksObj) => {
@@ -41,29 +47,6 @@ function CategoryModal(){
         // );
     }, [fetchTasks]);
 
-    useEffect(() => {
-        const swiper = new Swiper(swiperContainer.current, {
-            direction: 'horizontal',
-            loop: false,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            on: {
-                slideChange: function () {
-                    console.log("swiperContainer.current =" , swiperContainer.current)
-                    // Scroll to the top of the container element
-                    const container = swiperContainer.current;
-                    if (container.scrollTop !== 0) {
-                        container.scrollTop = 0;
-                    }
-                },
-            },
-        });
-    }, []);
-
-    console.log("tasks = ", tasks)
-    console.log("subs = ", subs)
 
     const openEvt = () => {
         dispatch(categoryActions.changeOpen({open:false}))
@@ -87,6 +70,47 @@ function CategoryModal(){
             setSubs(newArray)
         }
     }
+
+    const [bodyHeight, setBodyHeight] = useState('auto');
+    const [slideScrollPositions, setSlideScrollPositions] = useState({});
+
+    const swiperElRef = useRef(null);
+
+    const handleSlideChange = (e) => {
+        // get the Swiper instance
+        const swiper = swiperElRef.current.swiper;
+        const activeIndex = swiper.activeIndex;
+        const slideHeight = swiper.slides[activeIndex].clientHeight;
+
+        setBodyHeight(`${slideHeight}px`);
+
+        // get the scroll position for the active slide
+        const scrollTop = slideScrollPositions[activeIndex];
+        const containerEl = swiperElRef.current;
+    };
+
+    const handleScroll = (e) => {
+        console.log("asdasdasas")
+    }
+
+    const handleSlideScroll = (index, scrollTop) => {
+        setSlideScrollPositions(prevState => ({
+            ...prevState,
+            [index]: scrollTop
+        }));
+    };
+
+    useEffect(() => {
+        // listen for Swiper events using addEventListener
+        swiperElRef.current.addEventListener('progress', (e) => {
+            const [swiper, progress] = e.detail;
+        });
+
+        swiperElRef.current.addEventListener('slidechange', (e) => {
+            handleSlideChange(e)
+        });
+    }, []);
+
 
     if(isLoading){
         return <div></div>
@@ -122,23 +146,25 @@ function CategoryModal(){
                             })}
                         </div>
                     </div>
-                    <div>
-                        <div className="swiper-container" ref={swiperContainer}>
-                            <div className="swiper-wrapper">
+                    <div className={classes.body} >
+                        <swiper-container
+                            style={{ height: bodyHeight }}
+                            ref={swiperElRef}
+                            onScroll={handleScroll}
+                            observer="true">
                                 {tasks.map((ele, index) => {
                                     if(ele){
                                         return (
-                                            <div key={uuidv4()} style={{ height : '100vh'}}  className="swiper-slide">
+                                            <swiper-slide onScroll={handleScroll}>
                                                 {ele.subCategories.map((data) => {
                                                     return (
                                                         <>
-                                                        // <div key={uuidv4()}>asd</div>
-                                                        <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs}/>
-                                                        <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs}/>
+                                                            <Content onScroll={handleScroll} selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs} onScroll={(e) => handleSlideScroll(index, e.target.scrollTop)}/>
+                                                            <Content onScroll={handleScroll} selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs} onScroll={(e) => handleSlideScroll(index, e.target.scrollTop)}/>
                                                         </>
                                                     )
                                                 })}
-                                            </div>
+                                            </swiper-slide>
                                         )
                                     }
                                     else{
@@ -147,8 +173,7 @@ function CategoryModal(){
                                         )
                                     }
                                 })}
-                            </div>
-                        </div>
+                        </swiper-container>
                     </div>
                     <div className={classes.footer}>
                         <div className={classes.footerBox}>
@@ -158,6 +183,8 @@ function CategoryModal(){
                 </div>
             </>
         )
+
+
     }
 
 }

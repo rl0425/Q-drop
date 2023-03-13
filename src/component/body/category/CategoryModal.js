@@ -87,6 +87,10 @@ function CategoryModal(){
         // get the scroll position for the active slide
         const scrollTop = slideScrollPositions[activeIndex];
         const containerEl = swiperElRef.current;
+
+        console.log("swiperElRef.current= ", swiperElRef.current.scrollTop)
+        console.log("containerEl= ", containerEl.scrollTop)
+
     };
 
     const handleScroll = (e) => {
@@ -150,17 +154,15 @@ function CategoryModal(){
                         <swiper-container
                             style={{ height: bodyHeight }}
                             ref={swiperElRef}
-                            onScroll={handleScroll}
-                            observer="true">
+                            observer="false">
                                 {tasks.map((ele, index) => {
                                     if(ele){
                                         return (
-                                            <swiper-slide onScroll={handleScroll}>
+                                            <swiper-slide>
                                                 {ele.subCategories.map((data) => {
                                                     return (
                                                         <>
-                                                            <Content onScroll={handleScroll} selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs} onScroll={(e) => handleSlideScroll(index, e.target.scrollTop)}/>
-                                                            <Content onScroll={handleScroll} selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs} onScroll={(e) => handleSlideScroll(index, e.target.scrollTop)}/>
+                                                            <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs} onScroll={(e) => handleSlideScroll(index, e.target.scrollTop)}/>
                                                         </>
                                                     )
                                                 })}

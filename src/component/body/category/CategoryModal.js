@@ -153,13 +153,14 @@ function CategoryModal(){
                     <div className={classes.body} >
                         <swiper-container
                             // style={{ height: bodyHeight }}
+                            // centermode = {true}
                             ref={swiperElRef}
                             observer="false">
                                 {tasks.map((ele, index) => {
                                     if(ele){
                                         return (
                                             <swiper-slide
-                                                style = {{overflow : "auto"}}
+                                                // style = {{overflow : "auto"}}
                                             >
                                                 {ele.subCategories.map((data) => {
                                                     return (

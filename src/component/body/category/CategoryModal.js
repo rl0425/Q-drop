@@ -3,9 +3,12 @@ import {v4 as uuidv4} from "uuid";
 import {useSelector, useDispatch} from "react-redux";
 import SwipeableViews  from 'react-swipeable-views';
 import {categoryActions} from "../../../store/category-slice";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import useHttp from "../../../hooks/use-http";
 import Content from "./Content";
+
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
 function CategoryModal(){
     const open = useSelector((state) => state.category.open)
@@ -16,6 +19,8 @@ function CategoryModal(){
     const [tasks, setTasks] = useState([]);
     const [subs, setSubs] = useState([1,2,4,6]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+
+    const swiperContainer = useRef(null);
 
     useEffect(() => {
         const transformTasks = (tasksObj) => {
@@ -35,6 +40,27 @@ function CategoryModal(){
         //     transformSubs
         // );
     }, [fetchTasks]);
+
+    useEffect(() => {
+        const swiper = new Swiper(swiperContainer.current, {
+            direction: 'horizontal',
+            loop: false,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            on: {
+                slideChange: function () {
+                    console.log("swiperContainer.current =" , swiperContainer.current)
+                    // Scroll to the top of the container element
+                    const container = swiperContainer.current;
+                    if (container.scrollTop !== 0) {
+                        container.scrollTop = 0;
+                    }
+                },
+            },
+        });
+    }, []);
 
     console.log("tasks = ", tasks)
     console.log("subs = ", subs)
@@ -96,29 +122,33 @@ function CategoryModal(){
                             })}
                         </div>
                     </div>
-                    <div className={classes.body}>
-                        <SwipeableViews index={pageIndex} onChangeIndex={handleIndexChange}>
-                            {tasks.map((ele, index) => {
-                                if(ele){
-                                    return (
-                                        <div key={uuidv4()} style={{ height : '100vh'}}>
-                                            {ele.subCategories.map((data) => {
-                                                return (
-                                                    // <div key={uuidv4()}>asd</div>
-                                                    <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs}/>
-                                                )
-                                            })}
-                                        </div>
-                                    )
-                                }
-                                else{
-                                    return  (
-                                        <div key={uuidv4()}>asd</div>
-                                    )
-                                }
-                            })}
-
-                        </SwipeableViews>
+                    <div>
+                        <div className="swiper-container" ref={swiperContainer}>
+                            <div className="swiper-wrapper">
+                                {tasks.map((ele, index) => {
+                                    if(ele){
+                                        return (
+                                            <div key={uuidv4()} style={{ height : '100vh'}}  className="swiper-slide">
+                                                {ele.subCategories.map((data) => {
+                                                    return (
+                                                        <>
+                                                        // <div key={uuidv4()}>asd</div>
+                                                        <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs}/>
+                                                        <Content selectEvt={subSelectEvt} key={uuidv4()} data={data} subs={subs}/>
+                                                        </>
+                                                    )
+                                                })}
+                                            </div>
+                                        )
+                                    }
+                                    else{
+                                        return  (
+                                            <div key={uuidv4()}>asd</div>
+                                        )
+                                    }
+                                })}
+                            </div>
+                        </div>
                     </div>
                     <div className={classes.footer}>
                         <div className={classes.footerBox}>

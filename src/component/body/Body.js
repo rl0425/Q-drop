@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import BodyHead from "./Main/BodyHead";
 import BodyContents from "./Main/BodyContent/BodyContents";
 import useHttp from "../../hooks/use-http";
+import MemoizedBodyContents from "./Main/BodyContent/BodyContents";
 
 function Body(){
     const [tasks, setTasks] = useState([]);
@@ -10,6 +11,7 @@ function Body(){
     useEffect(() => {
         const transformTasks = (tasksObj) => {
             setTasks(tasksObj);
+            console.log("first")
         };
 
         fetchTasks(

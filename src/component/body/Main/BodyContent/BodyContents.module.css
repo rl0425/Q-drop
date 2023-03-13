@@ -3,10 +3,10 @@
     overflow-y: scroll;
 }
 
-.box > div{
-    height: fit-content;
-    max-height: fit-content;
-}
+/*.box > div{*/
+/*    height: fit-content;*/
+/*    max-height: fit-content;*/
+/*}*/
 
 .react-swipeable-view-container > div{
     height: fit-content;
@@ -97,4 +97,13 @@
     max-height: calc(var(--vh, 1vh) * 100 - 203px);
     min-height: calc(var(--vh, 1vh) * 100 - 203px);
     color: #9C9EA7;
+}
+
+.body .swiper-slide{
+    overflow: auto !important;
+}
+
+.body > div > div{
+    overflow: auto !important;
+    height: 10% !important;
 }

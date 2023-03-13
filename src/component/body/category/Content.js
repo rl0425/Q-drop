@@ -8,16 +8,12 @@ function Content(props){
     const hasChecked = props.subs.find(u => u === props.data.id)
 
     return (
-        <>
+
         <div onClick={hasChecked ? () => clickEvt("remove") : () => clickEvt("add")} className={hasChecked ? `${classes.box} ${classes.active}` : classes.box}>
             {hasChecked ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
             <span>{props.data.name}</span>
         </div>
-        <div onClick={hasChecked ? () => clickEvt("remove") : () => clickEvt("add")} className={hasChecked ? `${classes.box} ${classes.active}` : classes.box}>
-            {hasChecked ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
-            <span>{props.data.name}</span>
-        </div>
-        </>
+
 
     )
 }

@@ -51,7 +51,7 @@
 }
 
 .body{
-    overflow: auto;
+    /*overflow: auto;*/
     height: calc(100% - 220px);
 }
 
@@ -110,10 +110,17 @@
     transition: all 0.15s linear;
 }
 
-.swiper-backface-hidden swiper-slide{
-    height: fit-content;
-}
+/*.swiper-backface-hidden swiper-slide{*/
+/*    height: fit-content;*/
+/*}*/
 
-.swiper-slide, swiper-slide{
-    height: fit-content !important;
+/*.swiper-slide swiper-slide{*/
+/*    height: fit-content !important;*/
+/*}*/
+
+.body swiper-slide {
+    /*overflow: scroll;*/
+}
+.body swiper-container {
+    height: 100%;
 }

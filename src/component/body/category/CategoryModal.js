@@ -76,22 +76,22 @@ function CategoryModal(){
 
     const swiperElRef = useRef(null);
 
-    const handleSlideChange = (e) => {
-        // get the Swiper instance
-        const swiper = swiperElRef.current.swiper;
-        const activeIndex = swiper.activeIndex;
-        const slideHeight = swiper.slides[activeIndex].clientHeight;
-
-        setBodyHeight(`${slideHeight}px`);
-
-        // get the scroll position for the active slide
-        const scrollTop = slideScrollPositions[activeIndex];
-        const containerEl = swiperElRef.current;
-
-        console.log("swiperElRef.current= ", swiperElRef.current.scrollTop)
-        console.log("containerEl= ", containerEl.scrollTop)
-
-    };
+    // const handleSlideChange = (e) => {
+    //     // get the Swiper instance
+    //     const swiper = swiperElRef.current.swiper;
+    //     const activeIndex = swiper.activeIndex;
+    //     const slideHeight = swiper.slides[activeIndex].clientHeight;
+    //
+    //     setBodyHeight(`${slideHeight}px`);
+    //
+    //     // get the scroll position for the active slide
+    //     const scrollTop = slideScrollPositions[activeIndex];
+    //     const containerEl = swiperElRef.current;
+    //
+    //     console.log("swiperElRef.current= ", swiperElRef.current.scrollTop)
+    //     console.log("containerEl= ", containerEl.scrollTop)
+    //
+    // };
 
     const handleScroll = (e) => {
         console.log("asdasdasas")
@@ -103,17 +103,17 @@ function CategoryModal(){
             [index]: scrollTop
         }));
     };
-
-    useEffect(() => {
-        // listen for Swiper events using addEventListener
-        swiperElRef.current.addEventListener('progress', (e) => {
-            const [swiper, progress] = e.detail;
-        });
-
-        swiperElRef.current.addEventListener('slidechange', (e) => {
-            handleSlideChange(e)
-        });
-    }, []);
+    //
+    // useEffect(() => {
+    //     // listen for Swiper events using addEventListener
+    //     swiperElRef.current.addEventListener('progress', (e) => {
+    //         const [swiper, progress] = e.detail;
+    //     });
+    //
+    //     swiperElRef.current.addEventListener('slidechange', (e) => {
+    //         handleSlideChange(e)
+    //     });
+    // }, []);
 
 
     if(isLoading){
@@ -152,13 +152,15 @@ function CategoryModal(){
                     </div>
                     <div className={classes.body} >
                         <swiper-container
-                            style={{ height: bodyHeight }}
+                            // style={{ height: bodyHeight }}
                             ref={swiperElRef}
                             observer="false">
                                 {tasks.map((ele, index) => {
                                     if(ele){
                                         return (
-                                            <swiper-slide>
+                                            <swiper-slide
+                                                style = {{overflow : "auto"}}
+                                            >
                                                 {ele.subCategories.map((data) => {
                                                     return (
                                                         <>

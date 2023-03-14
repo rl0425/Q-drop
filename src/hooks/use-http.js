@@ -9,18 +9,21 @@ const useHttp = () => {
     const sendRequest = useCallback(async (requestConfig, applyData) => {
         setIsLoading(true);
         setError(null);
+        const header ={Authorization:null}
+        if (requestConfig.header === true) {
+            // header['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzgwMzIxNzYsImV4cCI6MTY3ODYzNjk3NiwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.wulLuDasOKkP1iqwyQdQonZ-kxa8DBLXrJJUQHrsaSk`
+        }
 
         try {
             axios.get(requestConfig.url, {
-                headers: {
-                    // 'Authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzgzODU1MTcsImV4cCI6MTY3ODk5MDMxNywiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.x8ZarTw6EZmRpbK24ynr1XRjmGRla9eAbbEj6JVUK-A`
-                }
+                headers: header
             })
                 .then(response => {
                     applyData(response.data);
                     setIsLoading(false);
                 })
                 .catch(error => {
+                    console.log("Error= ", error)
                     setError(error);
                     setIsLoading(false);
             });

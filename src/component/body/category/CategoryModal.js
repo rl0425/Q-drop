@@ -21,11 +21,11 @@ function CategoryModal(){
     const dispatch = useDispatch()
 
     const [tasks, setTasks] = useState([]);
+    const [test1, setTest1] = useState([]);
     const [subs, setSubs] = useState([1,2,4,6]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-    const swiperContainer = useRef(null);
-    const [allowTouchMove, setAllowTouchMove] = useState(false);
+    const [state, setState] = useState({slideIndex:0, updateCount:0})
 
     register();
 
@@ -35,17 +35,17 @@ function CategoryModal(){
         };
 
         const transformSubs = (tasksObj) => {
-            setTasks(tasksObj);
+            setTest1(tasksObj);
         };
 
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' },
             transformTasks
         );
-        // fetchTasks(
-        //     { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option={all}' },
-        //     transformSubs
-        // );
+        fetchTasks(
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all', header:true},
+            transformSubs
+        );
     }, [fetchTasks]);
 
 
@@ -54,9 +54,9 @@ function CategoryModal(){
     }
 
     const handleIndexChange = (index) => {
-        sliderRef.current.slickGoTo(index);
-        sliderRef.current.slickAnimate();
         setIndex(index);
+
+        sliderRef.current.slickGoTo(index, true);
     };
 
     const subSelectEvt = (ele) => {
@@ -76,6 +76,8 @@ function CategoryModal(){
 
     const sliderRef = useRef(null);
 
+    console.log("test1 = ", test1)
+
     if(isLoading){
         return <div></div>
     }
@@ -92,9 +94,19 @@ function CategoryModal(){
         const settings = {
             dots: true,
             infinite: false,
-            speed: 500,
+            speed:500,
             slidesToShow: 1,
-            slidesToScroll: 1
+            slidesToScroll: 1,
+            afterChange: () =>
+                setState(prevState => {
+                    const content = {
+                        slideIndex:prevState.slideIndex,
+                        updateCount:prevState.updateCount + 1
+                    }
+
+                    return content
+                }),
+            // beforeChange: (current, next) => setState({ slideIndex: next })
         };
 
         return (

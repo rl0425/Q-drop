@@ -1,8 +1,9 @@
 import {v4 as uuidv4} from "uuid";
 import classes from "./BodyContents.module.css"
 
-import SwipeableViews  from 'react-swipeable-views';
-import { virtualize } from 'react-swipeable-views-utils';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import React, {useState, useEffect, useRef} from "react";
 import useHttp from "../../../../hooks/use-http";
@@ -18,7 +19,7 @@ function BodyContents(props){
     const bottomBoundaryRef = useRef(null);
     const noRef = useRef(null);
 
-    const VirtualizeSwipeableViews = virtualize(SwipeableViews);
+    const sliderRef = useRef(null);
 
     const dispatch = useDispatch()
 
@@ -33,7 +34,6 @@ function BodyContents(props){
             await Promise.all(ele.subCategories.map(async (data) => {
                 subCategorySet.add(data.id);
                 await fetchTasks({ url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${data.id}?count=10&page=1` }, (tasksObj) => {
-
                     if(tasksObj.length > 0 ) {
                         setTasks((prevTasks) => ([...prevTasks, ...tasksObj]))
                         setCategory((prevArray) =>
@@ -95,9 +95,20 @@ function BodyContents(props){
         }
     }, [tasks]);
 
+
+    const settings = {
+        dots: true,
+        infinite: false,
+        speed:500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
+
+    console.log("tasks = ", tasks)
+
     return (
         <div className={classes.box}>
-            <SwipeableViews  index={pageIndex} onChangeIndex={handleChangeIndex} virtualize>
+            <Slider {...settings} ref={sliderRef}>
                 {category.map((ele,index) => {
                     return (
                         <div key={uuidv4()}>
@@ -135,51 +146,9 @@ function BodyContents(props){
                             }
                         </div>
                     )
-
-                    // return (
-                    //     <div style={{ height: ele.value * 172, containerStyle: { height: ele.value * 172 } }} className={classes.contentBox} key={uuidv4()} >
-                    //         {tasks.length > 0 ? tasks.map((data, index) => {
-                    //             tasks.sort((a, b) => {
-                    //                 return a.id - b.id
-                    //             })
-                    //
-                    //             if (data.mainCategory.main_category_id === ele.id) {
-                    //                 empty = false
-                    //
-                    //                 return (
-                    //                     <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
-                    //                          className={classes.itemBox} key={uuidv4()}>
-                    //                         <div className={classes.qSpanBox}>
-                    //                             <div className={classes.qSpan}><span>Q.</span></div>
-                    //                         </div>
-                    //                         <div className={classes.contentBox}>
-                    //                             <div className={classes.questionBox}><span>{data.title}</span></div>
-                    //                             <div className={classes.answerBox}><span>{data.content}</span></div>
-                    //                             <div className={classes.optBox}>
-                    //                                 <div>
-                    //                                     <img style={{width: "20px", height: "17px"}}
-                    //                                          src={"images/icons/heart.png"}/>
-                    //                                     <span>99</span>
-                    //                                 </div>
-                    //                                 <img style={{width: "20px", height: "17px"}}
-                    //                                      src={"images/icons/star.png"}/>
-                    //                                 <div onClick={() => optClickEvt(data.id)}>
-                    //                                     <img style={{width: "3px", height: "14px"}}
-                    //                                          src={"images/icons/option.png"}/>
-                    //                                 </div>
-                    //                             </div>
-                    //                         </div>
-                    //                     </div>
-                    //                 )
-                    //             }
-                    //         }) : tasks.length === 0 && <div style={{width:"100%", height:"400px"}} className={classes.asdassa}><span></span></div>
-                    //         }
-                    //         {empty && <div className={classes.emptyItemBox}><span>asdasdasd</span></div>}
-                    //     </div>
-                    // )
                 })}
 
-            </SwipeableViews >
+            </Slider >
         </div>
     )
 }

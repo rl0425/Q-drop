@@ -8,18 +8,24 @@ import 'slick-carousel/slick/slick-theme.css';
 import React, {useState, useEffect, useRef} from "react";
 import useHttp from "../../../../hooks/use-http";
 import {modalActions} from "../../../../store/modal-slice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {mainDataActions} from "../../../../store/mianData-slice";
 
 function BodyContents(props){
     const [tasks, setTasks] = useState([]);
-    const [pageIndex, setIndex] = useState(0);
     const [category, setCategory] = useState([])
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
+    // 스크롤 이벤트 ref
     const bottomBoundaryRef = useRef(null);
     const noRef = useRef(null);
 
+    // 슬라이더 ref
     const sliderRef = useRef(null);
+
+    // 슬라이더
+    const index = useSelector((state) => state.main.index)
+    const entry = useSelector((state) => state.main.entry)
 
     const dispatch = useDispatch()
 
@@ -70,20 +76,30 @@ function BodyContents(props){
                         }
                     });
 
-                    updatedCategoryItem.data = taskData;
+                    const sortData = taskData.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
+
+                    updatedCategoryItem.data = sortData;
                     return updatedCategoryItem;
                 })
             ))
     }
 
+    // 세부 카테고리 설정 모달 이벤트
     const optClickEvt = (ele) => {
         dispatch(modalActions.changePostOpen({open: true, id: ele}))
     }
 
-    const handleChangeIndex = (index) => {
-        setIndex(index);
+    // 메인 카테고리 선택 이벤트
+    const handleIndexChange = () => {
+        if(!entry) {
+            sliderRef.current.slickGoTo(index, true);
+        }
     };
 
+    // 메인에서 슬라이드 이벤트
+    const handleSlideChange = (index) => {
+        dispatch(mainDataActions.changeIndex({index:index, entry:false}))
+    };
 
     useEffect(() => {
         getData();
@@ -95,23 +111,29 @@ function BodyContents(props){
         }
     }, [tasks]);
 
+    useEffect(() => {
+        handleIndexChange()
+    }, [index]);
+
 
     const settings = {
         dots: true,
         infinite: false,
-        speed:500,
+        speed:200,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        initialSlide:0,
+        afterChange:  handleSlideChange
     };
 
-    console.log("tasks = ", tasks)
+    console.log("category= ", category)
 
     return (
         <div className={classes.box}>
             <Slider {...settings} ref={sliderRef}>
-                {category.map((ele,index) => {
+                {category.map((ele, index) => {
                     return (
-                        <div key={uuidv4()}>
+                        <div key={uuidv4()} className={classes.silderBox}>
                             {(!ele.data || ele.data.length === 0) ?
                                 <div className={classes.emptyItemBox} key={uuidv4()}>empty</div>
                                 :

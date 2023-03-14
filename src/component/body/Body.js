@@ -5,19 +5,42 @@ import useHttp from "../../hooks/use-http";
 import MemoizedBodyContents from "./Main/BodyContent/BodyContents";
 
 function Body(){
-    const [tasks, setTasks] = useState([]);
+    const [mainData, setMainData] = useState([]);
+    const [categoryData, setCategoryData] = useState([]);
+
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     useEffect(() => {
-        const transformTasks = (tasksObj) => {
-            setTasks(tasksObj);
-            console.log("first")
+        const handleMainData = (tasksObj) => {
+            setMainData(tasksObj);
         };
 
+        const handleCategoryData = (tasksObj) => {
+            // tasksObj[0].bookmark_sub_categories[0].selected = true
+            // tasksObj[0].bookmark_sub_categories[2].selected = true
+            // tasksObj[0].bookmark_sub_categories[4].selected = true
+            // tasksObj[1].bookmark_sub_categories[0].selected = true
+            // tasksObj[1].bookmark_sub_categories[1].selected = true
+            // tasksObj[1].bookmark_sub_categories[3].selected = true
+            // tasksObj[1].bookmark_sub_categories[5].selected = true
+            // tasksObj[2].bookmark_sub_categories[0].selected = true
+            // tasksObj[3].bookmark_sub_categories[0].selected = true
+
+            setCategoryData(tasksObj);
+        };
+
+        // Main 데이터
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' },
-            transformTasks
+            handleMainData
         );
+
+        // 카테고리 관련 데이터
+        fetchTasks(
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all', header:true},
+            handleCategoryData
+        );
+
     }, [fetchTasks]);
 
     if(isLoading){
@@ -29,10 +52,13 @@ function Body(){
     }
 
     else {
+        console.log("mainData= ", mainData)
+        console.log("categoryData= ", categoryData)
+
         return (
             <Fragment>
-                <BodyHead data={tasks}/>
-                <BodyContents data={tasks}/>
+                <BodyHead data={mainData} categoryData={categoryData}/>
+                <BodyContents data={mainData} categoryData={categoryData}/>
             </Fragment>
         )
     }

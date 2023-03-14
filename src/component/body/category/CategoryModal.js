@@ -26,6 +26,8 @@ function CategoryModal(){
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const [state, setState] = useState({slideIndex:0, updateCount:0})
+    const sliderRef = useRef(null);
+
 
     register();
 
@@ -42,10 +44,10 @@ function CategoryModal(){
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' },
             transformTasks
         );
-        fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all', header:true},
-            transformSubs
-        );
+        // fetchTasks(
+        //     { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all', header:true},
+        //     transformSubs
+        // );
     }, [fetchTasks]);
 
 
@@ -55,8 +57,11 @@ function CategoryModal(){
 
     const handleIndexChange = (index) => {
         setIndex(index);
-
         sliderRef.current.slickGoTo(index, true);
+    };
+
+    const handleSlideChange = (index) => {
+        setIndex(index);
     };
 
     const subSelectEvt = (ele) => {
@@ -74,10 +79,6 @@ function CategoryModal(){
         }
     }
 
-    const sliderRef = useRef(null);
-
-    console.log("test1 = ", test1)
-
     if(isLoading){
         return <div></div>
     }
@@ -94,18 +95,11 @@ function CategoryModal(){
         const settings = {
             dots: true,
             infinite: false,
-            speed:500,
+            speed:200,
             slidesToShow: 1,
             slidesToScroll: 1,
-            afterChange: () =>
-                setState(prevState => {
-                    const content = {
-                        slideIndex:prevState.slideIndex,
-                        updateCount:prevState.updateCount + 1
-                    }
-
-                    return content
-                }),
+            afterChange:  handleSlideChange
+            // beforeChange: (current,next) => handleSlideChange(next)
             // beforeChange: (current, next) => setState({ slideIndex: next })
         };
 

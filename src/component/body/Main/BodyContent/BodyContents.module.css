@@ -1,6 +1,13 @@
 .box{
+    height: calc(100% - 80px);
+}
+
+.box div{
     height: 100%;
-    overflow-y: scroll;
+}
+
+.silderBox{
+    overflow: auto;
 }
 
 /*.box > div{*/
@@ -13,11 +20,12 @@
     max-height: fit-content;
 }
 
-.itemBox{
+.box .itemBox{
     display: flex;
     overflow: hidden;
     width: calc(var(--vw, 1vw) - 20px);
     max-width: calc(var(--vw, 1vw) - 20px);
+    height: auto;
     padding: 20px 20px;
     border-bottom: 1px solid #26282C;
     box-sizing: border-box;

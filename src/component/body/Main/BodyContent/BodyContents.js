@@ -130,6 +130,10 @@ function BodyContents(props){
 
     return (
         <div className={classes.box}>
+            <div className={classes.sortBox}>
+                <span>최신순</span>
+                <img src={"/images/icons/arrowBox.png"}/>
+            </div>
             <Slider {...settings} ref={sliderRef}>
                 {category.map((ele, index) => {
                     return (
@@ -150,11 +154,11 @@ function BodyContents(props){
                                                 <div className={classes.optBox}>
                                                     <div>
                                                         <img style={{width: "20px", height: "17px"}}
-                                                             src={"images/icons/heart.png"}/>
-                                                        <span>99</span>
+                                                             src={data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png" }/>
+                                                        <span>{data.board_like.total_like_count}</span>
                                                     </div>
                                                     <img style={{width: "20px", height: "17px"}}
-                                                         src={"images/icons/star.png"}/>
+                                                         src={data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png" }/>
                                                     <div onClick={() => optClickEvt(data.id)}>
                                                         <img style={{width: "3px", height: "14px"}}
                                                              src={"images/icons/option.png"}/>
@@ -169,7 +173,6 @@ function BodyContents(props){
                         </div>
                     )
                 })}
-
             </Slider >
         </div>
     )

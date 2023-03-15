@@ -21,13 +21,13 @@ function CategoryModal(){
     const dispatch = useDispatch()
 
     const [tasks, setTasks] = useState([]);
-    const [test1, setTest1] = useState([]);
-    const [subs, setSubs] = useState([1,2,4,6]);
+    const [subs, setSubs] = useState([]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const [state, setState] = useState({slideIndex:0, updateCount:0})
     const sliderRef = useRef(null);
 
+    const categoryData = useSelector((state) => state.main.categoryData)
 
     register();
 
@@ -36,20 +36,31 @@ function CategoryModal(){
             setTasks(tasksObj);
         };
 
-        const transformSubs = (tasksObj) => {
-            setTest1(tasksObj);
-        };
-
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' },
             transformTasks
         );
-        // fetchTasks(
-        //     { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all', header:true},
-        //     transformSubs
-        // );
     }, [fetchTasks]);
 
+
+    useEffect(() => {
+        setSubjectList()
+
+    }, [categoryData])
+
+    const setSubjectList = () => {
+        const selectedSubs = []
+
+        categoryData.map((ele) => {
+            ele.bookmark_sub_categories.map((data) => {
+                if(data.selected){
+                    selectedSubs.push(data.sub_category_id)
+                }
+            })
+        })
+
+        setSubs([...subs, ...selectedSubs])
+    }
 
     const openEvt = () => {
         dispatch(categoryActions.changeOpen({open:false}))

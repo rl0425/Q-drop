@@ -3,12 +3,16 @@ import BodyHead from "./Main/BodyHead";
 import BodyContents from "./Main/BodyContent/BodyContents";
 import useHttp from "../../hooks/use-http";
 import MemoizedBodyContents from "./Main/BodyContent/BodyContents";
+import {useDispatch} from "react-redux";
+import {mainDataActions} from "../../store/mianData-slice";
 
 function Body(){
     const [mainData, setMainData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
 
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const handleMainData = (tasksObj) => {
@@ -25,6 +29,7 @@ function Body(){
             // tasksObj[1].bookmark_sub_categories[5].selected = true
             // tasksObj[2].bookmark_sub_categories[0].selected = true
             // tasksObj[3].bookmark_sub_categories[0].selected = true
+            dispatch(mainDataActions.addCategoryData({data:tasksObj}))
 
             setCategoryData(tasksObj);
         };

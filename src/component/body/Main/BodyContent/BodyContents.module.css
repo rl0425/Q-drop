@@ -1,9 +1,24 @@
 .box{
-    height: calc(100% - 80px);
+    height: calc(100% - 99px);
 }
 
 .box div{
     height: 100%;
+}
+
+.box > .sortBox{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #9C9EA7;
+}
+
+.sortBox > img{
+    width: 27px;
+    height: 27px;
 }
 
 .silderBox{
@@ -23,8 +38,8 @@
 .box .itemBox{
     display: flex;
     overflow: hidden;
-    width: calc(var(--vw, 1vw) - 20px);
-    max-width: calc(var(--vw, 1vw) - 20px);
+    width: calc(var(--vw, 1vw) - 15px);
+    max-width: calc(var(--vw, 1vw) - 15px);
     height: auto;
     padding: 20px 20px;
     border-bottom: 1px solid #26282C;

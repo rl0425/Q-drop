@@ -11,6 +11,7 @@ import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../../../store/mianData-slice";
 import MemoizedContent from "./ContentList";
+import ContentList from "./ContentList";
 
 function BodyContents(props){
     const [tasks, setTasks] = useState([]);
@@ -67,6 +68,8 @@ function BodyContents(props){
         })
 
         subCategoryPromise.then((categoryList) => {
+            console.log("categoryList =", categoryList)
+
             const groupedData = categoryList.reduce((accumulator, currentValue) => {
                 const existingItem = accumulator.find(
                     (item) => item.id === currentValue.mainCategory.main_category_id
@@ -187,6 +190,12 @@ function BodyContents(props){
     }
 
     else {
+        console.log("category = ", category)
+
+        category.sort((a,b) => {
+            return a.id - b.id
+        })
+
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -199,7 +208,7 @@ function BodyContents(props){
                                 return (
                                     <div key={uuidv4()} className={classes.silderBox}>
                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
-                                            return <MemoizedContent data={data}/>
+                                            return <ContentList key={uuidv4()} data={data}/>
                                         })}
 
                                     </div>

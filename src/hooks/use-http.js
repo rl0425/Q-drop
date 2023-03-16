@@ -25,12 +25,18 @@ const useHttp = () => {
                     method: requestConfig.type,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
+                    data: requestConfig.data ? {
+                        [requestConfig.data.type]:requestConfig.data.item
+                    } : null
                 })
                     .then(function a(response) {
-                        console.log(response)
+                        applyData(response.data);
+                        setIsLoading(false);
                     })
                     .catch(function (error) {
                         console.log(error);
+                        setError(error);
+                        setIsLoading(false);
                     });
             } catch (err) {
                 setError(err.message || 'Something went wrong!');

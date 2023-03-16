@@ -9,3 +9,25 @@
     border-radius: 20px 20px 0px 0px;
     box-sizing: border-box;
 }
+
+.box > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    gap: 4px;
+}
+
+.box img{
+    width: 18px;
+}
+
+.box span{
+    font-size: 12px;
+    font-weight: 600;
+    color: #DADCE1;
+}
+
+.disable span{
+    color: #64666D;
+}

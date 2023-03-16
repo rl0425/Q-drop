@@ -4,6 +4,7 @@ import {categoryActions} from "../../../store/category-slice";
 import {useEffect, useState} from "react";
 import {v4 as uuidv4} from "uuid";
 import {mainDataActions} from "../../../store/mianData-slice";
+import {logDOM} from "@testing-library/react";
 
 function BodyHead(props){
     const dispatch = useDispatch()

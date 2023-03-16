@@ -10,8 +10,8 @@ function ContentList(props){
     const dispatch = useDispatch()
 
     const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png");
-    const [favoriteSrc, setFavoriteSrc] = useState(data.board_like.user_like_status ? "images/icons/colorStar.png" : "images/icons/star.png");
     const [likeCount, setLikeCount] = useState(data.board_like.total_like_count);
+    const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png");
 
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
@@ -89,6 +89,4 @@ function ContentList(props){
 }
 
 
-const MemoizedContent = React.memo(ContentList);
-
-export default MemoizedContent;
+export default ContentList;

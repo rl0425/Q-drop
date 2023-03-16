@@ -2,7 +2,7 @@ import classes from "./CategoryModal.module.css"
 import {v4 as uuidv4} from "uuid";
 import {useSelector, useDispatch} from "react-redux";
 import {categoryActions} from "../../../store/category-slice";
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useState, useRef, useContext} from "react";
 import useHttp from "../../../hooks/use-http";
 import Content from "./Content";
 
@@ -10,9 +10,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { register } from 'swiper/element/bundle';
-import {logDOM} from "@testing-library/react";
 import {mainDataActions} from "../../../store/mianData-slice";
+import {CategorySettings, UserContext} from "../Home";
 // register Swiper custom elements
 
 function CategoryModal(){
@@ -28,11 +27,7 @@ function CategoryModal(){
 
     const categoryData = useSelector((state) => state.main.categoryData)
 
-    register();
-
     useEffect(() => {
-        console.log("11")
-
         const transformTasks = (tasksObj) => {
             setTasks(tasksObj);
         };
@@ -49,6 +44,10 @@ function CategoryModal(){
 
     }, [categoryData])
 
+    useEffect(() => {
+        setOpenAnimation(true)
+    }, [])
+
     const setSubjectList = () => {
         const selectedSubs = []
 
@@ -61,7 +60,6 @@ function CategoryModal(){
         })
 
         setSubs([...subs, ...selectedSubs])
-        setOpenAnimation(true)
     }
 
     const closeEvt = () => {
@@ -101,18 +99,15 @@ function CategoryModal(){
 
     // 변경사항 완료 버튼 이벤트
     const handleComplete = () => {
-        const completPost = (data) => {
-
-
+        const completePost = (data) => {
             dispatch(mainDataActions.changeSubCategory({subCategoryList:subs}))
-
             closeEvt()
         }
 
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post", dataType:"id", data:subs},
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post", dataType:"id", data: {type:"id", item:subs}},
             // { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/post/1',  type:"post", dataType:"subCategoryId", data:subs},
-            completPost
+            completePost
         );
     }
 
@@ -152,7 +147,7 @@ function CategoryModal(){
                         <div className={classes.categorySet}>
                             {tasks.map((ele, index) => {
                                 return (
-                                    <div key={index} onClick={()=>handleIndexChange(index)} className={index === pageIndex ? classes.category : `${classes.category} ${classes.noSelect}`}>
+                                    <div key={uuidv4()} onClick={()=>handleIndexChange(index)} className={index === pageIndex ? classes.category : `${classes.category} ${classes.noSelect}`}>
                                         <span>{ele.mainCategoryName}</span>
                                     </div>
                                 )
@@ -165,12 +160,10 @@ function CategoryModal(){
                                     if(ele){
                                         return (
                                             // <SwiperSlide key={uuidv4()}>
-                                                <div className={classes.jonh}>
+                                                <div className={classes.jonh} key={uuidv4()}>
                                                 {ele.subCategories.map((data) => {
                                                     return (
-                                                        <>
-                                                            <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
-                                                        </>
+                                                        <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
                                                     )
                                                 })}
                                                 </div>

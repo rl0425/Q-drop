@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from "react";
+import {createContext, Fragment, useEffect, useMemo, useState} from "react";
 import BodyHead from "./Main/BodyHead";
 import BodyContents from "./Main/BodyContent/BodyContents";
 import useHttp from "../../hooks/use-http";
@@ -7,7 +7,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../store/mianData-slice";
 import axios from "axios";
 
-function Body(){
+
+function Home(){
+    const dispatch = useDispatch()
+
     const [mainData, setMainData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
 
@@ -16,9 +19,8 @@ function Body(){
     const [error, setError] = useState(false)
 
     // subcategory 변경 시 리렌더링 위한 selector
-    const subCategorys = useSelector((state) => state.main.subCategoryList)
+    const subs = useSelector((state) => state.main.subCategoryList)
 
-    const dispatch = useDispatch()
 
     useEffect(() => {
         Promise.all([
@@ -37,9 +39,7 @@ function Body(){
             .finally(() => {
                 setIsLoading(false);
             });
-
-        console.log("12312")
-    }, [])
+    }, [subs])
 
 
     if(isLoading){
@@ -51,17 +51,18 @@ function Body(){
     }
 
     else {
-        console.log("mainData= ", mainData)
+        // console.log("mainData= ", mainData)
         console.log("categoryData= ", categoryData)
 
         return (
             <Fragment>
-                <BodyHead data={mainData} categoryData={categoryData}/>
-                <BodyContents data={mainData} categoryData={categoryData}/>
+                <BodyHead subs={subs} data={mainData} categoryData={categoryData}/>
+                <BodyContents subs={subs} data={mainData} categoryData={categoryData}/>
             </Fragment>
         )
     }
 
 }
 
-export default Body
+
+export default Home

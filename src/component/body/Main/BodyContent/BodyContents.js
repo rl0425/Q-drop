@@ -43,7 +43,7 @@ function BodyContents(props){
         // categoryData.push(categoryItem);
 
         const subCategoryPromise = new Promise((resolve, reject) => {
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?id=1,2,3,4,5,6,7,8,9,10,11,12,13,14`}, (taskObj) => {
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?id=`}, (taskObj) => {
                 if (taskObj.length > 0) {
                     const trueList = []
                     const categoryList = []
@@ -145,9 +145,7 @@ function BodyContents(props){
     };
 
     const handleSortChange = () => {
-        if(sortType === "new"){
-            setSortType("joah")
-        }
+        if(sortType === "new") setSortType("joah")
         else setSortType("new")
     }
 
@@ -197,44 +195,42 @@ function BodyContents(props){
                     <img src={"/images/icons/arrowBox.png"}/>
                 </div>
                 <Slider {...settings} ref={sliderRef}>
-                    {category.map((ele, index) => {
-                        return (
-                            <div key={uuidv4()} className={classes.silderBox}>
-                                {(!ele.data || ele.data.length === 0) ?
-                                    <div className={classes.emptyItemBox} key={uuidv4()}>empty</div>
-                                    :
-                                    ele.data.map((data, index) => {
-                                        return (
-                                            <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
-                                                 className={classes.itemBox} key={uuidv4()}>
-                                                <div className={classes.qSpanBox}>
-                                                    <div className={classes.qSpan}><span>Q.</span></div>
+                    <div key={uuidv4()} className={classes.silderBox}>
+                        {(!category || category.length === 0) ? <div></div>:
+                            category.map((ele, index) => {
+                                return (
+
+
+                                    <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
+                                         className={classes.itemBox} key={uuidv4()}>
+                                        <div className={classes.qSpanBox}>
+                                            <div className={classes.qSpan}><span>Q.</span></div>
+                                        </div>
+                                        <div className={classes.contentBox}>
+                                            <div className={classes.questionBox}><span>{ele.title}</span></div>
+                                            <div className={classes.answerBox}><span>{ele.content}</span></div>
+                                            <div className={classes.optBox}>
+                                                <div className={classes.heartBox}>
+                                                    <img style={{width: "20px", height: "17px"}}
+                                                         src={ele.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
+                                                    <span>{ele.board_like.total_like_count}</span>
                                                 </div>
-                                                <div className={classes.contentBox}>
-                                                    <div className={classes.questionBox}><span>{data.title}</span></div>
-                                                    <div className={classes.answerBox}><span>{data.content}</span></div>
-                                                    <div className={classes.optBox}>
-                                                        <div className={classes.heartBox}>
-                                                            <img style={{width: "20px", height: "17px"}}
-                                                                 src={data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
-                                                            <span>{data.board_like.total_like_count}</span>
-                                                        </div>
-                                                        <img style={{width: "20px", height: "17px"}}
-                                                             src={data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png"}/>
-                                                        <div onClick={() => optClickEvt(data.id)}>
-                                                            <img style={{width: "3px", height: "14px"}}
-                                                                 src={"images/icons/option.png"}/>
-                                                        </div>
-                                                    </div>
+                                                <img style={{width: "20px", height: "17px"}}
+                                                     src={ele.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png"}/>
+                                                <div onClick={() => optClickEvt(ele.id)}>
+                                                    <img style={{width: "3px", height: "14px"}}
+                                                         src={"images/icons/option.png"}/>
                                                 </div>
                                             </div>
-                                        )
-                                    })
+                                        </div>
+                                    </div>
 
-                                }
-                            </div>
-                        )
-                    })}
+
+
+                                )
+                            })
+                        }
+                    </div>
                 </Slider>
             </div>
         )

@@ -36,12 +36,6 @@ function BodyContents(props){
     const dispatch = useDispatch()
 
     const getData = () => {
-        // const categoryData = [];
-        const subCategorySet = new Set();
-
-        // const categoryItem = { id: ele.categoryId, value: 0, data: null };
-        // categoryData.push(categoryItem);
-
         const subCategoryPromise = new Promise((resolve, reject) => {
             fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?id=`}, (taskObj) => {
                 if (taskObj.length > 0) {
@@ -56,7 +50,6 @@ function BodyContents(props){
                         })
                     })
 
-
                     taskObj.map((ele) => {
                         const data = trueList.find(u => u === ele.id)
                         if (data) {
@@ -70,32 +63,39 @@ function BodyContents(props){
                     reject(new Error('No data returned from fetchTasks')); // reject the promise with an error
                 }
             })
-
-
-            // const subCategoryPromises = ele.subCategories.map(async (data) => {
-            //     subCategorySet.add(data.id);
-            //     fetchTasks({ url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${data.id}?count=10&page=1` }, (taskObj) =>{
-            //         if (taskObj.length > 0) {
-            //             setTasks((prevTasks) => ([...prevTasks, ...taskObj]))
-            //             setCategory((prevArray) =>
-            //                 prevArray.map((item) =>
-            //                     item.id === taskObj[0].mainCategory.main_category_id ? {
-            //                         ...item,
-            //                         value: item.value + 1
-            //                     } : item
-            //                 )
-            //             );
-            //         }
-            //
-            //     });
-            // });
-
-            // return Promise.all(subCategoryPromise);
-
-            // Promise.all(promises).then(() => {
-            //     setCategory(categoryData);
-            // });
         })
+
+        subCategoryPromise.then((categoryList) => {
+            const groupedData = categoryList.reduce((accumulator, currentValue) => {
+                const existingItem = accumulator.find(
+                    (item) => item.id === currentValue.mainCategory.main_category_id
+                );
+                if (existingItem) {
+                    existingItem.values.push(currentValue);
+                } else {
+                    accumulator.push({
+                        id: currentValue.mainCategory.main_category_id,
+                        values: [currentValue],
+                    });
+                }
+                return accumulator;
+            }, []);
+
+            props.categoryData.map((ele) => {
+                if(ele.bookmark_sub_categories.length > 0){
+                    const hasId = groupedData.find(u => u.id === ele.main_category_id)
+                    if(!hasId){
+                        groupedData.push({
+                            id:  ele.main_category_id,
+                            values: []
+                        })
+                    }
+                }
+            })
+
+            setCategory(groupedData)
+        })
+
         return subCategoryPromise;
 
     }
@@ -186,8 +186,6 @@ function BodyContents(props){
     }
 
     else {
-        console.log("category = " ,category)
-
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -195,42 +193,42 @@ function BodyContents(props){
                     <img src={"/images/icons/arrowBox.png"}/>
                 </div>
                 <Slider {...settings} ref={sliderRef}>
-                    <div key={uuidv4()} className={classes.silderBox}>
                         {(!category || category.length === 0) ? <div></div>:
                             category.map((ele, index) => {
                                 return (
-
-
-                                    <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
-                                         className={classes.itemBox} key={uuidv4()}>
-                                        <div className={classes.qSpanBox}>
-                                            <div className={classes.qSpan}><span>Q.</span></div>
-                                        </div>
-                                        <div className={classes.contentBox}>
-                                            <div className={classes.questionBox}><span>{ele.title}</span></div>
-                                            <div className={classes.answerBox}><span>{ele.content}</span></div>
-                                            <div className={classes.optBox}>
-                                                <div className={classes.heartBox}>
-                                                    <img style={{width: "20px", height: "17px"}}
-                                                         src={ele.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
-                                                    <span>{ele.board_like.total_like_count}</span>
+                                    <div key={uuidv4()} className={classes.silderBox}>
+                                        {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
+                                            return (
+                                                <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
+                                                     className={classes.itemBox} key={uuidv4()}>
+                                                    <div className={classes.qSpanBox}>
+                                                        <div className={classes.qSpan}><span>Q.</span></div>
+                                                    </div>
+                                                    <div className={classes.contentBox}>
+                                                        <div className={classes.questionBox}><span>{data.title}</span></div>
+                                                        <div className={classes.answerBox}><span>{data.content}</span></div>
+                                                        <div className={classes.optBox}>
+                                                            <div className={classes.heartBox}>
+                                                                <img style={{width: "20px", height: "17px"}}
+                                                                     src={data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
+                                                                <span>{data.board_like.total_like_count}</span>
+                                                            </div>
+                                                            <img style={{width: "20px", height: "17px"}}
+                                                                 src={data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png"}/>
+                                                            <div onClick={() => optClickEvt(data.id)}>
+                                                                <img style={{width: "3px", height: "14px"}}
+                                                                     src={"images/icons/option.png"}/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <img style={{width: "20px", height: "17px"}}
-                                                     src={ele.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png"}/>
-                                                <div onClick={() => optClickEvt(ele.id)}>
-                                                    <img style={{width: "3px", height: "14px"}}
-                                                         src={"images/icons/option.png"}/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            )
+                                        })}
+
                                     </div>
-
-
-
                                 )
                             })
                         }
-                    </div>
                 </Slider>
             </div>
         )

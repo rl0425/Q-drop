@@ -56,62 +56,6 @@
     transition: all 0.3s linear;
 }
 
-.qSpanBox{
-    margin-right: 8px;
-}
-
-.contentBox{
-    display: flex;
-    flex-direction: column;
-    width: calc(100%);
-    height: 170px;
-    /*overflow: hidden;*/
-}
-
-.qSpan{
-    font-size: 18px;
-    font-weight: bold;
-    color: #48BAFB
-}
-
-.questionBox{
-    font-size: 18px;
-    font-weight: bold;
-    color: #DADCE1;
-    margin-bottom: 10px;
-}
-
-.answerBox{
-
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-
-    height: 57px;
-
-    /*white-space: nowrap; !* 텍스트가 줄바꿈되지 않도록 설정 *!*/
-    overflow: hidden; /* 넘치는 부분을 숨김 */
-    /*text-overflow: ellipsis;*/
-    font-weight: 400;
-    font-size: 16px;
-    color: #9C9EA7;
-    margin-bottom: 24px;
-}
-
-.optBox{
-    display: flex;
-    justify-content: right;
-    gap: 24px;
-}
-
-.optBox > div{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-}
-
-
 .emptyItemBox{
     display: flex;
     justify-content: center;

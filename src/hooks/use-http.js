@@ -10,22 +10,27 @@ const useHttp = () => {
         setIsLoading(true);
         setError(null);
         const header ={Authorization:null}
-        if (requestConfig.header === true) {
-            // header['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzgwMzIxNzYsImV4cCI6MTY3ODYzNjk3NiwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.wulLuDasOKkP1iqwyQdQonZ-kxa8DBLXrJJUQHrsaSk`
-        }
 
-        if (requestConfig.type && requestConfig.type === "post"){
+        // if (requestConfig.header === true) {
+        //     // header['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzgwMzIxNzYsImV4cCI6MTY3ODYzNjk3NiwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.wulLuDasOKkP1iqwyQdQonZ-kxa8DBLXrJJUQHrsaSk`
+        // }
+
+        if (requestConfig.type){
             try {
-                axios.post(requestConfig.url)
-                    .then(response => {
-                        console.log("response = ", response)
-                        applyData(response.data);
-                        setIsLoading(false);
+                // const dataType = requestConfig.dataType
+
+                // axios.post(requestConfig.url, {[dataType]: requestConfig.data})
+                axios({
+                    url: requestConfig.url,
+                    method: requestConfig.type,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                })
+                    .then(function a(response) {
+                        console.log(response)
                     })
-                    .catch(error => {
-                        console.log("Error= ", error)
-                        setError(error);
-                        setIsLoading(false);
+                    .catch(function (error) {
+                        console.log(error);
                     });
             } catch (err) {
                 setError(err.message || 'Something went wrong!');

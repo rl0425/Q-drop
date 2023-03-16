@@ -10,6 +10,7 @@ import useHttp from "../../../../hooks/use-http";
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../../../store/mianData-slice";
+import MemoizedContent from "./ContentList";
 
 function BodyContents(props){
     const [tasks, setTasks] = useState([]);
@@ -189,7 +190,7 @@ function BodyContents(props){
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
-                    <span>{sortType === "new" ? "최신순" : "좋아요순"}</span>
+                    <span>{sortType === "new" ? "최신순" : "좋아요 순"}</span>
                     <img src={"/images/icons/arrowBox.png"}/>
                 </div>
                 <Slider {...settings} ref={sliderRef}>
@@ -198,31 +199,7 @@ function BodyContents(props){
                                 return (
                                     <div key={uuidv4()} className={classes.silderBox}>
                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
-                                            return (
-                                                <div key={uuidv4()} ref={index === 5 ? bottomBoundaryRef : noRef}
-                                                     className={classes.itemBox} key={uuidv4()}>
-                                                    <div className={classes.qSpanBox}>
-                                                        <div className={classes.qSpan}><span>Q.</span></div>
-                                                    </div>
-                                                    <div className={classes.contentBox}>
-                                                        <div className={classes.questionBox}><span>{data.title}</span></div>
-                                                        <div className={classes.answerBox}><span>{data.content}</span></div>
-                                                        <div className={classes.optBox}>
-                                                            <div className={classes.heartBox}>
-                                                                <img style={{width: "20px", height: "17px"}}
-                                                                     src={data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
-                                                                <span>{data.board_like.total_like_count}</span>
-                                                            </div>
-                                                            <img style={{width: "20px", height: "17px"}}
-                                                                 src={data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png"}/>
-                                                            <div onClick={() => optClickEvt(data.id)}>
-                                                                <img style={{width: "3px", height: "14px"}}
-                                                                     src={"images/icons/option.png"}/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
+                                            return <MemoizedContent data={data}/>
                                         })}
 
                                     </div>

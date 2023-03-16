@@ -102,13 +102,16 @@ function CategoryModal(){
     // 변경사항 완료 버튼 이벤트
     const handleComplete = () => {
         const completPost = (data) => {
+
+
             dispatch(mainDataActions.changeSubCategory({subCategoryList:subs}))
 
             closeEvt()
         }
 
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark/9',  type:"post", dataType:"subCategoryId", data:""},
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post", dataType:"id", data:subs},
+            // { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/post/1',  type:"post", dataType:"subCategoryId", data:subs},
             completPost
         );
     }

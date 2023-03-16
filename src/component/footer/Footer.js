@@ -1,7 +1,6 @@
 import classes from "./Footer.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {mainSectorActions} from "../../store/mainSector-slice";
-
 function Footer(){
     const dispatch = useDispatch()
     const sector = useSelector((state) => state.sector.type)
@@ -18,7 +17,6 @@ function Footer(){
                 dispatch(mainSectorActions.changeSector({type:"my"}))
             }
         }
-
     }
 
     return (

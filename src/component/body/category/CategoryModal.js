@@ -12,10 +12,10 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import { register } from 'swiper/element/bundle';
 import {logDOM} from "@testing-library/react";
+import {mainDataActions} from "../../../store/mianData-slice";
 // register Swiper custom elements
 
 function CategoryModal(){
-    const open = useSelector((state) => state.category.open)
     const [openAnimation, setOpenAnimation] = useState(false);
     const [pageIndex, setIndex] = useState(0);
     const dispatch = useDispatch()
@@ -24,7 +24,6 @@ function CategoryModal(){
     const [subs, setSubs] = useState([]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-    const [state, setState] = useState({slideIndex:0, updateCount:0})
     const sliderRef = useRef(null);
 
     const categoryData = useSelector((state) => state.main.categoryData)
@@ -32,6 +31,8 @@ function CategoryModal(){
     register();
 
     useEffect(() => {
+        console.log("11")
+
         const transformTasks = (tasksObj) => {
             setTasks(tasksObj);
         };
@@ -60,21 +61,29 @@ function CategoryModal(){
         })
 
         setSubs([...subs, ...selectedSubs])
+        setOpenAnimation(true)
     }
 
-    const openEvt = () => {
-        dispatch(categoryActions.changeOpen({open:false}))
+    const closeEvt = () => {
+        setOpenAnimation(false)
+
+        setTimeout(()=>{
+            dispatch(categoryActions.changeOpen({open:false}))
+        }, 500)
     }
 
+    // 헤더로 인덱스 변경
     const handleIndexChange = (index) => {
         setIndex(index);
         sliderRef.current.slickGoTo(index, true);
     };
 
+    // 슬라이드로 인덱스 변경
     const handleSlideChange = (index) => {
         setIndex(index);
     };
 
+    // 서브카테고리 선택 이벱트
     const subSelectEvt = (ele) => {
         let newArray = [...subs]
         const index = newArray.indexOf(ele.id)
@@ -90,6 +99,20 @@ function CategoryModal(){
         }
     }
 
+    // 변경사항 완료 버튼 이벤트
+    const handleComplete = () => {
+        const completPost = (data) => {
+            dispatch(mainDataActions.changeSubCategory({subCategoryList:subs}))
+
+            closeEvt()
+        }
+
+        fetchTasks(
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark/9',  type:"post", dataType:"subCategoryId", data:""},
+            completPost
+        );
+    }
+
     if(isLoading){
         return <div></div>
     }
@@ -99,10 +122,6 @@ function CategoryModal(){
     }
 
     else {
-        setTimeout(()=>{
-            setOpenAnimation(true)
-        },50)
-
         const settings = {
             dots: true,
             infinite: false,
@@ -117,13 +136,15 @@ function CategoryModal(){
         return (
             <>
                 <div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>
+                {/*<div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>*/}
 
                 </div>
                 <div className={openAnimation ? classes.box : classes.nonBox}>
+                {/*<div className={openAnimation ? classes.box : classes.nonBox}>*/}
                     <div className={classes.head}>
                         <div className={classes.header}>
                             <div className={classes.spanHeader}><span>관심 카테고리 설정</span></div>
-                            <div onClick={openEvt} className={classes.exit}><span>닫기</span><img/></div>
+                            <div onClick={closeEvt} className={classes.exit}><span>닫기</span><img/></div>
                         </div>
                         <div className={classes.categorySet}>
                             {tasks.map((ele, index) => {
@@ -162,7 +183,7 @@ function CategoryModal(){
                         </Slider>
                     </div>
                     <div className={classes.footer}>
-                        <div className={classes.footerBox}>
+                        <div onClick={handleComplete} className={classes.footerBox}>
                             <span>카테고리 설정 완료</span>
                         </div>
                     </div>

@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useRef} from "react"
 import {v4 as uuidv4} from "uuid";
-import classes from "./Content.module.css"
+import classes from "./ContentList.module.css"
 
 import useHttp from "../../../../hooks/use-http";
 import {useSelector, useDispatch} from "react-redux";
 import {categoryActions} from "../../../../store/category-slice";
 import {modalActions} from "../../../../store/modal-slice";
 
-function Content(props){
+function ContentList(props){
     const [tasks, setTasks] = useState([]);
     const [times, setTimes] = useState([]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
@@ -32,18 +32,11 @@ function Content(props){
     useEffect(() => {
         const transformTasks = (tasksObj) => {
             setTasks((prevTasks) => [...prevTasks, ...tasksObj]);
-            // dispatch(categoryActions.addCategory({id: props.data.categoryId, data: tasksObj}))
         };
 
         const data = category.find(u => u.id === props.data.categoryId)
 
         if(true){
-
-            // fetchTasks(
-            //     {url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${1}?count=10&page=1`},
-            //     transformTasks
-            // );
-
             props.data.subCategories.map((ele) => {
                 fetchTasks(
                     {url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${ele.id}?count=10&page=1`},
@@ -89,11 +82,6 @@ function Content(props){
     }
 
     else {
-        // if(props.pageIndex ===  props.index) {
-        //     props.setHeightEvt(tasks.length)
-        // }
-        // console.log("props = ", props.data)
-
         return (
             <div style={{height: "fit-content", maxHeight: "fit-content"}} className={times ? `${classes.loadBox} ${classes.load}` : classes.loadBox}>
                 {tasks.map((ele, index) => {
@@ -125,6 +113,6 @@ function Content(props){
 }
 
 
-const MemoizedContent = React.memo(Content);
+const MemoizedContent = React.memo(ContentList);
 
 export default MemoizedContent;

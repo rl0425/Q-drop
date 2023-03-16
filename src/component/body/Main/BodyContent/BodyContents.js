@@ -30,42 +30,75 @@ function BodyContents(props){
     const index = useSelector((state) => state.main.index)
     const entry = useSelector((state) => state.main.entry)
 
+    // 모든 데이터의 로드 확인
     const [dataLoaded, setDataLoaded] = useState(false);
+
     const dispatch = useDispatch()
 
     const getData = () => {
-        const categoryData = [];
+        // const categoryData = [];
         const subCategorySet = new Set();
 
-        const promises = props.data.map(async (ele) => {
-            const categoryItem = { id: ele.categoryId, value: 0, data: null };
-            categoryData.push(categoryItem);
+        // const categoryItem = { id: ele.categoryId, value: 0, data: null };
+        // categoryData.push(categoryItem);
 
-            const subCategoryPromises = ele.subCategories.map(async (data) => {
-                subCategorySet.add(data.id);
-                fetchTasks({ url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${data.id}?count=10&page=1` }, (taskObj) =>{
-                    if (taskObj.length > 0) {
-                        setTasks((prevTasks) => ([...prevTasks, ...taskObj]))
-                        setCategory((prevArray) =>
-                            prevArray.map((item) =>
-                                item.id === taskObj[0].mainCategory.main_category_id ? {
-                                    ...item,
-                                    value: item.value + 1
-                                } : item
-                            )
-                        );
-                    }
+        const subCategoryPromise = new Promise((resolve, reject) => {
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?id=1,2,3,4,5,6,7,8,9,10,11,12,13,14`}, (taskObj) => {
+                if (taskObj.length > 0) {
+                    const trueList = []
+                    const categoryList = []
 
-                });
-            });
-            return Promise.all(subCategoryPromises);
-        });
+                    props.categoryData.map((ele) => {
+                        ele.bookmark_sub_categories.map((data) => {
+                            if (data.selected) {
+                                trueList.push(data.sub_category_id)
+                            }
+                        })
+                    })
 
-        Promise.all(promises).then(() => {
-            setCategory(categoryData);
-            console.log("categoryData = ", categoryData)
-        });
-    };
+
+                    taskObj.map((ele) => {
+                        const data = trueList.find(u => u === ele.id)
+                        if (data) {
+                            categoryList.push(ele)
+                        }
+                    })
+
+                    setCategory(categoryList)
+                    resolve(categoryList);
+                } else {
+                    reject(new Error('No data returned from fetchTasks')); // reject the promise with an error
+                }
+            })
+
+
+            // const subCategoryPromises = ele.subCategories.map(async (data) => {
+            //     subCategorySet.add(data.id);
+            //     fetchTasks({ url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${data.id}?count=10&page=1` }, (taskObj) =>{
+            //         if (taskObj.length > 0) {
+            //             setTasks((prevTasks) => ([...prevTasks, ...taskObj]))
+            //             setCategory((prevArray) =>
+            //                 prevArray.map((item) =>
+            //                     item.id === taskObj[0].mainCategory.main_category_id ? {
+            //                         ...item,
+            //                         value: item.value + 1
+            //                     } : item
+            //                 )
+            //             );
+            //         }
+            //
+            //     });
+            // });
+
+            // return Promise.all(subCategoryPromise);
+
+            // Promise.all(promises).then(() => {
+            //     setCategory(categoryData);
+            // });
+        })
+        return subCategoryPromise;
+
+    }
 
     const setDataOrder = (sortType) =>{
 
@@ -124,11 +157,11 @@ function BodyContents(props){
 
     useEffect(() => {
 
-        if (tasks.length > 0) {
+        if (category.length > 0) {
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [tasks]);
+    }, [category]);
 
     useEffect(() => {
         handleIndexChange()
@@ -155,11 +188,12 @@ function BodyContents(props){
     }
 
     else {
-        console.log("asdas")
+        console.log("category = " ,category)
+
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
-                    <span>최신순</span>
+                    <span>{sortType === "new" ? "최신순" : "좋아요순"}</span>
                     <img src={"/images/icons/arrowBox.png"}/>
                 </div>
                 <Slider {...settings} ref={sliderRef}>
@@ -180,7 +214,7 @@ function BodyContents(props){
                                                     <div className={classes.questionBox}><span>{data.title}</span></div>
                                                     <div className={classes.answerBox}><span>{data.content}</span></div>
                                                     <div className={classes.optBox}>
-                                                        <div>
+                                                        <div className={classes.heartBox}>
                                                             <img style={{width: "20px", height: "17px"}}
                                                                  src={data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png"}/>
                                                             <span>{data.board_like.total_like_count}</span>

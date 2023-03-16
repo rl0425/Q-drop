@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import useHttp from "../../../../hooks/use-http";
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,12 +14,11 @@ import MemoizedContent from "./ContentList";
 import ContentList from "./ContentList";
 
 function BodyContents(props){
-    const [tasks, setTasks] = useState([]);
     const [category, setCategory] = useState([])
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     // 정렬 이벤트
-    const [sortType, setSortType] = useState("new")
+    const [sortType, setSortType] = useState("")
 
     // 스크롤 이벤트 ref
     const bottomBoundaryRef = useRef(null);
@@ -34,6 +33,7 @@ function BodyContents(props){
 
     // 모든 데이터의 로드 확인
     const [dataLoaded, setDataLoaded] = useState(false);
+    const categoryRef = useRef(category);
 
     const dispatch = useDispatch()
 
@@ -98,42 +98,28 @@ function BodyContents(props){
             })
 
             setCategory(groupedData)
+            setSortType("new")
         })
 
         return subCategoryPromise;
 
     }
 
-    const setDataOrder = (sortType) =>{
+    const setDataOrder = () =>{
+        const temp = [...category]
+        temp.map((ele) => {
+            const sortdData = sortType === "new" ?
+                ele.values.sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+                : ele.values.sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count)
 
-        if (tasks.length === 0) {
-            return category;
-        }
-        else {
-            return (
-                setCategory(prevArray =>
-                    prevArray.map(categoryItem => {
-                        const updatedCategoryItem = {...categoryItem};
-                        const taskData = [];
+            ele.values = sortdData
+        })
 
-                        tasks.forEach(task => {
-                            if (task.mainCategory.main_category_id === categoryItem.id) {
-                                taskData.push(task);
-                            }
-                        });
+        setCategory(temp)
 
-                        const sortData = sortType === "new" ? taskData.sort((a, b) => new Date(b.createTime) - new Date(a.createTime)) : taskData.sort((a, b) => new Date(b.board_like.total_like_count) - new Date(a.board_like.total_like_count))
-
-                        updatedCategoryItem.data = sortData;
-                        return updatedCategoryItem;
-                    })
-                ))
-        }
-    }
-
-    // 세부 카테고리 설정 모달 이벤트
-    const optClickEvt = (ele) => {
-        dispatch(modalActions.changePostOpen({open: true, id: ele}))
+        category.sort((a,b) => {
+            return a.id - b.id
+        })
     }
 
     // 메인 카테고리 선택 이벤트
@@ -149,8 +135,22 @@ function BodyContents(props){
     };
 
     const handleSortChange = () => {
-        if(sortType === "new") setSortType("joah")
+        if(sortType === "new") setSortType("like")
         else setSortType("new")
+    }
+
+    const handleCategoryUpdate = (data) => {
+        // const temp = [...category]
+        // const matchingBData = temp.find(b => b.id === data.data.mainCategory.main_category_id);
+        // if (matchingBData){
+        //     const updatedBData = matchingBData.values.filter(item => item.id !== data.data.id);
+        //
+        //     updatedBData.push(data.data);
+        //
+        //     console.log("updatedBData= ", updatedBData)
+        //
+        //     temp[data.data.mainCategory.main_category_id-1].values = updatedBData
+        // }
     }
 
     useEffect(() => {
@@ -158,12 +158,11 @@ function BodyContents(props){
     }, [props.data]);
 
     useEffect(() => {
-
         if (category.length > 0) {
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [category]);
+    }, [sortType]);
 
     useEffect(() => {
         handleIndexChange()
@@ -190,12 +189,6 @@ function BodyContents(props){
     }
 
     else {
-        console.log("category = ", category)
-
-        category.sort((a,b) => {
-            return a.id - b.id
-        })
-
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -208,9 +201,8 @@ function BodyContents(props){
                                 return (
                                     <div key={uuidv4()} className={classes.silderBox}>
                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
-                                            return <ContentList key={uuidv4()} data={data}/>
+                                            return <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
                                         })}
-
                                     </div>
                                 )
                             })

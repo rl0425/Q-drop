@@ -51,7 +51,7 @@ function Home(){
     }
 
     else {
-        // console.log("mainData= ", mainData)
+        console.log("mainData= ", mainData)
         console.log("categoryData= ", categoryData)
 
         return (

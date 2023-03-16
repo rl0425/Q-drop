@@ -35,6 +35,13 @@ function ContentList(props){
                 console.log("uncheck")
             })
         }
+
+        const tempData = props.data
+        tempData.board_like.total_like_count = type === "check" ? tempData.board_like.total_like_count+1 : tempData.board_like.total_like_count-1
+        tempData.board_like.user_like_status = type === "check" ? true : false
+
+        props.onUpdateCategory({type:"favorite", kind:type, data:props.data})
+
     }
 
     const handleFavoriteClick = () => {
@@ -44,21 +51,23 @@ function ContentList(props){
         setFavoriteSrc(newLikeSrc);
 
         if(type === "check"){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"post"}, (taskObj) => {
-                console.log("check")
-            })
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"post"})
         }
         else if(type === "uncheck"){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"delete"}, (taskObj) => {
-                console.log("uncheck")
-            })
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"delete"})
         }
+
+        const tempData = props.data
+        tempData.bookmark_info.user_bookmark_status = type === "check" ? true : false
+
+        props.onUpdateCategory({type:"favorite", kind:type, data:props.data})
     }
 
     // 세부 카테고리 설정 모달 이벤트
     const optClickEvt = (ele) => {
         dispatch(modalActions.changePostOpen({open: true, id: ele}))
     }
+
 
     return (
         <div className={classes.itemBox}>

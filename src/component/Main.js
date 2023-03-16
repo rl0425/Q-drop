@@ -5,6 +5,7 @@ import CategoryModalWrapper from "./body/category/CategoryModalWrapper";
 import PostWrapper from "./body/postOpt/PostWrapper";
 import HomeWrapper from "./body/HomeWrapper";
 import MyWrapper from "./My/MyWrapper";
+import ModalSetWrapper from "./modal/ModalSetWrapper";
 
 function Main(){
     return (
@@ -19,8 +20,7 @@ function Main(){
             <div className={classes.footer}>
                 <Footer />
             </div>
-            <CategoryModalWrapper/>
-            <PostWrapper />
+            <ModalSetWrapper />
         </div>
     )
 }

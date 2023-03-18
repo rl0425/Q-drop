@@ -68,9 +68,16 @@ function ContentList(props){
         dispatch(modalActions.changePostOpen({open: true, id: ele}))
     }
 
+    // 내용 자세히 보기 이벤트
+    const openDetail = (e) => {
+        e.stopPropagation()
+
+        dispatch(modalActions.changeDetailOpen({open:true, data:data}))
+    }
+
 
     return (
-        <div className={classes.itemBox}>
+        <div onClick={openDetail} className={classes.itemBox}>
             <div className={classes.qSpanBox}>
                 <div className={classes.qSpan}><span>Q.</span></div>
             </div>

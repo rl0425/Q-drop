@@ -22,7 +22,7 @@ function PostModal(){
 
         setTimeout(() => {
             dispatch(modalActions.changeDetailOpen({open:false, data:null}))
-        }, 200)
+        }, 50)
     }
 
     return (

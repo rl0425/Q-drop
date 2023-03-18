@@ -4,18 +4,29 @@ import classes from "./ContentList.module.css"
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch} from "react-redux";
 import useHttp from "../../../../hooks/use-http";
+import {logDOM} from "@testing-library/react";
 
 function ContentList(props){
-    const data = props.data
     const dispatch = useDispatch()
 
-    const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png");
-    const [likeCount, setLikeCount] = useState(data.board_like.total_like_count);
-    const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png");
+    const [data, setData] = useState(props.data)
+    const [temp, setTemp] = useState(data)
+
+
+    const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png")
+    const [likeCount, setLikeCount] = useState(data.board_like.total_like_count)
+    const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png")
 
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-    const handleLikeClick = () => {
+    useEffect(() =>{
+        setData(props.data)
+    }, [likeSrc, favoriteSrc])
+
+    const handleLikeClick = (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+
         // Update like status and count
         const type = likeSrc === "images/icons/colorHeart.png" ? "uncheck" : "check"
 
@@ -27,24 +38,32 @@ function ContentList(props){
         // Make API call to update like status
         if(type === "check"){
             fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"post"}, (taskObj) => {
-                console.log("check")
             })
         }
         else if(type === "uncheck"){
             fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"delete"}, (taskObj) => {
-                console.log("uncheck")
             })
         }
 
-        const tempData = props.data
-        tempData.board_like.total_like_count = type === "check" ? tempData.board_like.total_like_count+1 : tempData.board_like.total_like_count-1
-        tempData.board_like.user_like_status = type === "check" ? true : false
+        const tempData = {
+            ...data,
+            board_like: {
+                ...data.board_like,
+                total_like_count: newLikeCount,
+                user_like_status: type === "check" ? true : false
+            }
+        };
 
-        props.onUpdateCategory({type:"favorite", kind:type, data:props.data})
+        props.onUpdateCategory(e,{type:"like", kind:type, data:tempData})
 
+        setData(tempData)
+        setTemp(tempData);
     }
 
-    const handleFavoriteClick = () => {
+    const handleFavoriteClick = (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+
         const type = favoriteSrc === "images/icons/colorStar.png" ? "uncheck" : "check"
 
         const newLikeSrc = type === "uncheck" ? "images/icons/star.png" : "images/icons/colorStar.png";
@@ -59,25 +78,36 @@ function ContentList(props){
 
         const tempData = props.data
         tempData.bookmark_info.user_bookmark_status = type === "check" ? true : false
+    }
 
-        props.onUpdateCategory({type:"favorite", kind:type, data:props.data})
+    const changeData = () => {
+        const temp = [...data]
+        const matchingBData = temp.find(b => b.id === data.data.mainCategory.main_category_id);
+        if (matchingBData){
+            const updatedBData = matchingBData.values.filter(item => item.id !== data.data.id);
+
+            updatedBData.push(data.data);
+            temp[data.data.mainCategory.main_category_id-1].values = updatedBData
+        }
+
     }
 
     // 세부 카테고리 설정 모달 이벤트
-    const optClickEvt = (ele) => {
+    const optClickEvt = (e, ele) => {
+        e.stopPropagation()
+        e.preventDefault()
+
         dispatch(modalActions.changePostOpen({open: true, id: ele}))
     }
 
     // 내용 자세히 보기 이벤트
     const openDetail = (e) => {
-        e.stopPropagation()
-
-        dispatch(modalActions.changeDetailOpen({open:true, data:data}))
+        dispatch(modalActions.changeDetailOpen({open:true, data: {...temp}}))
     }
 
-
     return (
-        <div onClick={openDetail} className={classes.itemBox}>
+
+        data !== "" ? <div onClick={openDetail} className={classes.itemBox} data={data}>
             <div className={classes.qSpanBox}>
                 <div className={classes.qSpan}><span>Q.</span></div>
             </div>
@@ -100,7 +130,8 @@ function ContentList(props){
                     </div>
                 </div>
             </div>
-        </div>
+        </div> : ""
+
     )
 }
 

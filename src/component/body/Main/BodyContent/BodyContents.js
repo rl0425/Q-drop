@@ -139,18 +139,20 @@ function BodyContents(props){
         else setSortType("new")
     }
 
-    const handleCategoryUpdate = (data) => {
-        // const temp = [...category]
-        // const matchingBData = temp.find(b => b.id === data.data.mainCategory.main_category_id);
-        // if (matchingBData){
-        //     const updatedBData = matchingBData.values.filter(item => item.id !== data.data.id);
-        //
-        //     updatedBData.push(data.data);
-        //
-        //     console.log("updatedBData= ", updatedBData)
-        //
-        //     temp[data.data.mainCategory.main_category_id-1].values = updatedBData
-        // }
+    const handleCategoryUpdate = (e, data) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const temp = [...category]
+        const matchingBData = temp.find(b => b.id === data.data.mainCategory.main_category_id);
+        if (matchingBData){
+            const updatedBData = matchingBData.values.filter(item => item.id !== data.data.id);
+
+            updatedBData.push(data.data);
+            temp[data.data.mainCategory.main_category_id-1].values = updatedBData
+        }
+
+        // setCategory(temp)
     }
 
     useEffect(() => {
@@ -198,6 +200,7 @@ function BodyContents(props){
                 <Slider {...settings} ref={sliderRef}>
                         {(!category || category.length === 0) ? <div></div>:
                             category.map((ele, index) => {
+
                                 return (
                                     <div key={uuidv4()} className={classes.silderBox}>
                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {

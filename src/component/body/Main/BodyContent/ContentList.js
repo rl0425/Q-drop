@@ -29,11 +29,7 @@ function ContentList(props){
 
         // Update like status and count
         const type = likeSrc === "images/icons/colorHeart.png" ? "uncheck" : "check"
-
-        const newLikeSrc = type === "uncheck" ? "images/icons/heart.png" : "images/icons/colorHeart.png";
         const newLikeCount = likeCount + (type === "uncheck" ? -1 : 1);
-        setLikeSrc(newLikeSrc);
-        setLikeCount(newLikeCount);
 
         // Make API call to update like status
         if(type === "check"){
@@ -55,9 +51,6 @@ function ContentList(props){
         };
 
         props.onUpdateCategory(e,{type:"like", kind:type, data:tempData})
-
-        setData(tempData)
-        setTemp(tempData);
     }
 
     const handleFavoriteClick = (e) => {
@@ -76,8 +69,18 @@ function ContentList(props){
             fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"delete"})
         }
 
-        const tempData = props.data
-        tempData.bookmark_info.user_bookmark_status = type === "check" ? true : false
+        const tempData = {
+            ...data,
+            bookmark_info: {
+                ...data.board_like,
+                user_bookmark_status: type === "check" ? true : false
+            }
+        };
+        console.log("Asdas")
+
+        props.onUpdateCategory(e,{type:"like", kind:type, data:tempData})
+
+
     }
 
     const changeData = () => {

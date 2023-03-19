@@ -6,7 +6,8 @@ const mainDataSlice = createSlice({
         index:0,
         entry:true,
         categoryData:[],
-        subCategoryList:[]
+        subCategoryList:[],
+        contentList:null
     },
     reducers: {
         changeIndex(state,action){
@@ -15,6 +16,9 @@ const mainDataSlice = createSlice({
         },
         changeSubCategory(state,action){
             state.subCategoryList = action.payload.subCategoryList
+        },
+        changeContent(state,action){
+            state.contentList = action.payload.contentList
         },
         addCategoryData(state,action){
             state.categoryData = action.payload.data

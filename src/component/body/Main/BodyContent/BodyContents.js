@@ -5,15 +5,16 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import React, {useState, useEffect, useRef, useCallback} from "react";
+import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
 import useHttp from "../../../../hooks/use-http";
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../../../store/mianData-slice";
 import MemoizedContent from "./ContentList";
 import ContentList from "./ContentList";
+import contentList from "./ContentList";
 
-function BodyContents(props){
+const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
@@ -36,6 +37,9 @@ function BodyContents(props){
     const categoryRef = useRef(category);
 
     const dispatch = useDispatch()
+
+    // reducer data
+    const mainData = useSelector((state) => state.main.contentList)
 
     const getData = () => {
         const subCategoryPromise = new Promise((resolve, reject) => {
@@ -68,8 +72,6 @@ function BodyContents(props){
         })
 
         subCategoryPromise.then((categoryList) => {
-            console.log("categoryList =", categoryList)
-
             const groupedData = categoryList.reduce((accumulator, currentValue) => {
                 const existingItem = accumulator.find(
                     (item) => item.id === currentValue.mainCategory.main_category_id
@@ -98,6 +100,9 @@ function BodyContents(props){
             })
 
             setCategory(groupedData)
+            const temp = [...groupedData]
+
+            dispatch(mainDataActions.changeContent({contentList: temp}))
             setSortType("new")
         })
 
@@ -106,20 +111,22 @@ function BodyContents(props){
     }
 
     const setDataOrder = () =>{
-        const temp = [...category]
-        temp.map((ele) => {
-            const sortdData = sortType === "new" ?
-                ele.values.sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
-                : ele.values.sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count)
+        const temp = mainData.map((ele) => {
+            const sortdData = sortType === "new"
+                ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+                : [...ele.values].sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count);
 
-            ele.values = sortdData
-        })
+            return {
+                ...ele,
+                values: sortdData,
+            };
+        });
 
-        setCategory(temp)
+        temp.sort((a, b) => {
+            return a.id - b.id;
+        });
 
-        category.sort((a,b) => {
-            return a.id - b.id
-        })
+        setCategory(temp);
     }
 
     // 메인 카테고리 선택 이벤트
@@ -143,16 +150,22 @@ function BodyContents(props){
         e.preventDefault()
         e.stopPropagation()
 
-        const temp = [...category]
-        const matchingBData = temp.find(b => b.id === data.data.mainCategory.main_category_id);
-        if (matchingBData){
-            const updatedBData = matchingBData.values.filter(item => item.id !== data.data.id);
+        const temp = category.map((ele) => {
+            if (ele.id === data.data.mainCategory.main_category_id) {
+                const updatedValues = ele.values.filter(item => item.id !== data.data.id);
+                updatedValues.push(data.data);
 
-            updatedBData.push(data.data);
-            temp[data.data.mainCategory.main_category_id-1].values = updatedBData
-        }
+                return {
+                    ...ele,
+                    values: updatedValues,
+                };
+            }
 
-        // setCategory(temp)
+            return ele;
+        });
+
+        // setDataLoaded(false)
+        dispatch(mainDataActions.changeContent({ contentList: temp }));
     }
 
     useEffect(() => {
@@ -164,7 +177,7 @@ function BodyContents(props){
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [sortType]);
+    }, [sortType, mainData]);
 
     useEffect(() => {
         handleIndexChange()
@@ -191,6 +204,7 @@ function BodyContents(props){
     }
 
     else {
+        console.log("category =" , category)
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -200,7 +214,6 @@ function BodyContents(props){
                 <Slider {...settings} ref={sliderRef}>
                         {(!category || category.length === 0) ? <div></div>:
                             category.map((ele, index) => {
-
                                 return (
                                     <div key={uuidv4()} className={classes.silderBox}>
                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
@@ -214,6 +227,6 @@ function BodyContents(props){
             </div>
         )
     }
-}
+})
 
 export default BodyContents

@@ -22,7 +22,11 @@ function PostModal(){
 
         setTimeout(() => {
             dispatch(modalActions.changeDetailOpen({open:false, data:null}))
-        }, 50)
+        }, 200)
+    }
+
+    const handleHeart = () => {
+
     }
 
     return (

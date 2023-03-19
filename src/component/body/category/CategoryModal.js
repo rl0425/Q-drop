@@ -159,15 +159,13 @@ function CategoryModal(){
                                 {tasks.map((ele, index) => {
                                     if(ele){
                                         return (
-                                            // <SwiperSlide key={uuidv4()}>
-                                                <div className={classes.jonh} key={uuidv4()}>
-                                                {ele.subCategories.map((data) => {
-                                                    return (
-                                                        <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
-                                                    )
-                                                })}
-                                                </div>
-                                            // </SwiperSlide>
+                                            <div className={classes.jonh} key={uuidv4()}>
+                                            {ele.subCategories.map((data) => {
+                                                return (
+                                                    <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
+                                                )
+                                            })}
+                                            </div>
                                         )
                                     }
                                     else{

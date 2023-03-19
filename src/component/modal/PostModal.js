@@ -3,19 +3,42 @@ import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import {useEffect, useState} from "react";
 import {modalActions} from "../../store/modal-slice";
+import {mainDataActions} from "../../store/mianData-slice";
+import useHttp from "../../hooks/use-http";
 
 function PostModal(){
-    const data = useSelector((state) => state.modal.data)
     const dispatch = useDispatch()
 
-    const [heart, setHeart] = useState(data.board_like.user_like_status)
-    const [heartNum, setHeartNum] = useState(data.board_like.total_like_count)
-    const [favorite, setFavorite] = useState(data.bookmark_info.user_bookmark_status)
+    const contentList = useSelector((state) => state.main.contentList)
+    const id = useSelector((state) => state.modal.dataId)
+
+    const [data, setData] = useState("")
+    const [like, setHeart] = useState("")
+    const [likeNum, setHeartNum] = useState("")
+    const [favorite, setFavorite] = useState("")
+
     const [open, setOpen] = useState(false)
+    const [setting, setSetting] = useState(false)
+
+    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     useEffect(()=>{
-        setOpen(true)
-    }, [])
+        getIdData()
+    }, [contentList])
+
+    const getIdData = () => {
+        const tempData = contentList[id.mainCategory-1].values.find(item => item.id === id.id)
+        setData(tempData)
+        setHeart(tempData.board_like.user_like_status)
+        setHeartNum(tempData.board_like.total_like_count)
+        setFavorite(tempData.bookmark_info.user_bookmark_status)
+
+        setSetting(true)
+
+        setTimeout(() => {
+            setOpen(true)
+        }, 50)
+    }
 
     const closeModal = () => {
         setOpen(false)
@@ -25,11 +48,75 @@ function PostModal(){
         }, 200)
     }
 
-    const handleHeart = () => {
+    const handleLike = () => {
+        const type = !like
+        const newLikeCount = likeNum + (type === false ? -1 : 1);
 
+        // Make API call to update like status
+        if(type){
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"post"}, (taskObj) => {
+            })
+        }
+        else if(!type){
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"delete"}, (taskObj) => {
+            })
+        }
+
+        const temp = contentList.map((ele) => {
+            if (ele.id === id.mainCategory) {
+                const updatedValues = ele.values.filter(item => item.id !== id.id);
+                updatedValues.push({
+                    ...data,
+                    board_like:{
+                        total_like_count:newLikeCount,
+                        user_like_status:type
+                    }
+                });
+
+                return {
+                    ...ele,
+                    values: updatedValues,
+                };
+            }
+            return ele;
+        });
+
+        dispatch(mainDataActions.changeContent({ contentList: temp }))
+    }
+
+    const handleFavorite = () => {
+        const type = !favorite
+
+        if(type){
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"post"})
+        }
+        else if(!type){
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"delete"})
+        }
+
+        const temp = contentList.map((ele) => {
+            if (ele.id === id.mainCategory) {
+                const updatedValues = ele.values.filter(item => item.id !== id.id);
+                updatedValues.push({
+                    ...data,
+                    bookmark_info:{
+                        user_bookmark_status:type
+                    }
+                });
+
+                return {
+                    ...ele,
+                    values: updatedValues,
+                };
+            }
+            return ele;
+        });
+
+        dispatch(mainDataActions.changeContent({ contentList: temp }))
     }
 
     return (
+        !setting ? "" :
         <div className={open ? classes.box : classes.unBox}>
             <div className={classes.head}>
                 <div className={classes.prevHead}>
@@ -70,13 +157,13 @@ function PostModal(){
                 </span>
             </div>
             <div className={classes.footer}>
-                <div className={classes.likeDiv}>
-                    <img src={heart ? "/images/icons/colorHeart.png" : "/images/icons/heart.png"}/>
+                <div onClick={handleLike} className={classes.likeDiv}>
+                    <img src={like ? "/images/icons/colorHeart.png" : "/images/icons/heart.png"}/>
                     <span>
-                        {heartNum}
+                        {likeNum}
                     </span>
                 </div>
-                <div className={classes.favoriteDiv}>
+                <div onClick={handleFavorite} className={classes.favoriteDiv}>
                     <img src={favorite ? "/images/icons/colorStar.png" : "/images/icons/star.png"}/>
                 </div>
             </div>

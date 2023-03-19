@@ -103,7 +103,8 @@ function ContentList(props){
 
     // 내용 자세히 보기 이벤트
     const openDetail = (e) => {
-        dispatch(modalActions.changeDetailOpen({open:true, data: {...temp}}))
+        console.log("temp = ", temp)
+        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id}}))
     }
 
     return (

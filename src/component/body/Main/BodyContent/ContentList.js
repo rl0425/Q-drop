@@ -76,8 +76,6 @@ function ContentList(props){
                 user_bookmark_status: type === "check" ? true : false
             }
         };
-        console.log("Asdas")
-
         props.onUpdateCategory(e,{type:"like", kind:type, data:tempData})
 
 

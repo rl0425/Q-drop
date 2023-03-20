@@ -7,20 +7,31 @@ import HomeWrapper from "./body/HomeWrapper";
 import MyWrapper from "./My/MyWrapper";
 import ModalSetWrapper from "./modal/ModalSetWrapper";
 import SearchWrapper from "./search/SearchWrapper";
+import {useSelector} from "react-redux";
 
 function Main(){
+    const sector = useSelector((state) => state.sector.type);
+    console.log("sector = ", sector)
+
     return (
         <div className={classes.box}>
-            <div className={classes.head}>
-                <Head />
-            </div>
-            <div className={classes.body}>
-                <HomeWrapper />
+            {sector === "home" ?
+                <>
+                    <div className={classes.head}>
+                            <Head />
+                        </div>
+                    <div className={classes.body}>
+                        <HomeWrapper />
+                    </div>
+
+                </>
+            :
                 <MyWrapper />
-            </div>
+            }
             <div className={classes.footer}>
                 <Footer />
             </div>
+
             <SearchWrapper />
             <ModalSetWrapper />
         </div>

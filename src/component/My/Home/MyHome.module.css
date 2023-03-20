@@ -1,0 +1,130 @@
+.box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100vh - 63px);
+}
+
+.head{
+    padding: 20px;
+    color: #DADCE1;
+    font-size: 20px;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    overflow: scroll;
+}
+
+.loginDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 20px 40px 20px;
+    border-bottom: 8px solid #2B2C31;
+    box-sizing: border-box;
+    gap: 6px;
+}
+
+.loginDiv img{
+    width: 40px;
+}
+
+.logoSet{
+    display: flex;
+    gap: 12px;
+}
+
+.logoImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+}
+
+.logoImg > img{
+    width: 40px;
+}
+
+.logoSpan{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.logoNextBtn > img{
+    transform: rotate(180deg);
+}
+
+.logoSpanHead{
+    font-size: 16px;
+    font-weight: 600;
+    color: #DADCE1;
+}
+
+.logoSpanCont{
+    font-size: 14px;
+    font-weight: 400;
+    color: #8B92A0;
+}
+
+.note, .guide{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.guide{
+    padding-top: 0;
+}
+
+.note div, .guide div{
+    padding: 13px 0px;
+}
+
+.noteHead, .guideHead{
+    font-weight: 600;
+    font-size: 14px;
+    color: #595A5C;
+}
+
+.noteBody, .guideBody{
+    font-weight: 600;
+    font-size: 16px;
+    color: #DADCE1;
+}
+
+.noteBody .favoriteNote{
+    padding-bottom: 36px;
+    border-bottom: 1px solid #26282C;
+}
+
+.logout , .withdrawal{
+    color: #64666D;
+}
+
+.withdrawal{
+    font-size: 13px;
+    line-height: 16px;
+    color: #64666D;
+    text-decoration:underline;
+    text-underline-position:under
+}
+
+.version{
+    display: flex;
+    gap: 4px;
+}
+
+.version > label{
+    color: #48BAFB;
+}

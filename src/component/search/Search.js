@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {searchActions} from "../../store/search-slice";
 import useHttp from "../../hooks/use-http";
+import {modalActions} from "../../store/modal-slice";
+import {v4 as uuidv4} from "uuid";
 
 function Search(){
     const [open, setOpen] = useState(false)
@@ -35,6 +37,10 @@ function Search(){
 
 
         }
+    }
+
+    const handleDataDetail = (data) => {
+        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:data.id, mainCategory:data.mainCategory.main_category_id}}))
     }
 
     const handleSearchChange = (e) => {
@@ -101,7 +107,7 @@ function Search(){
                         {
                             searchData.map((ele) => {
                                 return (
-                                    <div className={classes.searchContent}>
+                                    <div key={uuidv4()} onClick={() => {handleDataDetail(ele)}} className={classes.searchContent}>
                                         <div className={classes.searchHead}>
                                             <span>Q. {ele.title}</span>
                                         </div>

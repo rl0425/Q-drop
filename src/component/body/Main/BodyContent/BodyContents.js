@@ -51,7 +51,7 @@ const BodyContents = React.memo((props) => {
 
                     props.categoryData.map((ele) => {
                         ele.bookmark_sub_categories.map((data) => {
-                            if (data.selected) {
+                            if (!data.selected) {
                                 trueList.push(data.sub_category_id)
                             }
                         })

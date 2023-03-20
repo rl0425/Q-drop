@@ -27,6 +27,7 @@ function PostModal(){
     }, [contentList])
 
     const getIdData = () => {
+
         const tempData = contentList[id.mainCategory-1].values.find(item => item.id === id.id)
         setData(tempData)
         setHeart(tempData.board_like.user_like_status)
@@ -115,6 +116,10 @@ function PostModal(){
         dispatch(mainDataActions.changeContent({ contentList: temp }))
     }
 
+    const handleOption = (e) => {
+        dispatch(modalActions.changePostOpen({open: true, id: data.id}))
+    }
+
     return (
         !setting ? "" :
         <div className={open ? classes.box : classes.unBox}>
@@ -134,7 +139,7 @@ function PostModal(){
                             <span>{moment(new Date(data.createTime)).format("YYYY.MM.DD")}</span>
                         </div>
                     </div>
-                    <div className={classes.qOption}>
+                    <div onClick={handleOption} className={classes.qOption}>
                         <img src={"images/icons/option.png"}/>
                     </div>
                 </div>

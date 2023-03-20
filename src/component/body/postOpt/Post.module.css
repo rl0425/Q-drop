@@ -5,6 +5,7 @@
     height: 100%;
     top: 0;
     transition: all 0.2s linear;
+    z-index: 2;
 }
 
 .blackBox, .unBlackBox{

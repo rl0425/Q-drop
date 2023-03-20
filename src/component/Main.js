@@ -6,6 +6,7 @@ import PostWrapper from "./body/postOpt/PostWrapper";
 import HomeWrapper from "./body/HomeWrapper";
 import MyWrapper from "./My/MyWrapper";
 import ModalSetWrapper from "./modal/ModalSetWrapper";
+import SearchWrapper from "./search/SearchWrapper";
 
 function Main(){
     return (
@@ -20,6 +21,7 @@ function Main(){
             <div className={classes.footer}>
                 <Footer />
             </div>
+            <SearchWrapper />
             <ModalSetWrapper />
         </div>
     )

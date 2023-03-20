@@ -43,7 +43,7 @@ function BodyHead(props){
                 })}
             </div>
             <div onClick={searchClick} className={classes.setting}>
-                <div>img</div>
+                <div><img src={"/images/icons/subModalBtn.png"}/></div>
             </div>
         </div>
     )

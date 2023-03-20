@@ -1,0 +1,154 @@
+.box, .unBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #1A1B1E;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.unBox{
+    left: 100%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.head{
+    display: flex;
+    padding: 20px;
+    padding-left: 10px;
+    height: 90px;
+    min-height: 90px;
+    box-sizing: border-box;
+}
+
+.head img{
+    width: 42px;
+}
+
+.searchBarBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: 42px;
+    padding: 14px;
+    background: #2B2C31;
+    border: 1px solid #2B2C31;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.searchBarBox > input{
+    all: unset;
+    width: calc(100% - 30px);
+    color: #DADCE1;
+    font-weight: 500;
+}
+
+.searchBarBox > input::placeholder{
+    color: #B1B1B1;
+}
+
+.searchBarBox > img{
+    width: 16px;
+}
+
+.beforeBox{
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 90px)
+}
+
+.recentBox{
+    display: flex;
+    flex-direction: column;
+}
+
+.recentHead{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    padding: 0 20px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #DADCE1;
+}
+
+.recentDeleteBtn{
+    color: #B1B1B1;
+}
+
+.recentContBox{
+    display: flex;
+    overflow: scroll;
+    padding: 0 20px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    border-bottom: 8px solid rgba(43, 44, 49, 1);
+    gap: 8px;
+}
+
+.recentContBox > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: fit-content;
+    height: 33px;
+    border: 1px solid #373C42;
+    padding: 8px 12px;
+    border-radius: 30px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    color: #DADCE1;
+}
+
+.famousBox{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 24px 20px 20px 20px;
+}
+
+.famousHead{
+    height: 44px;
+    font-weight: 600;
+    color: #DADCE1;
+}
+
+.famousContent{
+    display: flex;
+    width: 100%;
+    overflow: scroll;
+}
+
+.famousContent ul{
+    width: 100%;
+    margin: 0;
+    list-style:none;
+    padding-left:0px;
+}
+
+.famousContent li{
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    border-bottom: 1px solid #373C42;
+    padding: 17px 0;
+}
+
+.famousContent span{
+    color: #48BAFB;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.famousContent label{
+    color: #DADCE1;
+    font-weight: 500;
+    font-size: 16px;
+}

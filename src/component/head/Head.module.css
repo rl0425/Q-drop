@@ -5,3 +5,13 @@
     width: 100%;
     /*padding: 16px 12px;*/
 }
+
+.search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search img{
+    width: 32px;
+}

@@ -42,6 +42,10 @@
     cursor: pointer;
 }
 
+.setting img{
+    width: 20px;
+}
+
 
 .categoryBox{
     display: flex;

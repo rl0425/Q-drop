@@ -152,3 +152,64 @@
     font-weight: 500;
     font-size: 16px;
 }
+
+.searchContents{
+    display: flex;
+    flex-direction: column;
+    gap:12px;
+    box-sizing: border-box;
+    overflow: scroll;
+    height: calc(100% - 180px);
+}
+
+.searchContent{
+    padding: 20px 17px;
+    width: 100%;
+    background: #212225;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.afterBox{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    padding: 20px;
+}
+
+.numDiv{
+    display: flex;
+    font-weight: 600;
+    font-size: 15px;
+    color: #DADCE1;
+    margin-bottom: 12px;
+    gap:6px
+}
+
+.numDiv > label{
+    color: #48BAFB;
+}
+
+.searchHead{
+    font-weight: 600;
+    font-size: 16px;
+    color: #DADCE1;
+    margin-bottom: 12px;
+}
+
+.searchBody{
+    font-size: 14px;
+    color: #DADCE1;
+    margin-bottom: 20px;
+}
+
+.searchFooter{
+    min-height: 22px;
+    height: 22px;
+    width: fit-content;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    font-weight: 500;
+    font-size: 12px;
+}

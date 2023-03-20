@@ -44,10 +44,20 @@ const useHttp = () => {
         }
         else {
             try {
-                axios.get(requestConfig.url, {
-                    headers: header
+                // axios.get(requestConfig.url, {
+                //     // headers: header
+                // })
+                axios({
+                    url: requestConfig.url,
+                    method: "get",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: requestConfig.data ? {
+                        [requestConfig.data.type]:requestConfig.data.item
+                    } : null
                 })
                     .then(response => {
+                        console.log("response.data =" , response.data)
                         applyData(response.data);
                         setIsLoading(false);
                     })

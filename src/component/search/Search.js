@@ -7,6 +7,7 @@ import useHttp from "../../hooks/use-http";
 function Search(){
     const [open, setOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
+    const [hasSearch, setHasSearch] = useState(false)
     const [searchData, setSearchData] = useState("")
 
     const dispatch = useDispatch()
@@ -26,15 +27,18 @@ function Search(){
 
     const searchEvt = (e) => {
         if(e.key === "Enter") {
-            console.log("e.searchValue =", searchData)
-            getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?id=&search=${searchData}`}, (taskObj) => {
+            getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=1,2,3,4,5,6,7,8&search=${searchValue}`}, (taskObj) => {
                 console.log("taskObj= ", taskObj)
+                setHasSearch(true)
+                setSearchData(taskObj)
             })
+
+
         }
     }
 
     const handleSearchChange = (e) => {
-        setSearchData('');
+        setSearchValue('');
     }
 
     return (
@@ -42,11 +46,11 @@ function Search(){
             <div className={classes.head}>
                 <div onClick={prevBtnEvt}><img src={"/images/icons/prevBtn.png"}/></div>
                 <div className={classes.searchBarBox}>
-                    <input type={"string"} value={searchData} onChange={(e) => setSearchData(e.target.value)} onKeyPress={searchEvt} placeholder={"궁금한 내용을 검색해보세요."}/>
+                    <input type={"string"} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={"궁금한 내용을 검색해보세요."}/>
                     <img onClick={handleSearchChange} src={"/images/icons/searchRemove.png"}/>
                 </div>
             </div>
-            <div className={classes.beforeBox}>
+            {!hasSearch ? <div className={classes.beforeBox}>
                 <div className={classes.recentBox}>
                     <div className={classes.recentHead}>
                         <div><span>최근 검색어</span></div>
@@ -83,8 +87,37 @@ function Search(){
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div className={classes.afterBox}></div>
+            </div> :
+
+            searchData.length === 0 ?
+                <div><span>검색 결과가 없어요.</span></div>
+                :
+                <div className={classes.afterBox}>
+                    <div className={classes.numDiv}>
+                        <span>총</span>
+                        <label>{searchData.length > 99 ? "99+" : searchData.length}</label>
+                    </div>
+                    <div className={classes.searchContents}>
+                        {
+                            searchData.map((ele) => {
+                                return (
+                                    <div className={classes.searchContent}>
+                                        <div className={classes.searchHead}>
+                                            <span>Q. {ele.title}</span>
+                                        </div>
+                                        <div className={classes.searchBody}>
+                                            <span>{ele.content}</span>
+                                        </div>
+                                        <div className={classes.searchFooter}>
+                                            <div className={classes.subCategoryBox}><span>{ele.subCategory.sub_category_name}</span></div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            }
         </div>
     )
 }

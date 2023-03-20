@@ -1,8 +1,30 @@
 import classes from "./MyHome.module.css"
+import {useDispatch} from "react-redux";
+import {myPageActions} from "../../../store/myPage-slice";
+
+// 슬라이드 이벤트
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import {KakaoLogin} from "../loginHandler/kakaoLoginHandler";
 
 function MyHome(){
+    const dispatch = useDispatch()
+
+    const handleTerms = (e) => {
+        dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
+    }
+
+    const kakao = new KakaoLogin();
+
+
     return (
+
+
         <div className={classes.box}>
+            <div className={classes.box}>
+                <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>
+            </div>
             <div className={classes.head}>
                 <span>마이페이지</span>
             </div>
@@ -35,7 +57,7 @@ function MyHome(){
                         <span>이용안내</span>
                     </div>
                     <div className={classes.guideBody}>
-                        <div className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
+                        <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
                         <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
                         <div className={classes.logout}><span>로그아웃</span></div>
                         <div className={classes.withdrawal}><span>회원탈퇴</span></div>

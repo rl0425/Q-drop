@@ -12,9 +12,7 @@ function My(){
     const kakao = new KakaoLogin();
 
     return (
-        // <div className={classes.box}>
-        //     <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>
-        // </div>
+
         <>
             <MyHome />
             <TermsWrapper />

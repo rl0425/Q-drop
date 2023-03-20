@@ -7,8 +7,8 @@ const myPageSlice = createSlice({
         category : []
     },
     reducers: {
-        changeOpen(state,action){
-            state.open = action.payload.open
+        changeTermsOpen(state,action){
+            state.termsOpen = action.payload.termsOpen
         },
         addCategory(state,action){
             state.category = [...state.category, {id:action.payload.id, data:action.payload.data}]

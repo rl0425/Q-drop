@@ -19,6 +19,10 @@ function MyHome(){
         dispatch(myPageActions.changeWrittenOpen({writtenOpen:true}))
     }
 
+    const handleFavorite = (e) => {
+        dispatch(myPageActions.changeFavoriteOpen({favoriteOpen:true}))
+    }
+
     const kakao = new KakaoLogin();
 
 
@@ -53,7 +57,7 @@ function MyHome(){
                     </div>
                     <div className={classes.noteBody}>
                         <div onClick={handleWritten}><span>내가 쓴 노트</span></div>
-                        <div className={classes.favoriteNote}><span>즐겨찾기한 노트</span></div>
+                        <div onClick={handleFavorite} className={classes.favoriteNote}><span>즐겨찾기한 노트</span></div>
                     </div>
                 </div>
                 <div className={classes.guide}>

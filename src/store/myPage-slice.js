@@ -5,6 +5,7 @@ const myPageSlice = createSlice({
     initialState: {
         termsOpen : false,
         writtenOpen : false,
+        favoriteOpen : false,
         category : []
     },
     reducers: {
@@ -13,6 +14,9 @@ const myPageSlice = createSlice({
         },
         changeWrittenOpen(state,action){
             state.writtenOpen = action.payload.writtenOpen
+        },
+        changeFavoriteOpen(state,action){
+            state.favoriteOpen = action.payload.favoriteOpen
         },
         addCategory(state,action){
             state.category = [...state.category, {id:action.payload.id, data:action.payload.data}]

@@ -130,6 +130,10 @@ const BodyContents = React.memo((props) => {
         setCategory(temp);
     }
 
+    const handleReload = () => {
+        setCategory(mainData)
+    }
+
     // 메인 카테고리 선택 이벤트
     const handleIndexChange = () => {
         if(!entry) {
@@ -152,9 +156,11 @@ const BodyContents = React.memo((props) => {
         e.stopPropagation()
 
         const temp = category.map((ele) => {
+
             if (ele.id === data.data.mainCategory.main_category_id) {
+                const originalValues = ele.values.findIndex(item => item.id === data.data.id)
                 const updatedValues = ele.values.filter(item => item.id !== data.data.id);
-                updatedValues.push(data.data);
+                updatedValues.splice(originalValues,0,data.data);
 
                 return {
                     ...ele,
@@ -173,12 +179,18 @@ const BodyContents = React.memo((props) => {
         getData();
     }, [props.data]);
 
+    useEffect(() =>{
+        if (category.length > 0) {
+            handleReload()
+        }
+    }, [mainData])
+
     useEffect(() => {
         if (category.length > 0) {
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [sortType, mainData]);
+    }, [sortType]);
 
     useEffect(() => {
         handleIndexChange()

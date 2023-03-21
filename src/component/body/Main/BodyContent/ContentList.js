@@ -104,7 +104,8 @@ function ContentList(props){
     // 내용 자세히 보기 이벤트
     const openDetail = (e) => {
         console.log("temp = ", temp)
-        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id}}))
+        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id,  subcategory:temp.subCategory.sub_category_id}}))
+
     }
 
     return (

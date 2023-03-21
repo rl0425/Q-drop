@@ -28,17 +28,23 @@ function PostModal(){
 
     const getIdData = () => {
 
-        const tempData = contentList[id.mainCategory-1].values.find(item => item.id === id.id)
-        setData(tempData)
-        setHeart(tempData.board_like.user_like_status)
-        setHeartNum(tempData.board_like.total_like_count)
-        setFavorite(tempData.bookmark_info.user_bookmark_status)
+        console.log("id= ", id)
 
-        setSetting(true)
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${id.subcategory}/${id.id}`}, (taskObj) => {
 
-        setTimeout(() => {
-            setOpen(true)
-        }, 50)
+            console.log("taskObj= ", taskObj)
+
+            setData(taskObj)
+            setHeart(taskObj.board_like.user_like_status)
+            setHeartNum(taskObj.board_like.total_like_count)
+            setFavorite(taskObj.bookmark_info.user_bookmark_status)
+
+            setSetting(true)
+
+            setTimeout(() => {
+                setOpen(true)
+            }, 50)
+        })
     }
 
     const closeModal = () => {
@@ -49,18 +55,18 @@ function PostModal(){
         }, 200)
     }
 
-    const handleLike = () => {
+    const handleLike = async () => {
         const type = !like
         const newLikeCount = likeNum + (type === false ? -1 : 1);
 
         // Make API call to update like status
-        if(type){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"post"}, (taskObj) => {
-            })
-        }
-        else if(!type){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, type:"delete"}, (taskObj) => {
-            })
+        try {
+            const response = await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, { method: type ? "POST" : "DELETE" });
+            // const taskObj = await response.json();
+
+            // Do something with taskObj if needed
+        } catch (error) {
+            console.error(error);
         }
 
         const temp = contentList.map((ele) => {
@@ -82,17 +88,19 @@ function PostModal(){
             return ele;
         });
 
+        console.log("temp =" ,temp)
+
         dispatch(mainDataActions.changeContent({ contentList: temp }))
     }
 
-    const handleFavorite = () => {
+    const handleFavorite = async () => {
         const type = !favorite
 
-        if(type){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"post"})
-        }
-        else if(!type){
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type:"delete"})
+        try {
+            const response = await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, { method: type ? "POST" : "DELETE" });
+            // const taskObj = await response.json();
+        } catch (error) {
+            console.error(error);
         }
 
         const temp = contentList.map((ele) => {
@@ -112,6 +120,9 @@ function PostModal(){
             }
             return ele;
         });
+
+
+        console.log("temp = ", temp)
 
         dispatch(mainDataActions.changeContent({ contentList: temp }))
     }

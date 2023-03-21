@@ -51,9 +51,6 @@ function Home(){
     }
 
     else {
-        console.log("mainData= ", mainData)
-        console.log("categoryData= ", categoryData)
-
         return (
             <Fragment>
                 <BodyHead subs={subs} data={mainData} categoryData={categoryData}/>

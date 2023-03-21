@@ -15,6 +15,10 @@ function MyHome(){
         dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
     }
 
+    const handleWritten = (e) => {
+        dispatch(myPageActions.changeWrittenOpen({writtenOpen:true}))
+    }
+
     const kakao = new KakaoLogin();
 
 
@@ -48,7 +52,7 @@ function MyHome(){
                         <span>노트</span>
                     </div>
                     <div className={classes.noteBody}>
-                        <div><span>내가 쓴 노트</span></div>
+                        <div onClick={handleWritten}><span>내가 쓴 노트</span></div>
                         <div className={classes.favoriteNote}><span>즐겨찾기한 노트</span></div>
                     </div>
                 </div>

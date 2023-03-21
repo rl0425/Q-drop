@@ -40,8 +40,9 @@ function Search(){
     }
 
     const handleDataDetail = (data) => {
-        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:data.id, mainCategory:data.mainCategory.main_category_id}}))
+        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:data.id, mainCategory:data.mainCategory.main_category_id, subcategory:data.subCategory.sub_category_id}}))
     }
+
 
     const handleSearchChange = (e) => {
         setSearchValue('');

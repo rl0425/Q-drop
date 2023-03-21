@@ -1,257 +1,81 @@
 import classes from "./WrittenNote.module.css"
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {myPageActions} from "../../../store/myPage-slice";
+import {useEffect} from "react";
+import {v4 as uuidv4} from "uuid";
+import useHttp from "../../../hooks/use-http";
+import {modalActions} from "../../../store/modal-slice";
 
 function WrittenNote(){
+    const [open, setOpen] = useState(false)
+    const [data, setData] = useState("")
+    const dispatch = useDispatch()
 
-    const data = [
-        {
-            "id": 14,
-            "title": "취업은 언제할수있을까?",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "디자인",
-                "main_category_id": 2
-            },
-            "subCategory": {
-                "sub_category_id": 3,
-                "sub_category_name": "Java/Spring"
-            },
-            "board_like": {
-                "total_like_count": 1,
-                "user_like_status": true
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": false,
-                "total_bookmark_count": 0
-            },
-            "createTime": "2023-03-11T17:30:35",
-            "approval":1,
-            "author": false
-        },
-        {
-            "id": 13,
-            "title": "ㅁㄴㅇㅁㄴㅇㅁㄴ",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "디자인",
-                "main_category_id": 2
-            },
-            "subCategory": {
-                "sub_category_id": 3,
-                "sub_category_name": "Java/Spring"
-            },
-            "board_like": {
-                "total_like_count": 1,
-                "user_like_status": true
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": false,
-                "total_bookmark_count": 0
-            },
-            "createTime": "2023-03-09T17:30:35",
-            "approval":0,
-            "author": false
-        },
-        {
-            "id": 12,
-            "title": "12 12 12 12",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "디자인",
-                "main_category_id": 2
-            },
-            "subCategory": {
-                "sub_category_id": 3,
-                "sub_category_name": "Java/Spring"
-            },
-            "board_like": {
-                "total_like_count": 0,
-                "user_like_status": false
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": false,
-                "total_bookmark_count": 0
-            },
-            "createTime": "2023-03-08T17:30:35",
-            "approval":2,
-            "author": false
-        },
-        {
-            "id": 9,
-            "title": "99999999999999",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "디자인",
-                "main_category_id": 2
-            },
-            "subCategory": {
-                "sub_category_id": 2,
-                "sub_category_name": "백엔드"
-            },
-            "board_like": {
-                "total_like_count": 0,
-                "user_like_status": false
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": true,
-                "total_bookmark_count": 1
-            },
-            "createTime": "2023-03-05T17:30:35",
-            "approval":1,
-            "author": false
-        },
-        {
-            "id": 3,
-            "title": "2222222222222222",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "개발",
-                "main_category_id": 1
-            },
-            "subCategory": {
-                "sub_category_id": 1,
-                "sub_category_name": "프론트엔드"
-            },
-            "board_like": {
-                "total_like_count": 2,
-                "user_like_status": true
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": false,
-                "total_bookmark_count": 0
-            },
-            "createTime": "2023-03-13T17:30:35",
-            "approval":0,
-            "author": false
-        },
-        {
-            "id": 4,
-            "title": "44444444444",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "개발",
-                "main_category_id": 1
-            },
-            "subCategory": {
-                "sub_category_id": 1,
-                "sub_category_name": "프론트엔드"
-            },
-            "board_like": {
-                "total_like_count": 0,
-                "user_like_status": false
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": true,
-                "total_bookmark_count": 2
-            },
-            "createTime": "2023-03-09T17:30:35",
-            "author": false,
-            "approval":1,
-        },
-        {
-            "id": 1,
-            "title": "Personal Marketing이란 무엇일까?\r\n",
-            "content": "개인의 취향과 니즈에 맞추어 하는 마케팅의 한 종류 로 어쩌구 저쩌구 어쩌구 저쩌구어쩌구 저쩌구 어쩌구 저쩌구어쩌구 저쩌",
-            "mainCategory": {
-                "main_category_name": "개발",
-                "main_category_id": 1
-            },
-            "subCategory": {
-                "sub_category_id": 1,
-                "sub_category_name": "프론트엔드"
-            },
-            "board_like": {
-                "total_like_count": 0,
-                "user_like_status": false
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "기찬"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": true,
-                "total_bookmark_count": 1
-            },
-            "createTime": "2023-03-10T17:30:12",
-            "author": false,
-            "approval":0
-        },
-        {
-            "id": 2,
-            "title": "222222222",
-            "content": "이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵 이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵이러쿵 저러쿵",
-            "mainCategory": {
-                "main_category_name": "개발",
-                "main_category_id": 1
-            },
-            "subCategory": {
-                "sub_category_id": 1,
-                "sub_category_name": "프론트엔드"
-            },
-            "board_like": {
-                "total_like_count": 2,
-                "user_like_status": true
-            },
-            "member_info": {
-                "profile_img": null,
-                "nickname": "성우"
-            },
-            "bookmark_info": {
-                "user_bookmark_status": false,
-                "total_bookmark_count": 1
-            },
-            "createTime": "2023-03-12T17:30:35",
-            "approval":1,
-            "author": false
-        }
-    ]
+    const { isLoading, error, sendRequest: getData } = useHttp();
+
+    useEffect(()=>{
+        setTimeout(()=> {
+            setOpen(true)
+        },50)
+    }, [])
+
+    useEffect(()=>{
+        handleGetData()
+    }, [])
+
+    const handlePrevBtn = () => {
+        setOpen(false)
+        setTimeout(()=>{
+            dispatch(myPageActions.changeWrittenOpen({writtenOpen:false}))
+        }, 150)
+    }
+
+    const handleGetData = () => {
+        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my`}, (taskObj) => {
+            setData(taskObj)
+        })
+    }
+
+    const handlePostDetail = (element) => {
+        dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:element.id, mainCategory:element.mainCategory.main_category_id ,subcategory:element.subCategory.sub_category_id}}))
+
+    }
 
     return (
-        <div className={classes.box}>
+        data ?
+        <div className={open ? classes.box : classes.unBox}>
             <div className={classes.head}>
-                <img src={"/images/icons/prevBtn.png"}/>
+                <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
                 <span>내가 쓴 노트</span>
             </div>
             <div className={classes.body}>
                 {data.map((ele) => {
                     return (
-                        <div className={classes.content}>
+                        <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
                             <div className={classes.contentHead}>
-                                <img src={ele.approval === }/><span></span>
+                                <img
+                                     src={ele.approval === 0 ?
+                                    "/images/mypage/icons/approvalReady.png" : ele.approval === 1 ?
+                                    "/images/mypage/icons/approvalCheck.png" :
+                                    "/images/mypage/icons/approvalReject.png"
+                                }/>
+                                <span className={ele.approval === 0 ? classes.readyNote : ele.approval === 1 ? classes.completeNote : classes.rejectNote} >
+                                    {ele.approval === 0 ? "승인대기중" : ele.approval === 1 ? "승인" : "거절"}
+                                </span>
                             </div>
                             <div className={classes.contentBody}>
-                                <div><span>Q. {ele.title}</span></div>
-                                <div><span>{ele.content}</span></div>
-                                <div><span>{ele.subCategory.sub_category_name}</span></div>
+                                <div className={classes.contentTitle}><span>Q. {ele.title}</span></div>
+                                <div className={classes.contentMain}><span>{ele.content}</span></div>
+                                <div className={classes.contentSub}><span>{ele.subCategory.sub_category_name}</span></div>
                             </div>
                         </div>
                     )
                 })}
             </div>
         </div>
+        :
+        ""
     )
 }
 

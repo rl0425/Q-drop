@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import {mainDataActions} from "../../../store/mianData-slice";
 import {myPageActions} from "../../../store/myPage-slice";
 import {useDispatch} from "react-redux";
+
 function Terms(){
     const [open, setOpen] = useState(false)
     const [state, setState] = useState(0)

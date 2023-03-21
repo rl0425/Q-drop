@@ -48,7 +48,7 @@ const useHttp = () => {
                 // })
                 axios({
                     url: requestConfig.url,
-                    method: "GET",
+                    method: "get",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     // headers: {
@@ -60,12 +60,10 @@ const useHttp = () => {
                     } : null
                 })
                     .then(response => {
-                        console.log("response.data =" , response.data)
                         applyData(response.data);
                         setIsLoading(false);
                     })
                     .catch(error => {
-                        console.log("Error= ", error)
                         console.log("Error= ", error)
                         setError(error);
                         setIsLoading(false);

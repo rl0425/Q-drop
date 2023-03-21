@@ -4,6 +4,7 @@ body{
     max-width: 450px;
     width: 100%;
     background: rgb(42, 44, 49);
+    position: fixed;
 }
 
 

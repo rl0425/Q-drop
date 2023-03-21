@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 100%;
     max-height: calc(100vh - 63px);
+    /*padding-bottom: calc(env(safe-area-inset-bottom) + 20px);*/
 }
 
 .head{
@@ -11,6 +12,7 @@
     font-size: 20px;
     font-weight: 600;
     box-sizing: border-box;
+    padding-top: calc(env(safe-area-inset-top));;
 }
 
 .body{

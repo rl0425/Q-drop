@@ -121,7 +121,7 @@ function CategoryModal(){
 
     else {
         const settings = {
-            dots: true,
+            dots: false,
             infinite: false,
             speed:200,
             slidesToShow: 1,

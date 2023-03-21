@@ -1,11 +1,19 @@
 body{
-    background: rgba(26, 27, 30, 1);
     color: #E4E5E7;
     margin: 0;
+    max-width: 400px;
+    background: rgb(42, 44, 49);
+}
+
+
+.App {
+    background: rgba(26, 27, 30, 1);
 }
 
 
 :root {
+    display: flex;
+    justify-content: center;
     --vh: 100%;
     --vw: 100%;
 }

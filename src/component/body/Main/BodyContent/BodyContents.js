@@ -43,7 +43,7 @@ const BodyContents = React.memo((props) => {
 
     const getData = () => {
         const subCategoryPromise = new Promise((resolve, reject) => {
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=1,2,3,4,5,6,7,8&search=`}, (taskObj) => {
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=`}, (taskObj) => {
 
                 if (taskObj.length > 0) {
                     const trueList = []
@@ -51,7 +51,7 @@ const BodyContents = React.memo((props) => {
 
                     props.categoryData.map((ele) => {
                         ele.bookmark_sub_categories.map((data) => {
-                            if (!data.selected) {
+                            if (data.selected) {
                                 trueList.push(data.sub_category_id)
                             }
                         })

@@ -23,12 +23,13 @@ function MyHome(){
         dispatch(myPageActions.changeFavoriteOpen({favoriteOpen:true}))
     }
 
+    const handleWithdrawal = (e) => {
+        dispatch(myPageActions.changeWithdrawalOpen({WithdrawalOpen:true}))
+    }
+
     const kakao = new KakaoLogin();
 
-
     return (
-
-
         <div className={classes.box}>
             <div className={classes.box}>
                 <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>
@@ -68,7 +69,7 @@ function MyHome(){
                         <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
                         <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
                         <div className={classes.logout}><span>로그아웃</span></div>
-                        <div className={classes.withdrawal}><span>회원탈퇴</span></div>
+                        <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div>
                     </div>
                 </div>
             </div>

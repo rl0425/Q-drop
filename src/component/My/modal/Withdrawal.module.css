@@ -1,0 +1,55 @@
+.box ,.unBox{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    background: #1A1B1E;
+    transition: all 0.3s ease;
+}
+.unBox{
+    left: 100%;
+    opacity: 0;
+}
+
+.head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding:32px 20px 32px 20px;
+}
+
+.head > img{
+    position: absolute;
+    left: 15px;
+    top: 23px;
+    width: 36px;
+}
+
+.head > span{
+    font-weight: 600;
+    font-size: 18px;
+    color: #DADCE1;;
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+
+    box-sizing: border-box;
+    overflow: scroll;
+    gap: 12px;
+}
+
+.h1{
+    font-weight: 600;
+    font-size: 18px;
+    color: #DADCE1;
+}

@@ -30,12 +30,9 @@ function Search(){
     const searchEvt = (e) => {
         if(e.key === "Enter") {
             getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=${searchValue}&sortTarget=createTime&sortType=desc`}, (taskObj) => {
-                console.log("taskObj= ", taskObj)
                 setHasSearch(true)
                 setSearchData(taskObj)
             })
-
-
         }
     }
 

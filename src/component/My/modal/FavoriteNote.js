@@ -48,7 +48,7 @@ function FavoriteNote(){
         <div className={open ? classes.box : classes.unBox}>
             <div className={classes.head}>
                 <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
-                <span>내가 쓴 노트</span>
+                <span>즐겨찾기한 노트 </span>
             </div>
             <div className={classes.body}>
                 {data.map((ele) => {

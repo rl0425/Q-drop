@@ -18,8 +18,8 @@ function Main(){
             {sector === "home" ?
                 <>
                     <div className={classes.head}>
-                            <Head />
-                        </div>
+                        <Head />
+                    </div>
                     <div className={classes.body}>
                         <HomeWrapper />
                     </div>

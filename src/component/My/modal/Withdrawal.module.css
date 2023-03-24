@@ -49,7 +49,99 @@
 }
 
 .h1{
+    margin-bottom: 36px;
     font-weight: 600;
     font-size: 18px;
     color: #DADCE1;
+}
+
+.h2{
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #DADCE1;
+}
+
+.h3{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 40px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #8B92A0;
+    gap: 16px;
+}
+
+.h3 > div{
+    display: flex;
+    gap: 8px;
+}
+
+.h3 label{
+    max-width: 60%;
+}
+
+.h4{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 48px;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 12px;
+}
+
+.selectBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border: 1px solid #373C42;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.selectBox > span{
+    font-size: 16px;
+    color: #64666D;
+}
+
+.selectBox > img{
+    width: 32px;
+    transform: rotate(-90deg);
+}
+
+.btn{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 52px;
+    border-radius: 10px;
+    font-weight: 600;
+
+}
+
+.noSelect{
+    background: #173D53;
+    color: #1A1B1E;
+}
+
+.submitBtn{
+    background: #48BAFB;
+    color: #1A1B1E;
+}
+
+.cancelBtn{
+    background: #43464F;
+    color: #E4E5E7;
+
 }

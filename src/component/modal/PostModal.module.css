@@ -19,7 +19,7 @@
 .head{
     height: 20vh;
     min-height: 20vh;
-    padding: 0 20px;
+    padding: 10px 20px;
     border-bottom: 1px solid #26282C;
     box-sizing: border-box;
 }
@@ -106,8 +106,7 @@
 }
 
 .footer img{
-    width: 24px;
-    height: 24px;
+    width: 20px;
 }
 
 .likeDiv{

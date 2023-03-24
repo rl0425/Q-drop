@@ -11,6 +11,7 @@ function PostModal(){
 
     const contentList = useSelector((state) => state.main.contentList)
     const id = useSelector((state) => state.modal.dataId)
+    const openType = useSelector((state) => state.modal.detailOpen)
 
     const [data, setData] = useState("")
     const [like, setHeart] = useState("")
@@ -23,17 +24,13 @@ function PostModal(){
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     useEffect(()=>{
-        getIdData()
+        if(openType) {
+            getIdData()
+        }
     }, [contentList])
 
     const getIdData = () => {
-
-        console.log("id= ", id)
-
         fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${id.subcategory}/${id.id}`}, (taskObj) => {
-
-            console.log("taskObj= ", taskObj)
-
             setData(taskObj)
             setHeart(taskObj.board_like.user_like_status)
             setHeartNum(taskObj.board_like.total_like_count)

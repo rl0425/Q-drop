@@ -1,6 +1,7 @@
 import classes from "./Footer.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {mainSectorActions} from "../../store/mainSector-slice";
+import {mainDataActions} from "../../store/mianData-slice";
 function Footer(){
     const dispatch = useDispatch()
     const sector = useSelector((state) => state.sector.type)
@@ -8,12 +9,17 @@ function Footer(){
     const handleSector = (type) => {
         if(type === "home"){
             if(sector === "my"){
+                // 메인 카테고리 슬라이더 인덱스 변경
+                dispatch(mainDataActions.changeIndex({index:0, entry:true}))
+
+                // 렌더링 요소 변경
                 dispatch(mainSectorActions.changeSector({type:"home"}))
             }
         }
 
         if(type === "my"){
             if(sector === "home"){
+                // 렌더링 요소 변경
                 dispatch(mainSectorActions.changeSector({type:"my"}))
             }
         }

@@ -43,11 +43,13 @@ const BodyContents = React.memo((props) => {
 
     const getData = () => {
         const subCategoryPromise = new Promise((resolve, reject) => {
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=`}, (taskObj) => {
+            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=&paging_num=0&paging_count=10`}, (taskObj) => {
 
                 if (taskObj.length > 0) {
                     const trueList = []
                     const categoryList = []
+
+                    console.log("taskObj = ", taskObj)
 
                     props.categoryData.map((ele) => {
                         ele.bookmark_sub_categories.map((data) => {
@@ -58,13 +60,13 @@ const BodyContents = React.memo((props) => {
                     })
 
                     taskObj.map((ele) => {
-                        const data = trueList.find(u => u === ele.id)
+                        const data = trueList.find(u => u === ele.subCategory.sub_category_id)
                         if (data) {
                             categoryList.push(ele)
                         }
                     })
 
-                    setCategory(categoryList)
+                    setCategory(taskObj)
                     resolve(categoryList);
                 } else {
                     reject(new Error('No data returned from fetchTasks')); // reject the promise with an error
@@ -114,7 +116,8 @@ const BodyContents = React.memo((props) => {
     const setDataOrder = () =>{
         const temp = mainData.map((ele) => {
             const sortdData = sortType === "new"
-                ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+                ? [...ele.values].sort((a, b) => a.title - b.title)
+                // ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
                 : [...ele.values].sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count);
 
             return {
@@ -136,7 +139,7 @@ const BodyContents = React.memo((props) => {
 
     // 메인 카테고리 선택 이벤트
     const handleIndexChange = () => {
-        if(!entry) {
+        if(!entry && sliderRef.current) {
             sliderRef.current.slickGoTo(index, true);
         }
     };

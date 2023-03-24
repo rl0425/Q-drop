@@ -24,7 +24,7 @@ function MyHome(){
     }
 
     const handleWithdrawal = (e) => {
-        dispatch(myPageActions.changeWithdrawalOpen({WithdrawalOpen:true}))
+        dispatch(myPageActions.changeWithdrawalOpen({withdrawalOpen:true}))
     }
 
     const kakao = new KakaoLogin();

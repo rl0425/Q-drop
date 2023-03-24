@@ -7,8 +7,11 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {KakaoLogin} from "../loginHandler/kakaoLoginHandler";
+import {useState} from "react";
 
 function MyHome(){
+    const [cookies, setCookies] = useState("")
+
     const dispatch = useDispatch()
 
     const handleTerms = (e) => {
@@ -27,6 +30,10 @@ function MyHome(){
         dispatch(myPageActions.changeWithdrawalOpen({withdrawalOpen:true}))
     }
 
+    const handleMyInformation = (e) => {
+        dispatch(myPageActions.changeMyInformationOpen({myInformation:true}))
+    }
+
     const kakao = new KakaoLogin();
 
     return (
@@ -38,15 +45,29 @@ function MyHome(){
                 <span>마이페이지</span>
             </div>
             <div className={classes.body}>
-                <div className={classes.loginDiv}>
+                <div onClick={handleMyInformation} className={classes.loginDiv}>
                     <div className={classes.logoSet}>
-                        <div className={classes.logoImg}>
-                            <img src={"/images/icons/tempLogo.png"} />
-                        </div>
-                        <div className={classes.logoSpan}>
-                            <div className={classes.logoSpanHead}><span>로그인 / 회원가입</span></div>
-                            <div className={classes.logoSpanCont}><span>로그인하고 관심 카테고리를 설정해보세요!</span></div>
-                        </div>
+                        {cookies ?
+                            <div>
+                                <div className={classes.logoImg}>
+                                    <img src={"/images/icons/tempLogo.png"} />
+                                </div>
+                                <div className={classes.logoSpan}>
+                                    <div className={classes.logoSpanHead}><span>로그인 / 회원가입</span></div>
+                                    <div className={classes.logoSpanCont}><span>로그인하고 관심 카테고리를 설정해보세요!</span></div>
+                                </div>
+                            </div>
+                        :
+                            <div>
+                                <div className={classes.logoImg}>
+                                    <img src={"/images/icons/tempLogo.png"} />
+                                </div>
+                                <div className={classes.logoSpan}>
+                                    <div className={classes.logoSpanHead}><span>은비</span></div>
+                                    <div className={classes.logoSpanCont}><span>abcde@naver.com</span></div>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div className={classes.logoNextBtn}>
                         <img src={"/images/icons/prevBtn.png"}/>

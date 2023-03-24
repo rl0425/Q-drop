@@ -11,6 +11,7 @@ const myPageSlice = createSlice({
             open: false,
             reason: ""
         },
+        myInformation: false,
         category : []
     },
     reducers: {
@@ -25,6 +26,9 @@ const myPageSlice = createSlice({
         },
         changeWithdrawalOpen(state,action){
             state.withdrawalOpen = action.payload.withdrawalOpen
+        },
+        changeMyInformationOpen(state,action){
+            state.myInformation = action.payload.myInformation
         },
         changeWithdrawalReason(state,action){
             state.withdrawalReason = {

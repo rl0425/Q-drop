@@ -38,7 +38,6 @@ const AuthLoading = () => {
         });
     }
 
-
     useEffect(() => {
         getKakaoToken(KAKAO_CODE)
     }, [])

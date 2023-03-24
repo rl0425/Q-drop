@@ -37,7 +37,7 @@
     width: 40px;
 }
 
-.logoSet{
+.logoSet > div{
     display: flex;
     gap: 12px;
 }

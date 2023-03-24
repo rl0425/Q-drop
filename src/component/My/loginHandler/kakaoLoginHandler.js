@@ -31,8 +31,6 @@ class KakaoLogin {
             redirectUri: 'http://sungwoo-net.p-e.kr:3000/login/auth/code',
             state: 'userme',
         });
-
-        console.log("asdasd")
     }
 }
 

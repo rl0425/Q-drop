@@ -201,7 +201,7 @@ const BodyContents = React.memo((props) => {
 
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed:200,
         slidesToShow: 1,

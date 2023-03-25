@@ -12,7 +12,6 @@ function My(){
     const kakao = new KakaoLogin();
 
     return (
-
         <>
             <MyHome />
             <TermsWrapper />

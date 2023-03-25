@@ -5,14 +5,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import useHttp from "../../../../hooks/use-http";
-import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../../../store/mianData-slice";
-import MemoizedContent from "./ContentList";
 import ContentList from "./ContentList";
-import contentList from "./ContentList";
+
+import { useInView } from "react-intersection-observer"
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
@@ -22,8 +22,13 @@ const BodyContents = React.memo((props) => {
     const [sortType, setSortType] = useState("")
 
     // 스크롤 이벤트 ref
-    const bottomBoundaryRef = useRef(null);
-    const noRef = useRef(null);
+    const [pageNum, setPageNum] = useState(0)
+    const [pageEnd, setPageEnd] = useState([])
+
+    const lastItemRef = useRef(null);
+    const { ref, inView } = useInView({
+        threshold: 0,
+    });
 
     // 슬라이더 ref
     const sliderRef = useRef(null);
@@ -42,36 +47,37 @@ const BodyContents = React.memo((props) => {
     const mainData = useSelector((state) => state.main.contentList)
 
     const getData = () => {
-        const subCategoryPromise = new Promise((resolve, reject) => {
-            fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=&paging_num=0&paging_count=10`}, (taskObj) => {
-
-                if (taskObj.length > 0) {
-                    const trueList = []
-                    const categoryList = []
-
-                    console.log("taskObj = ", taskObj)
-
-                    props.categoryData.map((ele) => {
-                        ele.bookmark_sub_categories.map((data) => {
+        const subCategoryPromise = new Promise(async (resolve, reject) => {
+            try {
+                const promises = props.categoryData.map(async (ele) => {
+                    return Promise.all(
+                        ele.bookmark_sub_categories.map(async (data) => {
                             if (data.selected) {
-                                trueList.push(data.sub_category_id)
+                                return data.sub_category_id;
                             }
                         })
+                    ).then((trueList) => {
+                        const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
+                        return new Promise((resolve, reject) => {
+                            fetchTasks(
+                                {
+                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
+                                },
+                                (taskObj) => {
+                                    resolve(taskObj);
+                                }
+                            );
+                        });
                     })
+                })
 
-                    taskObj.map((ele) => {
-                        const data = trueList.find(u => u === ele.subCategory.sub_category_id)
-                        if (data) {
-                            categoryList.push(ele)
-                        }
-                    })
+                const result = await Promise.all(promises)
+                setCategory(result)
+                resolve(result.flat());
 
-                    setCategory(taskObj)
-                    resolve(categoryList);
-                } else {
-                    reject(new Error('No data returned from fetchTasks')); // reject the promise with an error
-                }
-            })
+            } catch (error) {
+                console.error(error);
+            }
         })
 
         subCategoryPromise.then((categoryList) => {
@@ -104,9 +110,13 @@ const BodyContents = React.memo((props) => {
 
             setCategory(groupedData)
             const temp = [...groupedData]
-
             dispatch(mainDataActions.changeContent({contentList: temp}))
             setSortType("new")
+
+            groupedData.map((data) => {
+                setPageEnd(prev => [...prev, {id:data.id, end:false}])
+            })
+
         })
 
         return subCategoryPromise;
@@ -131,6 +141,59 @@ const BodyContents = React.memo((props) => {
         });
 
         setCategory(temp);
+    }
+
+    const getMoreDatas = (props) =>{
+        fetchTasks({
+                url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=selected`,
+            },
+            (object) => {
+                const filterArr = object.filter(ele => ele.main_category_id === props.id)
+                // console.log("object = ", object)
+                // console.log("filterArr = ", filterArr)
+
+                const subCategoryIds = filterArr[0].bookmark_sub_categories.map((category) => {
+                    return category.sub_category_id;
+                });
+
+                console.log("subCategoryIds = ", subCategoryIds)
+                console.log("pageNum = ", pageNum)
+
+                fetchTasks(
+                    {
+                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=5`,
+                    },
+                    (taskObj) => {
+                        if(taskObj.length > 0) {
+                            const temp = category.map((ele) => {
+                                console.log("taskObj= ", taskObj)
+
+                                if (ele.id === props.id) {
+                                    const originalValues = Array.from(ele.values);
+                                    taskObj.map((data) => {
+                                        originalValues.push(data)
+                                    })
+
+                                    return {
+                                        ...ele,
+                                        values: originalValues,
+                                    };
+                                }
+
+                                return ele;
+                            });
+
+                            dispatch(mainDataActions.changeContent({contentList: temp}))
+                        }
+                        else{
+                            console.log("pageEnd =", pageEnd)
+                        }
+                    }
+                );
+            }
+        )
+
+        setPageNum(prev => prev +1)
     }
 
     const handleReload = () => {
@@ -178,9 +241,22 @@ const BodyContents = React.memo((props) => {
         dispatch(mainDataActions.changeContent({ contentList: temp }));
     }
 
+    const getMoreData = (props) => {
+        getMoreDatas(props)
+    }
+
     useEffect(() => {
         getData();
     }, [props.data]);
+
+    useEffect(() => {
+        // // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
+        if (inView && !isLoading) {
+            console.log("Asdasdasda")
+            //     setPageNum(prevState => prevState + 1)
+        }
+    }, [inView])
+
 
     useEffect(() =>{
         if (category.length > 0) {
@@ -227,19 +303,37 @@ const BodyContents = React.memo((props) => {
                     <span>{sortType === "new" ? "최신순" : "좋아요 순"}</span>
                     <img src={"/images/icons/arrowBox.png"}/>
                 </div>
-                <Slider {...settings} ref={sliderRef}>
-                        {(!category || category.length === 0) ? <div></div>:
-                            category.map((ele, index) => {
-                                return (
-                                    <div key={uuidv4()} className={classes.silderBox}>
-                                        {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data) => {
-                                            return <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
-                                        })}
-                                    </div>
-                                )
-                            })
-                        }
-                </Slider>
+
+                    <Slider {...settings} ref={sliderRef}>
+                            {(!category || category.length === 0) ? <div></div>:
+                                category.map((ele, index) => {
+                                    return (
+                                        <div className={classes.sibal}>
+                                            <InfiniteScroll
+                                                dataLength={ele.values.length}
+                                                next={() => getMoreData(ele)}
+                                                hasMore={true}
+                                                style={{ overflow: "scroll", height: "100%" }}
+                                                loader={<h4>Loading...</h4>}
+                                                height={"00%"}
+                                            >
+                                                {/*<div key={uuidv4()} className={classes.silderBox}>*/}
+
+                                                {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
+                                                    <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
+                                                ))}
+
+                                                {/*{ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (*/}
+                                                {/*    <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>*/}
+                                                {/*))}*/}
+                                                {/*</div>*/}
+                                            </InfiniteScroll>
+                                        </div>
+
+                                    )
+                                })
+                            }
+                    </Slider>
             </div>
         )
     }

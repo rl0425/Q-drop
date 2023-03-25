@@ -1,12 +1,13 @@
-import React, {useEffect, useState, useRef} from "react"
+import React, {useEffect, useState, useRef, forwardRef} from "react"
 import {v4 as uuidv4} from "uuid";
 import classes from "./ContentList.module.css"
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch} from "react-redux";
 import useHttp from "../../../../hooks/use-http";
 import {logDOM} from "@testing-library/react";
+import moment from "moment";
 
-function ContentList(props){
+const ContentList = forwardRef((props, ref) => {
     const dispatch = useDispatch()
 
     const [data, setData] = useState(props.data)
@@ -110,33 +111,39 @@ function ContentList(props){
 
     return (
 
-        data !== "" ? <div onClick={openDetail} className={classes.itemBox} data={data}>
-            <div className={classes.qSpanBox}>
-                <div className={classes.qSpan}><span>Q.</span></div>
-            </div>
-            <div className={classes.contentBox}>
-                <div className={classes.questionBox}><span>{data.title}</span></div>
-                <div className={classes.answerBox}><span>{data.content}</span></div>
-                <div className={classes.optBox}>
-                    <div className={classes.heartBox} onClick={handleLikeClick}>
-                        <img style={{width: "20px", height: "17px"}}
-                             src={likeSrc}/>
-                        <span>{likeCount}</span>
+        data !== "" ?
+            <div onClick={openDetail} className={classes.itemBox} data={data} ref={ref}>
+                <div className={classes.qSpanBox}>
+                    <div className={classes.qSpan}><span>Q.</span></div>
+                </div>
+                <div className={classes.contentBox}>
+                    <div className={classes.questionBox}>
+                        <div><span>{data.title}</span></div>
+                        <div className={classes.detailQuestion}>
+                            <span>{data.member_info.nickname}  |  {moment(data.createTime).format("YYYY.MM.DD")}</span>
+                        </div>
                     </div>
-                    <div onClick={handleFavoriteClick}>
-                        <img style={{width: "20px", height: "17px"}}
-                             src={favoriteSrc}/>
-                    </div>
-                    <div onClick={optClickEvt}>
-                        <img style={{width: "3px", height: "14px"}}
-                             src={"/images/icons/option.png"}/>
+                    <div className={classes.answerBox}><span>{data.content}</span></div>
+                    <div className={classes.optBox}>
+                        <div className={classes.heartBox} onClick={handleLikeClick}>
+                            <img style={{width: "20px", height: "17px"}}
+                                 src={likeSrc}/>
+                            <span>{likeCount}</span>
+                        </div>
+                        <div onClick={handleFavoriteClick}>
+                            <img style={{width: "20px", height: "17px"}}
+                                 src={favoriteSrc}/>
+                        </div>
+                        <div onClick={optClickEvt}>
+                            <img style={{width: "3px", height: "14px"}}
+                                 src={"/images/icons/option.png"}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div> : ""
+            </div> : ""
 
     )
-}
+})
 
 
 export default ContentList;

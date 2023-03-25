@@ -28,10 +28,20 @@
 }
 
 .questionBox{
+    display: flex;
+    flex-direction: column;
     font-size: 18px;
     font-weight: bold;
     color: #DADCE1;
     margin-bottom: 10px;
+    gap: 6px;
+
+}
+
+.detailQuestion{
+    font-size: 14px;
+    font-weight: 400;
+    color: #64666d;
 }
 
 .answerBox{

@@ -25,6 +25,14 @@
     overflow: auto;
 }
 
+.sibal{
+    overflow: scroll;
+}
+
+.infinite-scroll-component{
+    overflow: scroll !important;
+}
+
 /*.box > div{*/
 /*    height: fit-content;*/
 /*    max-height: fit-content;*/
@@ -73,4 +81,8 @@
 .body > div > div{
     overflow: auto !important;
     height: 10% !important;
+}
+
+.box .contentBox{
+    height: fit-content;
 }

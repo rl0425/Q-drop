@@ -25,11 +25,6 @@ const BodyContents = React.memo((props) => {
     const [pageNum, setPageNum] = useState(0)
     const [pageEnd, setPageEnd] = useState([])
 
-    const lastItemRef = useRef(null);
-    const { ref, inView } = useInView({
-        threshold: 0,
-    });
-
     // 슬라이더 ref
     const sliderRef = useRef(null);
 
@@ -114,7 +109,13 @@ const BodyContents = React.memo((props) => {
             setSortType("new")
 
             groupedData.map((data) => {
-                setPageEnd(prev => [...prev, {id:data.id, end:false}])
+                setPageEnd(prev => {
+                    if (prev.some(item => item.id === data.id)) {
+                        return prev; // 이미 해당 id가 있는 경우 이전 배열을 반환합니다.
+                    } else {
+                        return [...prev, { id: data.id, end: false }]; // 해당 id가 없는 경우 새로운 요소를 추가합니다.
+                    }
+                });
             })
 
         })
@@ -149,15 +150,9 @@ const BodyContents = React.memo((props) => {
             },
             (object) => {
                 const filterArr = object.filter(ele => ele.main_category_id === props.id)
-                // console.log("object = ", object)
-                // console.log("filterArr = ", filterArr)
-
                 const subCategoryIds = filterArr[0].bookmark_sub_categories.map((category) => {
                     return category.sub_category_id;
                 });
-
-                console.log("subCategoryIds = ", subCategoryIds)
-                console.log("pageNum = ", pageNum)
 
                 fetchTasks(
                     {
@@ -166,7 +161,6 @@ const BodyContents = React.memo((props) => {
                     (taskObj) => {
                         if(taskObj.length > 0) {
                             const temp = category.map((ele) => {
-                                console.log("taskObj= ", taskObj)
 
                                 if (ele.id === props.id) {
                                     const originalValues = Array.from(ele.values);
@@ -186,7 +180,13 @@ const BodyContents = React.memo((props) => {
                             dispatch(mainDataActions.changeContent({contentList: temp}))
                         }
                         else{
-                            console.log("pageEnd =", pageEnd)
+                            setPageEnd(prev => prev.map(item => {
+                                if (item.id === props.id) {
+                                    return { id: item.id, end: true };
+                                } else {
+                                    return item;
+                                }
+                            }));
                         }
                     }
                 );
@@ -245,18 +245,26 @@ const BodyContents = React.memo((props) => {
         getMoreDatas(props)
     }
 
+    const handleEndMessage = (props) => {
+        console.log("asdas")
+
+        const item = pageEnd.find(item => item.id === props.id);
+        if (item) {
+            if (item.end){
+                return false
+            }
+            else{
+                return true
+            }
+        } else {
+            return true;
+        }
+
+    }
+
     useEffect(() => {
         getData();
     }, [props.data]);
-
-    useEffect(() => {
-        // // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
-        if (inView && !isLoading) {
-            console.log("Asdasdasda")
-            //     setPageNum(prevState => prevState + 1)
-        }
-    }, [inView])
-
 
     useEffect(() =>{
         if (category.length > 0) {
@@ -275,7 +283,6 @@ const BodyContents = React.memo((props) => {
         handleIndexChange()
     }, [index, sortType]);
 
-
     const settings = {
         dots: false,
         infinite: false,
@@ -285,7 +292,6 @@ const BodyContents = React.memo((props) => {
         initialSlide:0,
         afterChange:  handleSlideChange
     };
-
 
     if(isLoading || !dataLoaded){
         return <div></div>
@@ -307,26 +313,21 @@ const BodyContents = React.memo((props) => {
                     <Slider {...settings} ref={sliderRef}>
                             {(!category || category.length === 0) ? <div></div>:
                                 category.map((ele, index) => {
+                                    console.log("pageEnd[index]= ", pageEnd[index].end)
+
                                     return (
-                                        <div className={classes.sibal}>
+                                        <div className={classes.scrollDiv}>
                                             <InfiniteScroll
                                                 dataLength={ele.values.length}
                                                 next={() => getMoreData(ele)}
-                                                hasMore={true}
+                                                hasMore={!pageEnd[index].end}
                                                 style={{ overflow: "scroll", height: "100%" }}
                                                 loader={<h4>Loading...</h4>}
-                                                height={"00%"}
+                                                height={"0"}
                                             >
-                                                {/*<div key={uuidv4()} className={classes.silderBox}>*/}
-
                                                 {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
                                                     <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
                                                 ))}
-
-                                                {/*{ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (*/}
-                                                {/*    <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>*/}
-                                                {/*))}*/}
-                                                {/*</div>*/}
                                             </InfiniteScroll>
                                         </div>
 

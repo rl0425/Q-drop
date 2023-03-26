@@ -42,6 +42,11 @@ const BodyContents = React.memo((props) => {
     const mainData = useSelector((state) => state.main.contentList)
 
     const getData = () => {
+
+        if(pageEnd.length > 0){
+            setPageEnd(prev => prev.map(item => ({ ...item, end: false })));
+            setPageNum(0)
+        }
         const subCategoryPromise = new Promise(async (resolve, reject) => {
             try {
                 const promises = props.categoryData.map(async (ele) => {
@@ -117,6 +122,7 @@ const BodyContents = React.memo((props) => {
                     }
                 });
             })
+
 
         })
 
@@ -246,8 +252,6 @@ const BodyContents = React.memo((props) => {
     }
 
     const handleEndMessage = (props) => {
-        console.log("asdas")
-
         const item = pageEnd.find(item => item.id === props.id);
         if (item) {
             if (item.end){
@@ -302,7 +306,8 @@ const BodyContents = React.memo((props) => {
     }
 
     else {
-        console.log("category =" , category)
+        console.log("pageEnd =", pageEnd)
+
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -313,8 +318,6 @@ const BodyContents = React.memo((props) => {
                     <Slider {...settings} ref={sliderRef}>
                             {(!category || category.length === 0) ? <div></div>:
                                 category.map((ele, index) => {
-                                    console.log("pageEnd[index]= ", pageEnd[index].end)
-
                                     return (
                                         <div className={classes.scrollDiv}>
                                             <InfiniteScroll

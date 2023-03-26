@@ -61,7 +61,7 @@ const BodyContents = React.memo((props) => {
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {
-                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
+                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=20`,
                                 },
                                 (taskObj) => {
                                     resolve(taskObj);
@@ -162,7 +162,7 @@ const BodyContents = React.memo((props) => {
 
                 fetchTasks(
                     {
-                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=5`,
+                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=20`,
                     },
                     (taskObj) => {
                         if(taskObj.length > 0) {
@@ -306,8 +306,6 @@ const BodyContents = React.memo((props) => {
     }
 
     else {
-        console.log("pageEnd =", pageEnd)
-
         return (
             <div className={classes.box}>
                 <div onClick={handleSortChange} className={classes.sortBox}>
@@ -319,7 +317,7 @@ const BodyContents = React.memo((props) => {
                             {(!category || category.length === 0) ? <div></div>:
                                 category.map((ele, index) => {
                                     return (
-                                        <div className={classes.scrollDiv}>
+                                        <div key={uuidv4()} className={classes.scrollDiv}>
                                             <InfiniteScroll
                                                 dataLength={ele.values.length}
                                                 next={() => getMoreData(ele)}

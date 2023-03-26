@@ -12,7 +12,7 @@ function FavoriteNote(){
     const [data, setData] = useState("")
     const dispatch = useDispatch()
 
-    const { isLoading, error, sendRequest: getData } = useHttp();
+    const { isLoading, error, sendRequest: fetchTask } = useHttp();
 
     useEffect(()=>{
         setTimeout(()=> {
@@ -32,7 +32,7 @@ function FavoriteNote(){
     }
 
     const handleGetData = () => {
-        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my`}, (taskObj) => {
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my`}, (taskObj) => {
             console.log("taskObj = ", taskObj)
             setData(taskObj)
         })
@@ -40,7 +40,17 @@ function FavoriteNote(){
 
     const handlePostDetail = (element) => {
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:element.id, mainCategory:element.mainCategory.main_category_id ,subcategory:element.subCategory.sub_category_id}}))
+    }
 
+    const handleIsFavorite = (e,element) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${element.id}`, type:"delete"}, (request) => {
+            if(request){
+                handleGetData()
+            }
+        })
     }
 
     return (
@@ -58,7 +68,7 @@ function FavoriteNote(){
                             <div className={classes.contentBody}>
                                 <div className={classes.contentTitle}>
                                     <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span></div>
-                                    <img src={"/images/mypage/icons/favorite.png"}/>
+                                    <img onClick={(e) => handleIsFavorite(e,ele)} src={"/images/mypage/icons/favorite.png"}/>
                                 </div>
                                 <div className={classes.contentMain}><span>{ele.content}</span></div>
                                 <div className={classes.contentSub}><span>{ele.subCategory.sub_category_name}</span></div>

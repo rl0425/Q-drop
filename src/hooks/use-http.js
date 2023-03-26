@@ -29,7 +29,13 @@ const useHttp = () => {
                     } : null
                 })
                     .then(function a(response) {
-                        applyData(response.data);
+                        if(requestConfig.type === "delete"){
+                            applyData(true);
+                        }
+                        else {
+                            applyData(response.data);
+                        }
+
                         setIsLoading(false);
                     })
                     .catch(function (error) {

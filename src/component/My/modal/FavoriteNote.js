@@ -1,5 +1,5 @@
 import classes from "./FavoriteNote.module.css"
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {myPageActions} from "../../../store/myPage-slice";
 import {useEffect} from "react";
@@ -7,10 +7,17 @@ import {v4 as uuidv4} from "uuid";
 import useHttp from "../../../hooks/use-http";
 import {modalActions} from "../../../store/modal-slice";
 
+// 무한스크롤
+import InfiniteScroll from "react-infinite-scroll-component";
+
+
 function FavoriteNote(){
     const [open, setOpen] = useState(false)
     const [data, setData] = useState("")
     const dispatch = useDispatch()
+
+    // 무한 스크롤
+    const [pageEnd, setPageEnd] = useState(true)
 
     const { isLoading, error, sendRequest: fetchTask } = useHttp();
 
@@ -53,6 +60,10 @@ function FavoriteNote(){
         })
     }
 
+    const handleMoreData = (ele) => {
+
+    }
+
     return (
         data ?
         <div className={open ? classes.box : classes.unBox}>
@@ -61,21 +72,30 @@ function FavoriteNote(){
                 <span>즐겨찾기한 노트 </span>
             </div>
             <div className={classes.body}>
-                {data.map((ele) => {
-                    return (
-                        <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
+                <InfiniteScroll
+                    dataLength={data.length}
+                    next={() => handleMoreData(data)}
+                    hasMore={pageEnd}
+                    style={{ overflow: "scroll", height: "100%", display:"flex", flexDirection:"column", gap:"16px"}}
+                    loader={<h4>Loading...</h4>}
+                    height={"0"}
+                >
+                    {data.map((ele) => {
+                        return (
+                            <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
 
-                            <div className={classes.contentBody}>
-                                <div className={classes.contentTitle}>
-                                    <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span></div>
-                                    <img onClick={(e) => handleIsFavorite(e,ele)} src={"/images/mypage/icons/favorite.png"}/>
+                                <div className={classes.contentBody}>
+                                    <div className={classes.contentTitle}>
+                                        <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span></div>
+                                        <img onClick={(e) => handleIsFavorite(e,ele)} src={"/images/mypage/icons/favorite.png"}/>
+                                    </div>
+                                    <div className={classes.contentMain}><span>{ele.content}</span></div>
+                                    <div className={classes.contentSub}><span>{ele.subCategory.sub_category_name}</span></div>
                                 </div>
-                                <div className={classes.contentMain}><span>{ele.content}</span></div>
-                                <div className={classes.contentSub}><span>{ele.subCategory.sub_category_name}</span></div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </InfiniteScroll>
             </div>
         </div>
         :

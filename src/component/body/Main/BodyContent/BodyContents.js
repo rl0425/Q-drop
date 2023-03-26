@@ -11,7 +11,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {mainDataActions} from "../../../../store/mianData-slice";
 import ContentList from "./ContentList";
 
-import { useInView } from "react-intersection-observer"
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const BodyContents = React.memo((props) => {

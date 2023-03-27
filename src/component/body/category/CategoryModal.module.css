@@ -135,4 +135,25 @@
     height: 100% !important;
 }
 
+.allSelect{
+    display: flex;
+    align-items: center;
+    height: 52px;
+    min-height: 52px;
+    max-height: 52px;
+    padding: 0 20px;
+    color: #E4E5E7;
+    background: #212225;
+    gap: 8px;
+}
 
+.allSelect > img{
+    width: 20px;
+    height: 20px;
+}
+
+.allSelect > span{
+    font-weight: 500;
+    font-size: 16px;
+    color: #DADCE1;
+}

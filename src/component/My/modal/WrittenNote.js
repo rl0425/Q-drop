@@ -111,9 +111,9 @@ function WrittenNote(){
                                                 }/>
                                             <span
                                                 className={ele.approval === 0 ? classes.readyNote : ele.approval === 1 ? classes.completeNote : classes.rejectNote}>
-                                    {ele.approval === 0 ? "승인대기중" : ele.approval === 1 ? "승인" : "거절"}
-                                </span>
-                                        </div>
+                                                {ele.approval === 0 ? "승인대기중" : ele.approval === 1 ? "승인" : "거절"}
+                                            </span>
+                                                    </div>
                                         <div className={classes.contentBody}>
                                             <div className={classes.contentTitle}><span>Q. {ele.title}</span></div>
                                             <div className={classes.contentMain}><span>{ele.content}</span></div>

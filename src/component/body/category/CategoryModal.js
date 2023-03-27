@@ -11,8 +11,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import {mainDataActions} from "../../../store/mianData-slice";
-import {CategorySettings, UserContext} from "../Home";
-// register Swiper custom elements
 
 function CategoryModal(){
     const [openAnimation, setOpenAnimation] = useState(false);
@@ -28,13 +26,14 @@ function CategoryModal(){
     const categoryData = useSelector((state) => state.main.categoryData)
 
     useEffect(() => {
-        const transformTasks = (tasksObj) => {
-            setTasks(tasksObj);
-        };
-
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' },
-            transformTasks
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' }, (taskObj) =>{
+                taskObj.map((ele) => (
+                    ele.allSelect = false
+                ))
+                console.log("taskObj = ", taskObj)
+                setTasks(taskObj);
+            }
         );
     }, [fetchTasks]);
 
@@ -78,6 +77,7 @@ function CategoryModal(){
 
     // 슬라이드로 인덱스 변경
     const handleSlideChange = (index) => {
+        console.log("111")
         setIndex(index);
     };
 
@@ -106,9 +106,42 @@ function CategoryModal(){
 
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post", dataType:"id", data: {type:"id", item:subs}},
-            // { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/post/1',  type:"post", dataType:"subCategoryId", data:subs},
             completePost
         );
+    }
+
+    const handleAllSelect = (ele) => {
+        const index = tasks.findIndex((item) => item.categoryId === ele.categoryId)
+        const data = tasks.filter((item) => item.categoryId === ele.categoryId)
+        const removeData = tasks.filter((item) => item.categoryId !== ele.categoryId)
+
+        if(data[0].allSelect){
+            data[0].allSelect = false
+
+
+        }
+        else{
+            const addList = []
+            data[0].allSelect = true
+
+            data[0].subCategories.map((ele) => {
+                const hasItem = subs.includes((item) => item === ele.id)
+
+                console.log("hasItem= ", hasItem)
+
+                if(!hasItem){
+                    addList.push(ele.id)
+
+                }
+            })
+            const temp = [...subs, ...addList]
+            setSubs(temp)
+        }
+
+        removeData.splice(index,0,data[0])
+
+
+        setTasks(removeData)
     }
 
     if(isLoading){
@@ -160,11 +193,15 @@ function CategoryModal(){
                                     if(ele){
                                         return (
                                             <div className={classes.jonh} key={uuidv4()}>
-                                            {ele.subCategories.map((data) => {
-                                                return (
-                                                    <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
-                                                )
-                                            })}
+                                                <div onClick={() => handleAllSelect(ele)} className={classes.allSelect}>
+                                                    {ele.allSelect ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
+                                                    <span>전체 선택</span>
+                                                </div>
+                                                {ele.subCategories.map((data) => {
+                                                    return (
+                                                        <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
+                                                    )
+                                                })}
                                             </div>
                                         )
                                     }

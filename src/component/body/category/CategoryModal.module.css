@@ -157,3 +157,9 @@
     font-size: 16px;
     color: #DADCE1;
 }
+
+.noContents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

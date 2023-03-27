@@ -21,11 +21,16 @@ function CategoryModal(){
     const [subs, setSubs] = useState([]);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
+    // 모든 데이터의 로드 확인
+    const [dataLoaded, setDataLoaded] = useState(false);
+
     const sliderRef = useRef(null);
 
     const categoryData = useSelector((state) => state.main.categoryData)
 
     useEffect(() => {
+        console.log("11")
+
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' }, (taskObj) =>{
                 taskObj.map((ele) => (
@@ -33,22 +38,33 @@ function CategoryModal(){
                 ))
                 console.log("taskObj = ", taskObj)
                 setTasks(taskObj);
+
+                setSubjectList(taskObj)
+
             }
         );
     }, [fetchTasks]);
 
 
     useEffect(() => {
-        setSubjectList()
+        console.log("22")
+        if(tasks.length > 0) {
+            console.log("33")
+            setSubjectList()
+        }
 
-    }, [categoryData])
+    }, [])
+    // }, [categoryData])
 
     useEffect(() => {
         setOpenAnimation(true)
     }, [])
 
-    const setSubjectList = () => {
+    const setSubjectList = (taskObj) => {
         const selectedSubs = []
+        const allSelectList = []
+
+        console.log("categoryData= ", categoryData)
 
         categoryData.map((ele) => {
             ele.bookmark_sub_categories.map((data) => {
@@ -56,9 +72,35 @@ function CategoryModal(){
                     selectedSubs.push(data.sub_category_id)
                 }
             })
+
+            const hasFalse = ele.bookmark_sub_categories.find((data) => data.selected === false)
+
+
+            if(!hasFalse){
+                allSelectList.push(ele.main_category_id)
+            }
         })
 
+        if(allSelectList.length > 0){
+
+            const updatedTasks = allSelectList.reduce((acc, item) => {
+                const findTask = taskObj.find((t) => t.categoryId === item);
+                if (findTask && findTask.subCategories.length > 0) {
+                    acc.push({ ...findTask, allSelect: true });
+                }
+                return acc;
+            }, []);
+
+            setTasks((prevTasks) =>
+                prevTasks.map((task) =>
+                    updatedTasks.find((t) => t.categoryId === task.categoryId) || task
+                )
+            );
+
+        }
+
         setSubs([...subs, ...selectedSubs])
+        setDataLoaded(true)
     }
 
     const closeEvt = () => {
@@ -77,23 +119,37 @@ function CategoryModal(){
 
     // 슬라이드로 인덱스 변경
     const handleSlideChange = (index) => {
-        console.log("111")
         setIndex(index);
     };
 
     // 서브카테고리 선택 이벱트
     const subSelectEvt = (ele) => {
-        let newArray = [...subs]
+        const newArray = [...subs]
         const index = newArray.indexOf(ele.id)
 
         if(index !== -1 && ele.type === "remove") {
             newArray.splice(index, 1)
             setSubs(newArray)
+
+            const taskIndex = tasks.findIndex((obj) => obj.categoryId === ele.mainId);
+            const updatedObj = {...tasks[taskIndex], allSelect: false};
+            const updatedArr = [...tasks.slice(0, taskIndex), updatedObj, ...tasks.slice(taskIndex + 1)];
+
+            setTasks(updatedArr);
         }
 
         if(ele.type === "add") {
-            newArray = [ele.id , ...newArray]
-            setSubs(newArray)
+            const tempArray = [ele.id , ...newArray]
+            setSubs(tempArray)
+
+            const taskIndex = tasks.findIndex((obj) => obj.categoryId === ele.mainId);
+            const result = tasks[taskIndex].subCategories.every(({id}) => tempArray.includes(id));
+
+            if(result) {
+                const updatedObj = {...tasks[taskIndex], allSelect: true};
+                const updatedArr = [...tasks.slice(0, taskIndex), updatedObj, ...tasks.slice(taskIndex + 1)];
+                setTasks(updatedArr);
+            }
         }
     }
 
@@ -117,25 +173,24 @@ function CategoryModal(){
 
         if(data[0].allSelect){
             data[0].allSelect = false
+            const newSubCategories = data[0].subCategories.filter(subCategory => {
+                return !subs.includes(subCategory.id);
+            });
 
+            setSubs(newSubCategories)
 
         }
         else{
-            const addList = []
+            const tempSubs = [...subs]
             data[0].allSelect = true
 
-            data[0].subCategories.map((ele) => {
-                const hasItem = subs.includes((item) => item === ele.id)
-
-                console.log("hasItem= ", hasItem)
-
-                if(!hasItem){
-                    addList.push(ele.id)
-
+            data[0].subCategories.forEach(subCategory => {
+                // subs 배열에 해당 id가 없으면, subs 배열에 추가합니다.
+                if (!tempSubs.includes(subCategory.id)) {
+                    tempSubs.push(subCategory.id);
                 }
-            })
-            const temp = [...subs, ...addList]
-            setSubs(temp)
+            });
+            setSubs(tempSubs)
         }
 
         removeData.splice(index,0,data[0])
@@ -144,7 +199,7 @@ function CategoryModal(){
         setTasks(removeData)
     }
 
-    if(isLoading){
+    if(isLoading && !dataLoaded){
         return <div></div>
     }
 
@@ -193,15 +248,28 @@ function CategoryModal(){
                                     if(ele){
                                         return (
                                             <div className={classes.jonh} key={uuidv4()}>
-                                                <div onClick={() => handleAllSelect(ele)} className={classes.allSelect}>
-                                                    {ele.allSelect ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
-                                                    <span>전체 선택</span>
-                                                </div>
-                                                {ele.subCategories.map((data) => {
-                                                    return (
-                                                        <Content key={uuidv4()} data={data} subs={subs} selectEvt={subSelectEvt}/>
-                                                    )
-                                                })}
+                                                {ele.subCategories.length > 0 ?
+                                                    <>
+                                                    <div onClick={() => handleAllSelect(ele)}
+                                                         className={classes.allSelect}>
+                                                        {ele.allSelect ? <img src={"/images/icons/fullCircle.png"}/> :
+                                                            <img src={"/images/icons/circle.png"}/>}
+                                                        <span>전체 선택</span>
+                                                    </div>
+
+                                                    {
+                                                        ele.subCategories.map((data) => {
+                                                            return (
+                                                                <Content key={uuidv4()} data={data}
+                                                                         mainId={ele.categoryId} subs={subs}
+                                                                         selectEvt={subSelectEvt}/>
+                                                            )
+                                                        })
+                                                    }
+                                                    </>
+                                                    :
+                                                    <div className={classes.noContents}><span>카테고리가 존재하지 않습니다.</span></div>
+                                                }
                                             </div>
                                         )
                                     }

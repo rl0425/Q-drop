@@ -4,15 +4,16 @@
     height: 52px;
     min-height: 52px;
     max-height: 52px;
-    padding: 0 20px;
+    margin: 0 20px;
     color: #E4E5E7;
     background: #212225;
+    border-bottom: 1px solid #26282C;
     gap: 8px;
     transition: all 0.2s linear;
 }
 
 .box.active{
-    background: #3E414A;
+    color: #48BAFB;
     transition: all 0.2s linear;
 }
 

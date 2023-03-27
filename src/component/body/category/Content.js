@@ -2,11 +2,13 @@ import classes from "./Content.module.css"
 import {useEffect, useState} from "react";
 
 function Content(props){
+
     const clickEvt = (e,ele) => {
         e.stopPropagation()
         e.preventDefault()
 
-        props.selectEvt({id:props.data.id, type:ele})
+
+        props.selectEvt({id:props.data.id, type:ele, mainId:props.mainId})
     }
     const hasChecked = props.subs.find(u => u === props.data.id)
 

@@ -114,3 +114,10 @@
     background: #33363F;
     border-radius: 4px;
 }
+
+.scrollDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 90vh;
+}

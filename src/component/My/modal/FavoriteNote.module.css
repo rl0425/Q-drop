@@ -49,8 +49,8 @@
 }
 
 .content{
-    max-height: 172px;
-    min-height: 172px;
+    /*max-height: 172px;*/
+    /*min-height: 172px;*/
     background: #212225;
     border-radius: 10px;
     box-sizing: border-box;
@@ -128,4 +128,11 @@
     color: #8B92A0;
     background: #33363F;
     border-radius: 4px;
+}
+
+.scrollDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 90vh;
 }

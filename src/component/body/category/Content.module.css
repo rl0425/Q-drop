@@ -11,17 +11,14 @@
     gap: 8px;
     transition: all 0.2s linear;
 }
-
 .box.active{
     color: #48BAFB;
     transition: all 0.2s linear;
 }
-
 .box > img{
     width: 20px;
     height: 20px;
 }
-
 .box > span{
     font-size: 14px;
     font-weight: 500;

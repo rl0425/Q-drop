@@ -58,7 +58,7 @@ function PostModal(){
 
         // Make API call to update like status
         try {
-            const response = await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, { method: type ? "POST" : "DELETE" });
+            const response = await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, { method: type ? "post" : "delete" });
             // const taskObj = await response.json();
 
             // Do something with taskObj if needed

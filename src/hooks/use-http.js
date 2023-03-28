@@ -5,12 +5,12 @@ import axios from "axios";
 const useHttp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAwMTcwOTEsImV4cCI6MTY4MDYyMTg5MSwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.U3zdRtjxJkLWCjKciqH40RneZQYPMWcN8CN6HOYzEUQ`
 
     const sendRequest = useCallback(async (requestConfig, applyData) => {
         setIsLoading(true);
         setError(null);
-        const header ={"Authorization":`Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzkzMDk3MTQsImV4cCI6MTY3OTkxNDUxNCwiaXNzIjoidGVzdCIsInN1YiI6InJsMDQyNUBuYXZlci5jb20ifQ.vABrff0d3qTG9RB1LXo5Gsp04Xua-_6QKsPfi4W3p2M`}
-
+        const header ={"Authorization":`Bearer ${token}`}
         // if (requestConfig.header === true) {
         //     header['Authorization'] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzgwMzIxNzYsImV4cCI6MTY3ODYzNjk3NiwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.wulLuDasOKkP1iqwyQdQonZ-kxa8DBLXrJJUQHrsaSk`
         // }
@@ -22,7 +22,7 @@ const useHttp = () => {
                     method: requestConfig.type,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    // headers: header,
+                    headers: header,
                     // withCredentials:true,
                     data: requestConfig.data ? {
                         [requestConfig.data.type]:requestConfig.data.item
@@ -57,9 +57,9 @@ const useHttp = () => {
                     method: "get",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    // headers: {
-                    //     "Authorization":`Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NzkzMDk3MTQsImV4cCI6MTY3OTkxNDUxNCwiaXNzIjoidGVzdCIsInN1YiI6InJsMDQyNUBuYXZlci5jb20ifQ.vABrff0d3qTG9RB1LXo5Gsp04Xua-_6QKsPfi4W3p2M`
-                    // },
+                    headers: {
+                        "Authorization":`Bearer ${token}`
+                    },
                     // withCredentials:true,
                     data: requestConfig.data ? {
                         [requestConfig.data.type]:requestConfig.data.item

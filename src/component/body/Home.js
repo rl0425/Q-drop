@@ -21,11 +21,17 @@ function Home(){
     // subcategory 변경 시 리렌더링 위한 selector
     const subs = useSelector((state) => state.main.subCategoryList)
 
+    const token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAwMTcwOTEsImV4cCI6MTY4MDYyMTg5MSwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.U3zdRtjxJkLWCjKciqH40RneZQYPMWcN8CN6HOYzEUQ`
+    const header ={"Authorization":`Bearer ${token}`}
 
     useEffect(() => {
         Promise.all([
-            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/main'),
-            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all'),
+            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/main',{
+                headers: header
+            }),
+            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all',{
+                headers: header
+            }),
         ])
             .then(([mainData, categoryData]) => {
                 setMainData(mainData.data);

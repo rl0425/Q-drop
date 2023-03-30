@@ -38,13 +38,14 @@ function Post(){
         },200)
     }
     const removeClickEvt = () =>{
-        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.postId}`, type:"delete"})
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.id}`, type:"delete"})
+
 
         const temp = JSON.parse(JSON.stringify(mainData))
         const category = temp.find(item => item.id === dataInfo.categoryId);
 
         const value = category.values || [];
-        category.values = value.filter(post => post.id !== dataInfo.postId);
+        category.values = value.filter(post => post.id !== dataInfo.id);
 
         dispatch(mainDataActions.changeContent({ contentList: temp }));
         removeModalClickEvt()

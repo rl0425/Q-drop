@@ -21,7 +21,7 @@
     opacity: 0;
 }
 
-.contentBox, .unContentBox{
+.contentBox, .unContentBox, .noAuthorBox{
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -37,6 +37,11 @@
     padding-right: env(safe-area-inset-right);
 }
 
+.noAuthorBox{
+    min-height: 125px;
+    height: 125px;
+}
+
 .unContentBox{
     bottom: -50%;
     transition: all 0.25s ease;
@@ -44,10 +49,12 @@
 
 
 .contentBox > div,
-.unContentBox > div{
+.unContentBox > div,
+.noAuthorBox > div{
     display: flex;
     align-items: center;
-    min-height: 25%;
+    min-height: 63px;
+    /*min-height: 25%;*/
     padding: 0 20px;
     font-weight: 500;
 }

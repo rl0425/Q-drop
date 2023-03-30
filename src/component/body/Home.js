@@ -21,7 +21,7 @@ function Home(){
     // subcategory 변경 시 리렌더링 위한 selector
     const subs = useSelector((state) => state.main.subCategoryList)
 
-    const token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAwMTcwOTEsImV4cCI6MTY4MDYyMTg5MSwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.U3zdRtjxJkLWCjKciqH40RneZQYPMWcN8CN6HOYzEUQ`
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAxNzYyMDcsImV4cCI6MTY4MDc4MTAwNywiaXNzIjoidGVzdCIsInN1YiI6InJsMDQyNUBuYXZlci5jb20ifQ.B_Or_wcOO29kibHx0Bed5q59jkPsFbdU-bj_YuQKFo4"
     const header ={"Authorization":`Bearer ${token}`}
 
     useEffect(() => {

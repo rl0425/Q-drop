@@ -99,12 +99,19 @@ const ContentList = forwardRef((props, ref) => {
         e.stopPropagation()
         e.preventDefault()
 
-        dispatch(modalActions.changePostOpen({open: true, id: ele}))
+        console.log("props = ", props)
+        dispatch(modalActions.changePostOpen({
+            open: true,
+            dataInfo:{
+                id:ele.data.id,
+                categoryId: data.mainCategory.main_category_id,
+                author:data.author
+            }
+        }))
     }
 
     // 내용 자세히 보기 이벤트
     const openDetail = (e) => {
-        console.log("temp = ", temp)
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id,  subcategory:temp.subCategory.sub_category_id}}))
 
     }
@@ -134,7 +141,7 @@ const ContentList = forwardRef((props, ref) => {
                             <img style={{width: "20px", height: "17px"}}
                                  src={favoriteSrc}/>
                         </div>
-                        <div onClick={optClickEvt}>
+                        <div onClick={(e) => optClickEvt(e,props)}>
                             <img style={{width: "3px", height: "14px"}}
                                  src={"/images/icons/option.png"}/>
                         </div>

@@ -40,6 +40,8 @@ const BodyContents = React.memo((props) => {
     // reducer data
     const mainData = useSelector((state) => state.main.contentList)
 
+    console.log("mainData= ", mainData)
+
     const getData = () => {
 
         if(pageEnd.length > 0){

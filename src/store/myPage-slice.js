@@ -11,6 +11,11 @@ const myPageSlice = createSlice({
             open: false,
             reason: ""
         },
+        loginData:{
+            email:"",
+            nickname:"",
+            image:""
+        },
         myInformation: false,
         category : []
     },

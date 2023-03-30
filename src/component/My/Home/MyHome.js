@@ -7,12 +7,19 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {KakaoLogin} from "../loginHandler/kakaoLoginHandler";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import useHttp from "../../../hooks/use-http";
 
 function MyHome(){
     const [cookies, setCookies] = useState("")
+    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const dispatch = useDispatch()
+
+
+    useEffect(()=>{
+        getLoginData()
+    }, [])
 
     const handleTerms = (e) => {
         dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
@@ -33,6 +40,13 @@ function MyHome(){
     const handleMyInformation = (e) => {
         dispatch(myPageActions.changeMyInformationOpen({myInformation:true}))
     }
+
+    const getLoginData = (e) => {
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users`}, (data) => {
+            console.log("data =", data)
+        })
+    }
+
 
     const kakao = new KakaoLogin();
 

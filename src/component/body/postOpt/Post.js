@@ -3,9 +3,15 @@ import {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import modalSlice, {modalActions} from "../../../store/modal-slice";
 import {safePreventDefault} from "react-slick/lib/utils/innerSliderUtils";
+import useHttp from "../../../hooks/use-http";
+import {mainDataActions} from "../../../store/mianData-slice";
 
 function Post(){
     const dispatch = useDispatch()
+    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+
+    const dataInfo = useSelector((state) => state.modal.dataInfo)
+    const mainData = useSelector((state) => state.main.contentList)
 
     const [openAnimation, setOpenAnimation] = useState(false);
     const [blackAnimation, setBlackAnimation] = useState(false);
@@ -21,7 +27,7 @@ function Post(){
     },[])
 
     const removeModalClickEvt = () => {
-        dispatch(modalActions.changePostOpen({open: false, id: null}))
+        dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
     }
 
     const removeCancelClickEvt = () =>{
@@ -30,6 +36,18 @@ function Post(){
         setTimeout(()=>{
             setOpenAnimation(true)
         },200)
+    }
+    const removeClickEvt = () =>{
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.postId}`, type:"delete"})
+
+        const temp = JSON.parse(JSON.stringify(mainData))
+        const category = temp.find(item => item.id === dataInfo.categoryId);
+
+        const value = category.values || [];
+        category.values = value.filter(post => post.id !== dataInfo.postId);
+
+        dispatch(mainDataActions.changeContent({ contentList: temp }));
+        removeModalClickEvt()
     }
 
     const deleteOpenClickEvt = (e) => {
@@ -64,19 +82,30 @@ function Post(){
             <div onClick={removeModalClickEvt} className={blackAnimation ? classes.blackBox : classes.unBlackBox}>
 
             </div>
-            <div className={openAnimation ? classes.contentBox : classes.unContentBox}>
-                <div><span>수정하기</span></div>
-                <div onClick={deleteOpenClickEvt} className={classes.deleteBox}><span>삭제하기</span></div>
+            <div className={!openAnimation ? classes.unContentBox : dataInfo.author ? classes.contentBox : classes.noAuthorBox}>
+                {dataInfo.author ?
+                    <>
+                    <div><span>수정하기</span></div>
+                    <div onClick={deleteOpenClickEvt} className={classes.deleteBox}><span>삭제하기</span></div>
+                    </>
+                    :
+                    ""
+                }
                 <div onClick={reportOpenClickEvt} className={classes.reportBtnBox}><span>신고하기</span></div>
                 <div className={classes.linkBox}><span>링크 공유하기</span></div>
             </div>
+
+            {dataInfo.author ?
             <div className={deleteOpenAnimation ? classes.deleteDiv : classes.unDeleteDiv}>
                 <div className={classes.deleteSpan}><span>해당 게시글을 삭제할까요?</span></div>
                 <div className={classes.deleteCheck}>
                     <div onClick={removeCancelClickEvt} className={classes.deleteCancel}><span>취소</span></div>
-                    <div className={classes.deleteBtn}><span>삭제</span></div>
+                    <div onClick={removeClickEvt} className={classes.deleteBtn}><span>삭제</span></div>
                 </div>
             </div>
+                : ""
+            }
+
             <div className={reportOpenAnimation ? classes.reportBox : classes.unReportBox}>
                 <div className={classes.reportHead}>
                     <div onClick={reportPrevBtnEvt} className={classes.reportHeadBtn}><img src={"/images/icons/prevBtn.png"}/></div>

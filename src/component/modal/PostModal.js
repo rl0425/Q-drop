@@ -123,7 +123,14 @@ function PostModal(){
     }
 
     const handleOption = (e) => {
-        dispatch(modalActions.changePostOpen({open: true, id: data.id}))
+        dispatch(modalActions.changePostOpen({
+            open: true,
+            dataInfo:{
+                id:data.id,
+                categoryId: data.mainCategory.main_category_id,
+                author:data.author
+            }
+        }))
     }
 
     return (

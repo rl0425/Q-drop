@@ -4,14 +4,18 @@ const modalSlice = createSlice({
     name:'modal',
     initialState: {
         postOpen : false,
-        id: null,
+        dataInfo:{
+            id:null,
+            categoryId:null,
+            author:null
+        },
         detailOpen : false,
         dataId: null
     },
     reducers: {
         changePostOpen(state,action){
             state.postOpen = action.payload.open
-            state.id = action.payload.id
+            state.dataInfo = action.payload.dataInfo
         },
         changeDetailOpen(state,action){
             state.detailOpen = action.payload.open

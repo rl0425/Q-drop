@@ -5,15 +5,17 @@ import mainDataSlice from "./mianData-slice";
 import mainSectorSlice from "./mainSector-slice";
 import searchSlice from "./search-slice";
 import myPageSlice from "./myPage-slice";
+import toastSlice from "./toast-slice";
 
 const store = configureStore({
     reducer: {
-        category: categorySlice.reducer, 
+        category: categorySlice.reducer,
         modal: modalSlice.reducer,
         main: mainDataSlice.reducer,
         sector: mainSectorSlice.reducer,
         search: searchSlice.reducer,
-        myPage: myPageSlice.reducer
+        myPage: myPageSlice.reducer,
+        toast: toastSlice.reducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false })
 })

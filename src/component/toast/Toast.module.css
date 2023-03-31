@@ -1,0 +1,28 @@
+.box, .unBox{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 90%;
+    max-width: 100%;
+    width: calc(100% - 40px);
+    min-height: 40px;
+    margin: 0 20px;
+    background: #4D515F;
+    border-radius: 4px;
+    opacity: 1;
+    font-weight: 600;
+    font-size: 14px;
+    color: #E4E5E7;
+    transition: all 0.3s linear;
+}
+
+.unBox{
+    margin: 0 20px;
+    opacity: 0;
+}
+
+.box > span,
+.unBox > span{
+    padding: 12px 16px;
+    box-sizing: border-box;
+}

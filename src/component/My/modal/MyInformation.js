@@ -2,12 +2,13 @@ import {useEffect, useRef, useState} from "react";
 import classes from "./MyInformation.module.css"
 import {myPageActions} from "../../../store/myPage-slice";
 import {useDispatch, useSelector} from "react-redux";
+import useHttp from "../../../hooks/use-http";
 
 function MyInformation(){
     const [open, setOpen] = useState(false)
     const [change, setChange] = useState(false)
     const [searchValue, setSearchValue] = useState("")
-    const [state, setState] = useState(0)
+    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const dispatch = useDispatch()
 
@@ -23,6 +24,22 @@ function MyInformation(){
         setTimeout(()=>{
             dispatch(myPageActions.changeMyInformationOpen({myInformation:false}))
         }, 150)
+    }
+
+    const handleSaveNickname = () => {
+        if(change) {
+            if (searchValue === profile.nickname) {
+                console.log("이름이 같다")
+            } else {
+                fetchTasks({
+                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users/update`,
+                    type:"post",
+                    data: {nickname: searchValue}
+                }, (taskObj) => {
+                    console.log("taskObj = ", taskObj)
+                })
+            }
+        }
     }
 
     const searchEvt = (e) => {
@@ -60,7 +77,7 @@ function MyInformation(){
                         <span>{profile.email}</span>
                     </div>
                 </div>
-                <div className={change ? classes.submit : classes.unChanged}>
+                <div onClick={handleSaveNickname} className={change ? classes.submit : classes.unChanged}>
                     <span>저장하기</span>
                 </div>
             </div>

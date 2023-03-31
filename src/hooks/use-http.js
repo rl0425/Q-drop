@@ -24,9 +24,7 @@ const useHttp = () => {
                     dataType: "json",
                     headers: header,
                     // withCredentials:true,
-                    data: requestConfig.data ? {
-                        [requestConfig.data.type]:requestConfig.data.item
-                    } : null
+                    data: requestConfig.data || null
                 })
                     .then(function a(response) {
                         if(requestConfig.type === "delete"){
@@ -61,9 +59,7 @@ const useHttp = () => {
                         "Authorization":`Bearer ${token}`
                     },
                     // withCredentials:true,
-                    data: requestConfig.data ? {
-                        [requestConfig.data.type]:requestConfig.data.item
-                    } : null
+                    data: requestConfig.data || null
                 })
                     .then(response => {
                         applyData(response.data);

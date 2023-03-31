@@ -12,6 +12,7 @@ import {mainDataActions} from "../../../../store/mianData-slice";
 import ContentList from "./ContentList";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import PullToRefresh  from "react-pull-to-refresh";
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
@@ -271,6 +272,11 @@ const BodyContents = React.memo((props) => {
 
     }
 
+    const handleRefresh = () => {
+        console.log("hi")
+
+    }
+
     useEffect(() => {
         getData();
     }, [props.data]);
@@ -322,19 +328,21 @@ const BodyContents = React.memo((props) => {
                             {(!category || category.length === 0) ? <div></div>:
                                 category.map((ele, index) => {
                                     return (
-                                        <div key={uuidv4()} className={classes.scrollDiv}>
-                                            <InfiniteScroll
-                                                dataLength={ele.values.length}
-                                                next={() => getMoreData(ele)}
-                                                hasMore={!pageEnd[index].end}
-                                                style={{ overflow: "scroll", height: "100%" }}
-                                                loader={<div className={classes.loadingDiv}><img src={"/images/icons/temp.gif"}/></div>}
-                                                height={"0"}
-                                            >
-                                                {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
-                                                    <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
-                                                ))}
-                                            </InfiniteScroll>
+                                        <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
+                                            {/*<PullToRefresh  onRefresh={handleRefresh}>*/}
+                                                <InfiniteScroll
+                                                    dataLength={ele.values.length}
+                                                    next={() => getMoreData(ele)}
+                                                    hasMore={!pageEnd[index].end}
+                                                    style={{ overflow: "scroll", height: "100%" }}
+                                                    loader={<div className={classes.loadingDiv}><img src={"/images/icons/temp.gif"}/></div>}
+                                                    height={"0"}
+                                                >
+                                                    {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
+                                                        <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
+                                                    ))}
+                                                </InfiniteScroll>
+                                            {/*</PullToRefresh>*/}
                                         </div>
 
                                     )

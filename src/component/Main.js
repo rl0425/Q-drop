@@ -8,6 +8,7 @@ import MyWrapper from "./My/MyWrapper";
 import ModalSetWrapper from "./modal/ModalSetWrapper";
 import SearchWrapper from "./search/SearchWrapper";
 import {useSelector} from "react-redux";
+import ToastWrapper from "./toast/ToastWrapper";
 
 function Main(){
     const sector = useSelector((state) => state.sector.type);
@@ -34,6 +35,8 @@ function Main(){
 
             <SearchWrapper />
             <ModalSetWrapper />
+            <ToastWrapper />
+
         </div>
     )
 }

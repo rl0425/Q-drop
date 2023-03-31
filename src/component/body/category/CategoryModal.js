@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import {mainDataActions} from "../../../store/mianData-slice";
+import {toastActions} from "../../../store/toast-slice";
 
 function CategoryModal(){
     const [openAnimation, setOpenAnimation] = useState(false);
@@ -63,8 +64,6 @@ function CategoryModal(){
     const setSubjectList = (taskObj) => {
         const selectedSubs = []
         const allSelectList = []
-
-        console.log("categoryData= ", categoryData)
 
         categoryData.map((ele) => {
             ele.bookmark_sub_categories.map((data) => {
@@ -161,9 +160,11 @@ function CategoryModal(){
         }
 
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post", dataType:"id", data: {type:"id", item:subs}},
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post",  data: {"id":subs}},
             completePost
         );
+
+        dispatch(toastActions.handleToastOpt({msg:"관심 카테고리가 변경되었습니다.", open:true}))
     }
 
     const handleAllSelect = (ele) => {

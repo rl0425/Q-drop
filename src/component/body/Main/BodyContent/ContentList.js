@@ -13,6 +13,8 @@ const ContentList = forwardRef((props, ref) => {
     const [data, setData] = useState(props.data)
     const [temp, setTemp] = useState(data)
 
+    const [refreshing, setRefreshing] = useState(false);
+
 
     const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png")
     const [likeCount, setLikeCount] = useState(data.board_like.total_like_count)

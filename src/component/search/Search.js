@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {searchActions} from "../../store/search-slice";
 import useHttp from "../../hooks/use-http";
+import {useCookies} from 'react-cookie'
 import {modalActions} from "../../store/modal-slice";
 import {v4 as uuidv4} from "uuid";
 
@@ -11,6 +12,7 @@ function Search(){
     const [searchValue, setSearchValue] = useState("")
     const [hasSearch, setHasSearch] = useState(false)
     const [searchData, setSearchData] = useState("")
+    const [cookies, setCookie, removeCookie] = useCookies(['search']);
 
     const dispatch = useDispatch()
 
@@ -33,7 +35,22 @@ function Search(){
                 setHasSearch(true)
                 setSearchData(taskObj)
             })
+            const names = cookies.search || [];
+            const newNames = [...names, searchValue];
+
+            setCookie("search", newNames, { path: "/"});
         }
+    }
+
+    const handleDeleteCookies = (e) =>{
+        removeCookie("search");
+    }
+
+    const handleClickRecord = (element) => {
+        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=${element}&sortTarget=createTime&sortType=desc`}, (taskObj) => {
+            setHasSearch(true)
+            setSearchData(taskObj)
+        })
     }
 
     const handleDataDetail = (data) => {
@@ -58,18 +75,13 @@ function Search(){
                 <div className={classes.recentBox}>
                     <div className={classes.recentHead}>
                         <div><span>최근 검색어</span></div>
-                        <div className={classes.recentDeleteBtn}><span>기록 삭제</span></div>
+                        <div onClick={handleDeleteCookies} className={classes.recentDeleteBtn}><span>기록 삭제</span></div>
                     </div>
                     <div className={classes.recentContBox}>
-                        {/*<div><span>최근 검색어가 없어요.</span></div>*/}
-                        <div className={classes.recentContent}><span>디자인</span></div>
-                        <div className={classes.recentContent}><span>프론트엔드</span></div>
-                        <div className={classes.recentContent}><span>프론드스타트</span></div>
-                        <div className={classes.recentContent}><span>백엔드</span></div>
-                        <div className={classes.recentContent}><span>백스타트</span></div>
-                        <div className={classes.recentContent}><span>컴퓨터 과학</span></div>
-                        <div className={classes.recentContent}><span>포트폴리오</span></div>
-                        <div className={classes.recentContent}><span>방구대장 뿡빵이</span></div>
+                        {cookies.search ? cookies.search.map((ele) => (
+                            <div onClick={() => handleClickRecord(ele)} key={uuidv4()} className={classes.recentContent}><span>{ele}</span></div>
+                        )) : <div className={classes.noRecentCont}><span>최근 검색어가 없어요.</span></div>
+                        }
                     </div>
                 </div>
                 <div className={classes.famousBox}>

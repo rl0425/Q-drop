@@ -42,7 +42,7 @@
     gap: 12px;
 }
 
-.logoImg{
+.logoImg, .hasLogoImg{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,6 +52,17 @@
 
 .logoImg > img{
     width: 40px;
+}
+
+.hasLogoImg{
+    width: 56px;
+    height: 56px;
+}
+
+.hasLogoImg > img{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
 }
 
 .logoSpan{

@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import classes from "./MyInformation.module.css"
 import {myPageActions} from "../../../store/myPage-slice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 function MyInformation(){
     const [open, setOpen] = useState(false)
@@ -11,9 +11,7 @@ function MyInformation(){
 
     const dispatch = useDispatch()
 
-    const cookiesValue = {
-        nickname:"은비"
-    }
+    const profile = useSelector((state) => state.main.profile)
 
     useEffect(()=>{
         setOpen(true)
@@ -28,7 +26,7 @@ function MyInformation(){
     }
 
     const searchEvt = (e) => {
-        if(searchValue === cookiesValue.nickname){
+        if(searchValue === profile.nickname){
             setChange(false)
         }
         else{
@@ -44,14 +42,14 @@ function MyInformation(){
             </div>
             <div className={classes.body}>
                 <div className={classes.profile}>
-                    <img src={"/images/icons/tempLogo.png"} />
+                    <img src={profile.image} />
                 </div>
                 <div className={classes.nickname}>
                     <div className={classes.nicknameHead}>
                         <span>닉네임</span>
                     </div>
                     <div className={classes.nicknameContent}>
-                        <input onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={"은비"} />
+                        <input onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={profile.nickname} />
                     </div>
                 </div>
                 <div className={classes.email}>
@@ -59,7 +57,7 @@ function MyInformation(){
                         <span>이메일</span>
                     </div>
                     <div className={classes.emailContent}>
-                        <span>abcde@naver.com</span>
+                        <span>{profile.email}</span>
                     </div>
                 </div>
                 <div className={change ? classes.submit : classes.unChanged}>

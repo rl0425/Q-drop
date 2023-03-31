@@ -10,7 +10,7 @@ function Footer(){
         if(type === "home"){
             if(sector === "my"){
                 // 메인 카테고리 슬라이더 인덱스 변경
-                dispatch(mainDataActions.changeIndex({index:0, entry:true}))
+                dispatch(mainDataActions.handleIndex({index:0, entry:true}))
 
                 // 렌더링 요소 변경
                 dispatch(mainSectorActions.changeSector({type:"home"}))

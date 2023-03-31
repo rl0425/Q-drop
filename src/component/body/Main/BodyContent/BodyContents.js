@@ -62,7 +62,8 @@ const BodyContents = React.memo((props) => {
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {
-                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=20`,
+                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${pageNum}&paging_count=5`,
+                                    // url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5&sortTarget=createTime&sortType=desc`,
                                 },
                                 (taskObj) => {
                                     resolve(taskObj);
@@ -111,7 +112,7 @@ const BodyContents = React.memo((props) => {
 
             setCategory(groupedData)
             const temp = [...groupedData]
-            dispatch(mainDataActions.changeContent({contentList: temp}))
+            dispatch(mainDataActions.handleContent({contentList: temp}))
             setSortType("new")
 
             groupedData.map((data) => {
@@ -163,7 +164,7 @@ const BodyContents = React.memo((props) => {
 
                 fetchTasks(
                     {
-                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=20`,
+                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=5`,
                     },
                     (taskObj) => {
                         if(taskObj.length > 0) {
@@ -184,7 +185,10 @@ const BodyContents = React.memo((props) => {
                                 return ele;
                             });
 
-                            dispatch(mainDataActions.changeContent({contentList: temp}))
+                            setTimeout(() => {
+                                dispatch(mainDataActions.handleContent({contentList: temp}))
+                            }, 700)
+
                         }
                         else{
                             setPageEnd(prev => prev.map(item => {
@@ -216,7 +220,7 @@ const BodyContents = React.memo((props) => {
 
     // 메인에서 슬라이드 이벤트
     const handleSlideChange = (index) => {
-        dispatch(mainDataActions.changeIndex({index:index, entry:false}))
+        dispatch(mainDataActions.handleIndex({index:index, entry:false}))
     };
 
     const handleSortChange = () => {
@@ -245,7 +249,7 @@ const BodyContents = React.memo((props) => {
         });
 
         // setDataLoaded(false)
-        dispatch(mainDataActions.changeContent({ contentList: temp }));
+        dispatch(mainDataActions.handleContent({ contentList: temp }));
     }
 
     const getMoreData = (props) => {
@@ -282,7 +286,7 @@ const BodyContents = React.memo((props) => {
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [sortType]);
+    }, [sortType, mainData]);
 
     useEffect(() => {
         handleIndexChange()
@@ -324,7 +328,7 @@ const BodyContents = React.memo((props) => {
                                                 next={() => getMoreData(ele)}
                                                 hasMore={!pageEnd[index].end}
                                                 style={{ overflow: "scroll", height: "100%" }}
-                                                loader={<h4>Loading...</h4>}
+                                                loader={<div className={classes.loadingDiv}><img src={"/images/icons/temp.gif"}/></div>}
                                                 height={"0"}
                                             >
                                                 {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (

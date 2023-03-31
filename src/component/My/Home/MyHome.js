@@ -1,5 +1,5 @@
 import classes from "./MyHome.module.css"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {myPageActions} from "../../../store/myPage-slice";
 
 // 슬라이드 이벤트
@@ -14,12 +14,9 @@ function MyHome(){
     const [cookies, setCookies] = useState("")
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
+    const profile = useSelector((state) => state.main.profile)
+
     const dispatch = useDispatch()
-
-
-    useEffect(()=>{
-        getLoginData()
-    }, [])
 
     const handleTerms = (e) => {
         dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
@@ -41,13 +38,6 @@ function MyHome(){
         dispatch(myPageActions.changeMyInformationOpen({myInformation:true}))
     }
 
-    const getLoginData = (e) => {
-        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users`}, (data) => {
-            console.log("data =", data)
-        })
-    }
-
-
     const kakao = new KakaoLogin();
 
     return (
@@ -61,7 +51,7 @@ function MyHome(){
             <div className={classes.body}>
                 <div onClick={handleMyInformation} className={classes.loginDiv}>
                     <div className={classes.logoSet}>
-                        {cookies ?
+                        {!profile ?
                             <div>
                                 <div className={classes.logoImg}>
                                     <img src={"/images/icons/tempLogo.png"} />
@@ -73,12 +63,12 @@ function MyHome(){
                             </div>
                         :
                             <div>
-                                <div className={classes.logoImg}>
-                                    <img src={"/images/icons/tempLogo.png"} />
+                                <div className={classes.hasLogoImg}>
+                                    <img src={profile.image} />
                                 </div>
                                 <div className={classes.logoSpan}>
-                                    <div className={classes.logoSpanHead}><span>은비</span></div>
-                                    <div className={classes.logoSpanCont}><span>abcde@naver.com</span></div>
+                                    <div className={classes.logoSpanHead}><span>{profile.nickname}</span></div>
+                                    <div className={classes.logoSpanCont}><span>{profile.email}</span></div>
                                 </div>
                             </div>
                         }

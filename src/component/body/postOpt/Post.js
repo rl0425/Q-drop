@@ -47,7 +47,7 @@ function Post(){
         const value = category.values || [];
         category.values = value.filter(post => post.id !== dataInfo.id);
 
-        dispatch(mainDataActions.changeContent({ contentList: temp }));
+        dispatch(mainDataActions.handleContent({ contentList: temp }));
         removeModalClickEvt()
     }
 

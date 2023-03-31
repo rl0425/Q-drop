@@ -58,7 +58,7 @@ function PostModal(){
 
         // Make API call to update like status
         try {
-            await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`, { method: type ? "post" : "delete" });
+            await fetchTasks({url:`http://explorer-cat-api.p-e.kr:8080/api/v1/post/like/${data.id}`,  type: type ? "post" : "delete" });
 
         } catch (error) {
             console.error(error);
@@ -83,16 +83,14 @@ function PostModal(){
             return ele;
         });
 
-        console.log("temp =" ,temp)
-
-        dispatch(mainDataActions.changeContent({ contentList: temp }))
+        dispatch(mainDataActions.handleContent({ contentList: temp }))
     }
 
     const handleFavorite = async () => {
         const type = !favorite
 
         try {
-            const response = await fetch(`http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, { method: type ? "POST" : "DELETE" });
+            await fetchTasks({url:`http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${data.id}`, type: type ? "POST" : "DELETE" });
             // const taskObj = await response.json();
         } catch (error) {
             console.error(error);
@@ -101,6 +99,7 @@ function PostModal(){
         const temp = contentList.map((ele) => {
             if (ele.id === id.mainCategory) {
                 const updatedValues = ele.values.filter(item => item.id !== id.id);
+
                 updatedValues.push({
                     ...data,
                     bookmark_info:{
@@ -112,14 +111,27 @@ function PostModal(){
                     ...ele,
                     values: updatedValues,
                 };
+                // const updatedIndex = ele.values.findIndex(item => item.id === id.id);
+                // const updatedValues = ele.values.filter(item => item.id !== id.id);
+                //
+                //
+                // console.log("updatedIndex= ", updatedIndex)
+                // const newData = {
+                //     ...data,
+                //     bookmark_info:{
+                //         user_bookmark_status:type
+                //     }
+                // }
+                //
+                // updatedValues.slice(updatedIndex,0,newData)
+                //
+                // console.log("updatedValues= ", updatedValues)
+
             }
             return ele;
         });
 
-
-        console.log("temp = ", temp)
-
-        dispatch(mainDataActions.changeContent({ contentList: temp }))
+        dispatch(mainDataActions.handleContent({ contentList: temp }))
     }
 
     const handleOption = (e) => {
@@ -160,18 +172,7 @@ function PostModal(){
             <div className={classes.body}>
                 <span>
                     {data.content}
-                    <p />
-                    {data.content}
-                    <p />
-                    {data.content}
-                    {data.content}
-                    {data.content}
-                    <p />
-                    {data.content}
-                    {data.content}
-                    <p />
-                    {data.content}
-                    {data.content}
+
                 </span>
             </div>
             <div className={classes.footer}>

@@ -12,7 +12,7 @@ function BodyHead(props){
     const activeIndex = useSelector((state) => state.main.index)
 
     const categoryClickEvt = (index) =>{
-        dispatch(mainDataActions.changeIndex({index:index}))
+        dispatch(mainDataActions.handleIndex({index:index}))
     }
 
     const searchClick = () => {

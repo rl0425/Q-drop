@@ -156,7 +156,7 @@ function CategoryModal(){
     // 변경사항 완료 버튼 이벤트
     const handleComplete = () => {
         const completePost = (data) => {
-            dispatch(mainDataActions.changeSubCategory({subCategoryList:subs}))
+            dispatch(mainDataActions.handleSubCategory({subCategoryList:subs}))
             closeEvt()
         }
 

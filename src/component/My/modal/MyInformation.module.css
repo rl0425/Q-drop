@@ -33,7 +33,7 @@
 .head > span{
     font-weight: 600;
     font-size: 18px;
-    color: #DADCE1;;
+    color: #DADCE1;
 }
 
 .body{
@@ -57,6 +57,7 @@
 .profile img{
     width: 64px;
     height: 64px;
+    border-radius: 50%;
 }
 
 .nicknameHead , .emailHead{

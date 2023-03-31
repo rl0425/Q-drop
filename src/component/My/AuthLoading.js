@@ -32,7 +32,7 @@ const AuthLoading = () => {
                     console.log("user_profile22", response.data.token)
                     //JWT token cookie
                     setCookie('jwt', response.data.token.data.token, {path: '/'});
-                    window.location.reload();
+                    // window.location.reload();
                     // history("/")
                 }
             }

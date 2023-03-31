@@ -135,8 +135,8 @@ const BodyContents = React.memo((props) => {
     const setDataOrder = () =>{
         const temp = mainData.map((ele) => {
             const sortdData = sortType === "new"
-                ? [...ele.values].sort((a, b) => a.title - b.title)
-                // ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
+                // ? [...ele.values].sort((a, b) => a.title - b.title)
+                ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
                 : [...ele.values].sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count);
 
             return {

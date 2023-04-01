@@ -12,7 +12,10 @@ import {mainDataActions} from "../../../../store/mianData-slice";
 import ContentList from "./ContentList";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import Lottie from 'lottie-react-web';
+
 import PullToRefresh  from "react-pull-to-refresh";
+import animationData from '../../../../jsons/spinner.json';
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
@@ -335,7 +338,9 @@ const BodyContents = React.memo((props) => {
                                                     next={() => getMoreData(ele)}
                                                     hasMore={!pageEnd[index].end}
                                                     style={{ overflow: "scroll", height: "100%" }}
-                                                    loader={<div className={classes.loadingDiv}><img src={"/images/icons/temp.gif"}/></div>}
+                                                    loader={<div className={classes.loadingDiv}><Lottie options={{
+                                                        animationData: animationData
+                                                    }}/></div>}
                                                     height={"0"}
                                                 >
                                                     {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (

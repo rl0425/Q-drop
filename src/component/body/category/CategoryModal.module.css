@@ -26,7 +26,7 @@
 
 .box{
     top: 60px;
-    opacity: 1;
+    /*opacity: 1;*/
 }
 
 .box .slick-dots {
@@ -35,7 +35,7 @@
 
 .nonBox{
     top: 100%;
-    opacity: 0;
+    /*opacity: 0;*/
 }
 
 .head{

@@ -8,6 +8,8 @@ import useHttp from "../../../hooks/use-http";
 import {modalActions} from "../../../store/modal-slice";
 
 import InfiniteScroll from "react-infinite-scroll-component";
+import Lottie from "lottie-react-web";
+import animationData from "../../../jsons/spinner.json";
 
 function FavoriteNote(){
     const [open, setOpen] = useState(false)
@@ -56,7 +58,7 @@ function FavoriteNote(){
     }
 
     const handleGetData = () => {
-        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=20&sortType=desc`}, (taskObj) => {
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=7&sortType=desc`}, (taskObj) => {
             setData(taskObj)
             setDataLoaded(true)
             setTimeout(()=> {
@@ -81,10 +83,13 @@ function FavoriteNote(){
     }
 
     const handleMoreData = () => {
-        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum+1}&paging_count=20&sortType=desc`}, (taskObj) => {
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum+1}&paging_count=7&sortType=desc`}, (taskObj) => {
             if(taskObj.length > 0) {
                 const temp = [...data, ...taskObj]
-                setData(temp)
+
+                setTimeout(() => {
+                    setData(temp)
+                }, 700)
             }
             else{
                 setPageEnd(false)
@@ -112,22 +117,23 @@ function FavoriteNote(){
                         <span>즐겨찾기한 노트 </span>
                     </div>
                     <div className={classes.body}>
-                        <InfiniteScroll
-                            dataLength={data.length}
-                            next={() => handleMoreData()}
-                            hasMore={pageEnd}
-                            style={{
-                                overflow: "scroll",
-                                height: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "16px"
-                            }}
-                            // loader={<h4>Loading...</h4>}
-                            endMessage={<p>stop</p>}
-                            height={"0"}
-                        >
-                            <div className={classes.scrollDiv}>
+                        <div className={classes.scrollDiv}>
+                            <InfiniteScroll
+                                dataLength={data.length}
+                                next={() => handleMoreData()}
+                                hasMore={pageEnd}
+                                style={{
+                                    overflow: "scroll",
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "16px"
+                                }}
+                                loader={<div className={classes.loadingDiv}><Lottie options={{
+                                    animationData: animationData
+                                }}/></div>}
+                                height={"0"}
+                            >
                             {data.map((ele) => {
                                 return (
                                     <div onClick={() => handlePostDetail(ele)} key={uuidv4()}
@@ -151,8 +157,9 @@ function FavoriteNote(){
 
                                 )
                             })}
-                            </div>
-                        </InfiniteScroll>
+                            </InfiniteScroll>
+
+                        </div>
 
                     </div>
                 </div>

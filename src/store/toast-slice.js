@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const toastSlice = createSlice({
-    name:'modal',
+    name:'toast',
     initialState: {
         msg:"",
         open:false

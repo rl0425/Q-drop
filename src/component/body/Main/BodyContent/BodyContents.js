@@ -16,6 +16,7 @@ import Lottie from 'lottie-react-web';
 
 import PullToRefresh  from "react-pull-to-refresh";
 import animationData from '../../../../jsons/spinner.json';
+import {writeActions} from "../../../../store/write-slice";
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
@@ -39,12 +40,13 @@ const BodyContents = React.memo((props) => {
     const [dataLoaded, setDataLoaded] = useState(false);
     const categoryRef = useRef(category);
 
+    // 슬라이드 여부
+    const [isSlide, setIsSlide] = useState(false)
+
     const dispatch = useDispatch()
 
     // reducer data
     const mainData = useSelector((state) => state.main.contentList)
-
-    console.log("mainData= ", mainData)
 
     const getData = () => {
 
@@ -260,29 +262,9 @@ const BodyContents = React.memo((props) => {
         getMoreDatas(props)
     }
 
-    const handleEndMessage = (props) => {
-        const item = pageEnd.find(item => item.id === props.id);
-        if (item) {
-            if (item.end){
-                return false
-            }
-            else{
-                return true
-            }
-        } else {
-            return true;
-        }
-
-    }
-
-    const handleRefresh = () => {
-        console.log("hi")
-
-    }
-
     useEffect(() => {
         getData();
-    }, [props.data]);
+    }, [props.data, props.reloadSwitch]);
 
     useEffect(() =>{
         if (category.length > 0) {
@@ -300,6 +282,14 @@ const BodyContents = React.memo((props) => {
     useEffect(() => {
         handleIndexChange()
     }, [index, sortType]);
+
+    const handleIsScroll = () => {
+        setIsSlide(true)
+    };
+
+    const handleWritePage = () => {
+        dispatch(writeActions.handleOpen({open:true}))
+    }
 
     const settings = {
         dots: false,
@@ -321,40 +311,47 @@ const BodyContents = React.memo((props) => {
 
     else {
         return (
-            <div className={classes.box}>
-                <div onClick={handleSortChange} className={classes.sortBox}>
-                    <span>{sortType === "new" ? "최신순" : "좋아요 순"}</span>
-                    <img src={"/images/icons/arrowBox.png"}/>
+            <>
+                <div className={classes.box}>
+                    <div onClick={handleSortChange} className={classes.sortBox}>
+                        <span>{sortType === "new" ? "최신순" : "좋아요 순"}</span>
+                        <img src={"/images/icons/arrowBox.png"}/>
+                    </div>
+
+                        <Slider {...settings} ref={sliderRef}>
+                                {(!category || category.length === 0) ? <div></div>:
+                                    category.map((ele, index) => {
+                                        return (
+                                            <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
+                                                {/*<PullToRefresh  onRefresh={handleRefresh}>*/}
+                                                    <InfiniteScroll
+                                                        dataLength={ele.values.length}
+                                                        next={() => getMoreData(ele)}
+                                                        hasMore={!pageEnd[index].end}
+                                                        style={{ overflow: "scroll", height: "100%" }}
+                                                        loader={<div className={classes.loadingDiv}><Lottie options={{
+                                                            animationData: animationData
+                                                        }}/></div>}
+                                                        height={"0"}
+                                                        onScroll={!isSlide ? handleIsScroll : ""}
+                                                    >
+                                                        {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
+                                                            <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
+                                                        ))}
+                                                    </InfiniteScroll>
+                                                {/*</PullToRefresh>*/}
+                                            </div>
+
+                                        )
+                                    })
+                                }
+                        </Slider>
                 </div>
-
-                    <Slider {...settings} ref={sliderRef}>
-                            {(!category || category.length === 0) ? <div></div>:
-                                category.map((ele, index) => {
-                                    return (
-                                        <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
-                                            {/*<PullToRefresh  onRefresh={handleRefresh}>*/}
-                                                <InfiniteScroll
-                                                    dataLength={ele.values.length}
-                                                    next={() => getMoreData(ele)}
-                                                    hasMore={!pageEnd[index].end}
-                                                    style={{ overflow: "scroll", height: "100%" }}
-                                                    loader={<div className={classes.loadingDiv}><Lottie options={{
-                                                        animationData: animationData
-                                                    }}/></div>}
-                                                    height={"0"}
-                                                >
-                                                    {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
-                                                        <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
-                                                    ))}
-                                                </InfiniteScroll>
-                                            {/*</PullToRefresh>*/}
-                                        </div>
-
-                                    )
-                                })
-                            }
-                    </Slider>
-            </div>
+                <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
+                    <img src={"/images/icons/writeAdd.png"}/>
+                    {!isSlide ? <span>글쓰기</span>: ""}
+                </div>
+            </>
         )
     }
 })

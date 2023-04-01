@@ -13,7 +13,6 @@
 
 .unBox{
     left: 100%;
-    opacity: 0;
 }
 
 .head{
@@ -54,13 +53,14 @@
     font-size: 18px;
     font-weight: bold;
     color: #DADCE1;
-    gap: 4px;
+    gap: 8px;
 }
 
 .qContentDetail{
     display: flex;
-    font-size: 14px;
-    font-weight: 400;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
     color: #64666D;
     gap: 6px;
 }
@@ -112,4 +112,18 @@
 .likeDiv{
     display: flex;
     gap: 8px;
+}
+
+
+.detailSubcategory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 6px;
+    box-sizing: border-box;
+    background: #33363F;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 10px;
+    color: #8B92A0;
 }

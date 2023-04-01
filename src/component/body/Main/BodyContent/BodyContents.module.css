@@ -103,3 +103,40 @@
 .ptr-element{
     height: fit-content;
 }
+
+.writeBox, .smallWriteBox{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    min-height: 56px;
+    bottom: 0;
+    right: 0;
+    margin: 0 20px 12px 0px;
+    padding: 16px;
+    font-weight: 500;
+    font-size: 20px;
+    color: #FFFFFF;
+    background: #48BAFB;
+    border-radius: 30px;
+    box-sizing: border-box;
+    gap: 16px;
+    transition: all 0.2s ease;
+}
+
+.smallWriteBox{
+    width: 56px;
+}
+
+.writeBox > img,
+.smallWriteBox > img{
+    width: 16px;
+    height: 16px;
+}
+
+.nonSpanShow{
+    width: 0;
+    height: 0;
+    opacity: 0;
+}

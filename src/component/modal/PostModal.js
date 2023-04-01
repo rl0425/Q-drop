@@ -1,7 +1,7 @@
 import classes from "./PostModal.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {modalActions} from "../../store/modal-slice";
 import {mainDataActions} from "../../store/mianData-slice";
 import useHttp from "../../hooks/use-http";
@@ -111,22 +111,6 @@ function PostModal(){
                     ...ele,
                     values: updatedValues,
                 };
-                // const updatedIndex = ele.values.findIndex(item => item.id === id.id);
-                // const updatedValues = ele.values.filter(item => item.id !== id.id);
-                //
-                //
-                // console.log("updatedIndex= ", updatedIndex)
-                // const newData = {
-                //     ...data,
-                //     bookmark_info:{
-                //         user_bookmark_status:type
-                //     }
-                // }
-                //
-                // updatedValues.slice(updatedIndex,0,newData)
-                //
-                // console.log("updatedValues= ", updatedValues)
-
             }
             return ele;
         });
@@ -159,6 +143,9 @@ function PostModal(){
                     <div className={classes.qContent}>
                         <span>{data.title}</span>
                         <div className={classes.qContentDetail}>
+                            <div className={classes.detailSubcategory}>
+                                <label>{data.subCategory.sub_category_name}</label>
+                            </div>
                             <span>{data.member_info.nickname}</span>
                             <span>|</span>
                             <span>{moment(new Date(data.createTime)).format("YYYY.MM.DD")}</span>

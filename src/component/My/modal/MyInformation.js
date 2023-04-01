@@ -3,6 +3,8 @@ import classes from "./MyInformation.module.css"
 import {myPageActions} from "../../../store/myPage-slice";
 import {useDispatch, useSelector} from "react-redux";
 import useHttp from "../../../hooks/use-http";
+import {mainDataActions} from "../../../store/mianData-slice";
+import {toastActions} from "../../../store/toast-slice";
 
 function MyInformation(){
     const [open, setOpen] = useState(false)
@@ -26,17 +28,30 @@ function MyInformation(){
         }, 150)
     }
 
+    const handleContent = (e) => {
+        setSearchValue(e.target.value)
+
+        setChange(true)
+    }
+
     const handleSaveNickname = () => {
         if(change) {
             if (searchValue === profile.nickname) {
-                console.log("이름이 같다")
+                dispatch(toastActions.handleToastOpt({msg:"기존 닉네임과 동일해요.", open:true}))
             } else {
                 fetchTasks({
-                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users/update`,
+                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users/profile`,
                     type:"post",
                     data: {nickname: searchValue}
                 }, (taskObj) => {
-                    console.log("taskObj = ", taskObj)
+                    dispatch(mainDataActions.handleProfile({
+                        profile: {
+                            ...profile,
+                            nickname: searchValue
+                        }
+                    }))
+                    handlePrevBtn()
+                    dispatch(toastActions.handleToastOpt({msg:"프로필 수정을 완료했어요.", open:true}))
                 })
             }
         }
@@ -66,7 +81,7 @@ function MyInformation(){
                         <span>닉네임</span>
                     </div>
                     <div className={classes.nicknameContent}>
-                        <input onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={profile.nickname} />
+                        <input onChange={(e) => handleContent(e)} onKeyPress={searchEvt} placeholder={profile.nickname} />
                     </div>
                 </div>
                 <div className={classes.email}>

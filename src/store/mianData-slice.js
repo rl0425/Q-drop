@@ -7,6 +7,7 @@ const mainDataSlice = createSlice({
         entry:true,
         categoryData:[],
         subCategoryList:[],
+        reloadSwitch:false,
         contentList:null,
         profile:{}
     },
@@ -23,6 +24,9 @@ const mainDataSlice = createSlice({
         },
         handleProfile(state,action){
             state.profile = action.payload.profile
+        },
+        handleReload(state,action){
+            state.reloadSwitch = !state.reloadSwitch
         },
         addCategoryData(state,action){
             state.categoryData = action.payload.data

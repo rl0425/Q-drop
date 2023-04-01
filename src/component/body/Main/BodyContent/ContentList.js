@@ -118,6 +118,8 @@ const ContentList = forwardRef((props, ref) => {
 
     }
 
+    console.log("data =", data)
+
     return (
 
         data !== "" ?
@@ -129,6 +131,9 @@ const ContentList = forwardRef((props, ref) => {
                     <div className={classes.questionBox}>
                         <div><span>{data.title}</span></div>
                         <div className={classes.detailQuestion}>
+                            <div className={classes.detailSubcategory}>
+                                <label>{data.subCategory.sub_category_name}</label>
+                            </div>
                             <span>{data.member_info.nickname}  |  {moment(data.createTime).format("YYYY.MM.DD")}</span>
                         </div>
                     </div>

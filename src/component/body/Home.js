@@ -20,6 +20,9 @@ function Home(){
 
     // subcategory 변경 시 리렌더링 위한 selector
     const subs = useSelector((state) => state.main.subCategoryList)
+    const reloadSwitch = useSelector((state) => state.main.reloadSwitch)
+
+    console.log("aaa1")
 
     const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAxNzYyMDcsImV4cCI6MTY4MDc4MTAwNywiaXNzIjoidGVzdCIsInN1YiI6InJsMDQyNUBuYXZlci5jb20ifQ.B_Or_wcOO29kibHx0Bed5q59jkPsFbdU-bj_YuQKFo4"
     const header ={"Authorization":`Bearer ${token}`}
@@ -59,8 +62,8 @@ function Home(){
     else {
         return (
             <Fragment>
-                <BodyHead subs={subs} data={mainData} categoryData={categoryData}/>
-                <BodyContents subs={subs} data={mainData} categoryData={categoryData}/>
+                <BodyHead subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>
+                <BodyContents subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>
             </Fragment>
         )
     }

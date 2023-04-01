@@ -7,10 +7,9 @@ function Content(props){
         e.stopPropagation()
         e.preventDefault()
 
-
-        props.selectEvt({id:props.data.id, type:ele, mainId:props.mainId})
+        props.selectEvt({id:props.data.id, type:ele, mainId:props.mainId, text:props.data.name})
     }
-    const hasChecked = props.subs.find(u => u === props.data.id)
+    const hasChecked = props.subs ? props.subs.find(u => u === props.data.id) : false
 
     return (
 

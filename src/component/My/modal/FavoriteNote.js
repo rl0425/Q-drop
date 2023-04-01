@@ -24,14 +24,29 @@ function FavoriteNote(){
     const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(()=>{
-        setTimeout(()=> {
-            setOpen(true)
-        },50)
+        // setOpen(true)
+        // setTimeout(()=> {
+        //     setOpen(true)
+        // },50)
     }, [])
 
     useEffect(()=>{
         handleGetData()
     }, [])
+
+    useEffect(() => {
+        console.log("adss")
+        const handleScroll = () => {
+            console.log("Scorlodld")
+            // Handle scroll event here
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const handlePrevBtn = () => {
         setOpen(false)
@@ -44,6 +59,9 @@ function FavoriteNote(){
         fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=20&sortType=desc`}, (taskObj) => {
             setData(taskObj)
             setDataLoaded(true)
+            setTimeout(()=> {
+                setOpen(true)
+            },20)
         })
     }
 

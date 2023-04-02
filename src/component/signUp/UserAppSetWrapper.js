@@ -19,15 +19,11 @@ function UserAppSetWrapper() {
             <ToastWrapper/>
             <div className={classes.wrapper_main}>
                 <div style ={{left: `${(100 * (0 - page))}%`}}>
-                    <Login />
-                </div>
-                <div style ={{left: `${(100 * (1 - page))}%`}}>
                     <AgreeTerms rederPage = {handlePageRender}/>
                 </div>
-                <div style ={{left: `${(100 * (2 - page))}%`}}>
+                <div style ={{left: `${(100 * (1 - page))}%`}}>
                     <CategorySetting />
                 </div>
-
             </div>
         </>
     )

@@ -10,10 +10,16 @@ import {modalActions} from "../../../store/modal-slice";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Lottie from "lottie-react-web";
 import animationData from "../../../jsons/spinner.json";
+import {toastActions} from "../../../store/toast-slice";
 
 function FavoriteNote(){
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
+
+    const [removeModal, setRemoveModal] = useState(false)
+    const [animated, setAnimated] = useState(false)
+    const [select, setSelect] = useState("")
+
     const dispatch = useDispatch()
 
     // 무한 스크롤
@@ -37,9 +43,10 @@ function FavoriteNote(){
     }
 
     const handleGetData = () => {
-        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=7&sortType=desc`}, (taskObj) => {
-
-            setData(taskObj)
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=7&sortType=asc`}, (taskObj) => {
+            if(taskObj) {
+                setData(taskObj)
+            }
             setDataLoaded(true)
             setTimeout(()=> {
                 setOpen(true)
@@ -51,14 +58,34 @@ function FavoriteNote(){
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:element.id, mainCategory:element.mainCategory.main_category_id ,subcategory:element.subCategory.sub_category_id}}))
     }
 
-    const handleIsFavorite = (e,element) => {
+    const handleModalOpen = (e,element) => {
         e.preventDefault()
         e.stopPropagation()
 
-        console.log("element =", element)
+        setRemoveModal(true)
+        setSelect(element.id)
 
-        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${element.id}`, type:"delete"}, (request) => {
-            handleGetData()
+        setTimeout(() => {
+            setAnimated(true)
+        }, 10)
+    }
+
+    const handleDeleteItems = () => {
+
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${select}`, type:"delete"}, (request) => {
+
+            // 데이터 리렌더링
+            if (request){
+                handleGetData()
+            }
+
+            // 모달 종료
+            removeModalClickEvt()
+
+            // toast msg
+            setTimeout(() => {
+                dispatch(toastActions.handleToastOpt({msg:"즐겨찾기가 제거되었습니다.", open:true}))
+            }, 300)
         })
     }
 
@@ -79,9 +106,17 @@ function FavoriteNote(){
         setPageNum((prev) => prev+1)
     }
 
+    const removeModalClickEvt = () => {
+        setAnimated(false)
+
+        setTimeout(() => {
+            setRemoveModal(false)
+        }, 200)
+
+    }
 
     if(isLoading || !dataLoaded){
-        return <div></div>
+        return <div>sss</div>
     }
 
     else if(error){
@@ -91,55 +126,80 @@ function FavoriteNote(){
     else {
         return (
             data ?
-                <div className={open ? classes.box : classes.unBox}>
-                    <div className={classes.head}>
-                        <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
-                        <span>즐겨찾기한 노트 </span>
-                    </div>
-                    <div className={classes.body}>
-                        <div className={classes.scrollDiv}>
-                            <InfiniteScroll
-                                dataLength={data.length}
-                                next={() => handleMoreData()}
-                                hasMore={pageEnd}
-                                style={{
-                                    overflow: "scroll",
-                                    height: "100%",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "16px"
-                                }}
-                                loader={<div className={classes.loadingDiv}><Lottie options={{
-                                    animationData: animationData
-                                }}/></div>}
-                                height={"0"}
-                            >
-                            {data.map((ele) => {
-                                return (
-                                    <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
-                                        <div className={classes.contentBody}>
-                                            <div className={classes.contentTitle}>
-                                                <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span>
+                <>
+                    <div className={open ? classes.box : classes.unBox}>
+                        <div className={classes.head}>
+                            <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
+                            <span>즐겨찾기한 노트 </span>
+                        </div>
+                        <div className={classes.body}>
+                            {data.length > 0 ?
+                                <div className={classes.scrollDiv}>
+                                    <InfiniteScroll
+                                        dataLength={data.length}
+                                        next={() => handleMoreData()}
+                                        hasMore={pageEnd}
+                                        style={{
+                                            overflow: "scroll",
+                                            height: "100%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "16px"
+                                        }}
+                                        loader={<div className={classes.loadingDiv}><Lottie options={{
+                                            animationData: animationData
+                                        }}/></div>}
+                                        height={"0"}
+                                    >
+                                    {data.map((ele) => {
+                                        return (
+                                            <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
+                                                <div className={classes.contentBody}>
+                                                    <div className={classes.contentTitle}>
+                                                        <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span>
+                                                        </div>
+                                                        <img onClick={(e) => handleModalOpen(e, ele)}
+                                                             src={"/images/mypage/icons/favorite.png"}/>
+                                                    </div>
+                                                    <div className={classes.contentMain}><span>{ele.content}</span></div>
+                                                    <div className={classes.contentSub}>
+                                                        <span>{ele.subCategory.sub_category_name}</span></div>
                                                 </div>
-                                                <img onClick={(e) => handleIsFavorite(e, ele)}
-                                                     src={"/images/mypage/icons/favorite.png"}/>
                                             </div>
-                                            <div className={classes.contentMain}><span>{ele.content}</span></div>
-                                            <div className={classes.contentSub}>
-                                                <span>{ele.subCategory.sub_category_name}</span></div>
-                                        </div>
-                                    </div>
 
-                                )
-                            })}
-                            </InfiniteScroll>
+                                        )
+                                    })}
+                                    </InfiniteScroll>
+
+                                </div>
+                                : "no"
+                            }
 
                         </div>
-
                     </div>
-                </div>
+                    {removeModal ?
+                        <>
+                            <div onClick={removeModalClickEvt}
+                                 className={animated ? classes.blackBox : classes.unBlackBox}></div>
+                            <div className={animated ? classes.modalBox : classes.unModalBox}>
+                                <div className={classes.modalHead}>
+                                    <span>즐겨찾기를 해제 할까요?</span>
+                                </div>
+                                <div className={classes.modalBody}>
+                                    <div onClick={removeModalClickEvt} className={classes.cancelBtn}>
+                                        <span>취소</span>
+                                    </div>
+                                    <div onClick={handleDeleteItems} className={classes.submitBtn}>
+                                        <span>해제</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                        : ""
+                    }
+                </>
                 :
-                ""
+                "ss"
         )
     }
 }

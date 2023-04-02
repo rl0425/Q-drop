@@ -55,7 +55,7 @@ function Write(){
             fetchTasks({
                 url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${categoryId}`,
                 type: "post",
-                data: {"title": title, "name": content}
+                data: {"title": title, "content": content}
             }, (taskObj) => {
                 handleExit()
                 dispatch(toastActions.handleToastOpt({msg:"새로운 글을 작성하였습니다.", open:true}))

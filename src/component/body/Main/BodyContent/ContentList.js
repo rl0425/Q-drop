@@ -101,7 +101,6 @@ const ContentList = forwardRef((props, ref) => {
         e.stopPropagation()
         e.preventDefault()
 
-        console.log("props = ", props)
         dispatch(modalActions.changePostOpen({
             open: true,
             dataInfo:{
@@ -117,8 +116,6 @@ const ContentList = forwardRef((props, ref) => {
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id,  subcategory:temp.subCategory.sub_category_id}}))
 
     }
-
-    console.log("data =", data)
 
     return (
 

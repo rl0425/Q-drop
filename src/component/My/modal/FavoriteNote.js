@@ -26,29 +26,8 @@ function FavoriteNote(){
     const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(()=>{
-        // setOpen(true)
-        // setTimeout(()=> {
-        //     setOpen(true)
-        // },50)
-    }, [])
-
-    useEffect(()=>{
         handleGetData()
     }, [])
-
-    useEffect(() => {
-        console.log("adss")
-        const handleScroll = () => {
-            console.log("Scorlodld")
-            // Handle scroll event here
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     const handlePrevBtn = () => {
         setOpen(false)
@@ -59,6 +38,7 @@ function FavoriteNote(){
 
     const handleGetData = () => {
         fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=7&sortType=desc`}, (taskObj) => {
+
             setData(taskObj)
             setDataLoaded(true)
             setTimeout(()=> {
@@ -75,10 +55,10 @@ function FavoriteNote(){
         e.preventDefault()
         e.stopPropagation()
 
+        console.log("element =", element)
+
         fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${element.id}`, type:"delete"}, (request) => {
-            if(request){
-                handleGetData()
-            }
+            handleGetData()
         })
     }
 
@@ -136,10 +116,7 @@ function FavoriteNote(){
                             >
                             {data.map((ele) => {
                                 return (
-                                    <div onClick={() => handlePostDetail(ele)} key={uuidv4()}
-                                         className={classes.content}>
-
-
+                                    <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
                                         <div className={classes.contentBody}>
                                             <div className={classes.contentTitle}>
                                                 <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span>
@@ -151,8 +128,6 @@ function FavoriteNote(){
                                             <div className={classes.contentSub}>
                                                 <span>{ele.subCategory.sub_category_name}</span></div>
                                         </div>
-
-
                                     </div>
 
                                 )

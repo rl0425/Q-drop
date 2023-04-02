@@ -6,6 +6,8 @@ import { CookiesProvider } from 'react-cookie';
 import useHttp from "./hooks/use-http";
 import {useDispatch} from "react-redux";
 import {mainDataActions} from "./store/mianData-slice";
+import UserAppSetWrapper from "./component/signUp/UserAppSetWrapper";
+import AgreeTerms from "./component/signUp/AgreeTerms";
 
 
 function App() {
@@ -42,6 +44,7 @@ function App() {
             <Router>
                 <Routes>
                         <Route path="/" element={<Main/>}/>
+                        <Route path="/signup" element={<UserAppSetWrapper />}/>
                         <Route path="/login/auth/code" element={<AuthLoading />}/>
                 </Routes>
             </Router>

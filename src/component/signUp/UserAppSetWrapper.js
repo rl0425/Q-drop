@@ -22,7 +22,7 @@ function UserAppSetWrapper() {
                     <AgreeTerms rederPage = {handlePageRender}/>
                 </div>
                 <div style ={{left: `${(100 * (1 - page))}%`}}>
-                    <CategorySetting />
+                    <CategorySetting  rederPage = {handlePageRender}/>
                 </div>
             </div>
         </>

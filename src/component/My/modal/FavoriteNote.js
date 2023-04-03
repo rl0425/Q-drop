@@ -12,6 +12,8 @@ import Lottie from "lottie-react-web";
 import animationData from "../../../jsons/spinner.json";
 import {toastActions} from "../../../store/toast-slice";
 
+import PullToRefresh from 'react-pull-to-refresh';
+
 function FavoriteNote(){
     const [open, setOpen] = useState(false)
     const [data, setData] = useState([])
@@ -115,6 +117,11 @@ function FavoriteNote(){
 
     }
 
+    const handleRefresh = () => {
+        // refresh 로직을 작성합니다.
+        console.log("123123")
+    };
+
     if(isLoading || !dataLoaded){
         return <div>sss</div>
     }
@@ -135,6 +142,16 @@ function FavoriteNote(){
                         <div className={classes.body}>
                             {data.length > 0 ?
                                 <div className={classes.scrollDiv}>
+                                    <PullToRefresh
+                                        onRefresh={handleRefresh}
+                                        style={{
+                                            // overflow:"scroll"
+                                            // height: "100%",
+                                            // display: "flex",
+                                            // flexDirection: "column",
+                                            // gap: "16px"
+                                        }}
+                                    >
                                     <InfiniteScroll
                                         dataLength={data.length}
                                         next={() => handleMoreData()}
@@ -151,25 +168,31 @@ function FavoriteNote(){
                                         }}/></div>}
                                         height={"0"}
                                     >
-                                    {data.map((ele) => {
-                                        return (
-                                            <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
-                                                <div className={classes.contentBody}>
-                                                    <div className={classes.contentTitle}>
-                                                        <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span>
-                                                        </div>
-                                                        <img onClick={(e) => handleModalOpen(e, ele)}
-                                                             src={"/images/mypage/icons/favorite.png"}/>
-                                                    </div>
-                                                    <div className={classes.contentMain}><span>{ele.content}</span></div>
-                                                    <div className={classes.contentSub}>
-                                                        <span>{ele.subCategory.sub_category_name}</span></div>
-                                                </div>
-                                            </div>
 
-                                        )
-                                    })}
+                                            {/*<div style={{height:"100%"}}>*/}
+                                            {data.map((ele) => {
+                                                return (
+                                                    <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
+                                                        <div className={classes.contentBody}>
+                                                            <div className={classes.contentTitle}>
+                                                                <div className={classes.contentTitleSpan}><span>Q. {ele.title}</span>
+                                                                </div>
+                                                                <img onClick={(e) => handleModalOpen(e, ele)}
+                                                                     src={"/images/mypage/icons/favorite.png"}/>
+                                                            </div>
+                                                            <div className={classes.contentMain}><span>{ele.content}</span></div>
+                                                            <div className={classes.contentSub}>
+                                                                <span>{ele.subCategory.sub_category_name}</span></div>
+                                                        </div>
+                                                    </div>
+                                                 )
+
+                                            })}
+                                            {/*</div>*/}
+
                                     </InfiniteScroll>
+                                    </PullToRefresh>
+
 
                                 </div>
                                 : "no"

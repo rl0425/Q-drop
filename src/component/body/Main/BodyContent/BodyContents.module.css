@@ -140,3 +140,17 @@
     height: 0;
     opacity: 0;
 }
+
+.pullBox{
+    height: 100% !important;
+    /*height: fit-content !important;*/
+}
+
+.pullBox > div:nth-child(1){
+    height: fit-content;
+}
+
+.pullBox > div:nth-child(2){
+    height: 100%;
+    overflow: scroll;
+}

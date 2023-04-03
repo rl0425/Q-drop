@@ -4,7 +4,8 @@ const writeSlice = createSlice({
     name:'write',
     initialState: {
         open: false,
-        categoryOpen: true
+        categoryOpen: false,
+        id:null
     },
     reducers: {
         handleOpen(state,action){
@@ -12,7 +13,10 @@ const writeSlice = createSlice({
         },
         handleCategoryOpen(state,action){
             state.categoryOpen = action.payload.categoryOpen
-        }
+        },
+        handleSetId(state,action){
+            state.id = action.payload.id
+        },
     }
 })
 

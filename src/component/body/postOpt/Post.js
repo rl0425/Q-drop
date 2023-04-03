@@ -5,6 +5,7 @@ import modalSlice, {modalActions} from "../../../store/modal-slice";
 import {safePreventDefault} from "react-slick/lib/utils/innerSliderUtils";
 import useHttp from "../../../hooks/use-http";
 import {mainDataActions} from "../../../store/mianData-slice";
+import {writeActions} from "../../../store/write-slice";
 
 function Post(){
     const dispatch = useDispatch()
@@ -27,7 +28,12 @@ function Post(){
     },[])
 
     const removeModalClickEvt = () => {
-        dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
+        setOpenAnimation(false)
+        setBlackAnimation(false)
+        setTimeout(()=>{
+            dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
+        },200)
+
     }
 
     const removeCancelClickEvt = () =>{
@@ -61,6 +67,17 @@ function Post(){
         },200)
     }
 
+    const handlePatchClickEvt = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        setOpenAnimation(false)
+        setBlackAnimation(false)
+        dispatch(modalActions.changeOnlyPostOpen({open: false}))
+
+        dispatch(writeActions.handleOpen({open:true}))
+    }
+
     const reportOpenClickEvt = (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -86,7 +103,7 @@ function Post(){
             <div className={!openAnimation ? classes.unContentBox : dataInfo.author ? classes.contentBox : classes.noAuthorBox}>
                 {dataInfo.author ?
                     <>
-                    <div><span>수정하기</span></div>
+                    <div onClick={handlePatchClickEvt}><span>수정하기</span></div>
                     <div onClick={deleteOpenClickEvt} className={classes.deleteBox}><span>삭제하기</span></div>
                     </>
                     :

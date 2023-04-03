@@ -9,12 +9,16 @@ const mainDataSlice = createSlice({
         subCategoryList:[],
         reloadSwitch:false,
         contentList:null,
+        isLogin:false,
         profile:{}
     },
     reducers: {
         handleIndex(state,action){
             state.index = action.payload.index
             state.entry = action.payload.entry
+        },
+        handleLogin(state,action){
+            state.isLogin = action.payload.isLogin
         },
         handleSubCategory(state,action){
             state.subCategoryList = action.payload.subCategoryList

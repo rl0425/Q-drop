@@ -7,11 +7,30 @@ import HomeWrapper from "./body/HomeWrapper";
 import MyWrapper from "./My/MyWrapper";
 import ModalSetWrapper from "./modal/ModalSetWrapper";
 import SearchWrapper from "./search/SearchWrapper";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import ToastWrapper from "./toast/ToastWrapper";
+import WriteWrapper from "./write/WriteWrapper";
+
+import {useCookies} from 'react-cookie'
+import {useEffect} from "react";
+import {mainDataActions} from "../store/mianData-slice";
 
 function Main(){
+    const dispatch = useDispatch()
     const sector = useSelector((state) => state.sector.type);
     console.log("sector = ", sector)
+    // 쿠키 관련
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+
+    useEffect(()=>{
+        if(cookies.jwt){
+            dispatch(mainDataActions.handleLogin({isLogin:true}))
+        }
+        else{
+            dispatch(mainDataActions.handleLogin({isLogin:false}))
+        }
+
+    }, [cookies])
 
     return (
         <div className={classes.box}>
@@ -33,7 +52,10 @@ function Main(){
             </div>
 
             <SearchWrapper />
+            <WriteWrapper />
             <ModalSetWrapper />
+            <ToastWrapper />
+
         </div>
     )
 }

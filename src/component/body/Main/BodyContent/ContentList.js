@@ -101,6 +101,8 @@ const ContentList = forwardRef((props, ref) => {
         e.stopPropagation()
         e.preventDefault()
 
+        console.log("ele =", ele)
+
         dispatch(modalActions.changePostOpen({
             open: true,
             dataInfo:{

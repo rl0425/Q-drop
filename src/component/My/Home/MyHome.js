@@ -6,7 +6,6 @@ import {myPageActions} from "../../../store/myPage-slice";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import {KakaoLogin} from "../Login/kakaoLoginHandler";
 import {useEffect, useState} from "react";
 import useHttp from "../../../hooks/use-http";
 
@@ -14,7 +13,8 @@ function MyHome(){
     const [cookies, setCookies] = useState("")
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-    const profile = null;//useSelector((state) => state.main.profile)
+    const isLogin = useSelector((state) => state.main.isLogin)
+    const profile = useSelector((state) => state.main.profile)
 
     const dispatch = useDispatch()
 
@@ -38,25 +38,19 @@ function MyHome(){
         dispatch(myPageActions.changeMyInformationOpen({myInformation:true}))
     }
 
-    const handleLogout = (e) => {
-
-    }
-
-
-    const kakao = new KakaoLogin();
 
     return (
         <div className={classes.box}>
-            <div className={classes.box}>
-                <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>
-            </div>
+            {/*<div className={classes.box}>*/}
+            {/*    <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>*/}
+            {/*</div>*/}
             <div className={classes.head}>
                 <span>마이페이지</span>
             </div>
             <div className={classes.body}>
                 <div onClick={handleMyInformation} className={classes.loginDiv}>
                     <div className={classes.logoSet}>
-                        {!profile ?
+                        {!isLogin ?
                             <div>
                                 <div className={classes.logoImg}>
                                     <img src={"/images/icons/tempLogo.png"} />
@@ -98,7 +92,8 @@ function MyHome(){
                     <div className={classes.guideBody}>
                         <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
                         <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
-                        <div className={classes.logout} onClick={ () => {kakao.logOutWithKakao()}}><span>로그아웃</span></div>
+                        {isLogin ?
+                            <div className={classes.logout}><span>로그아웃</span></div> : <div className={classes.logout}><span>로그인</span></div>}
                         <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div>
                     </div>
                 </div>

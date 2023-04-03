@@ -2,7 +2,7 @@ import Main from "./component/Main";
 import {useEffect} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import AuthLoading from "./component/My/AuthLoading";
-import { CookiesProvider } from 'react-cookie';
+import {CookiesProvider, useCookies} from 'react-cookie';
 import useHttp from "./hooks/use-http";
 import {useDispatch} from "react-redux";
 import {mainDataActions} from "./store/mianData-slice";
@@ -13,11 +13,15 @@ import AgreeTerms from "./component/signUp/AgreeTerms";
 function App() {
     const dispatch = useDispatch()
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 
     useEffect(() => {
         setScreenSize();
-        getLoginData()
-    });
+
+        if(cookies.jwt) {
+            getLoginData()
+        }
+    }, []);
 
     function setScreenSize() {
         let vh = window.innerHeight * 0.01;

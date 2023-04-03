@@ -9,6 +9,9 @@ import {logDOM} from "@testing-library/react";
 function BodyHead(props){
     const dispatch = useDispatch()
 
+    // 로그인 여부
+    const isLogin = useSelector((state) => state.main.isLogin)
+
     const activeIndex = useSelector((state) => state.main.index)
 
     const categoryClickEvt = (index) =>{
@@ -42,9 +45,9 @@ function BodyHead(props){
                     }
                 })}
             </div>
-            <div onClick={searchClick} className={classes.setting}>
+            {isLogin ? <div onClick={searchClick} className={classes.setting}>
                 <div><img src={"/images/icons/subModalBtn.png"}/></div>
-            </div>
+            </div> : ""}
         </div>
     )
 }

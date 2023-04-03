@@ -14,7 +14,7 @@ import ContentList from "./ContentList";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Lottie from 'lottie-react-web';
 
-import PullToRefresh  from "react-pull-to-refresh";
+import PullToRefresh from "react-pull-to-refresh";
 import animationData from '../../../../jsons/spinner.json';
 import {writeActions} from "../../../../store/write-slice";
 
@@ -32,16 +32,21 @@ const BodyContents = React.memo((props) => {
     // 슬라이더 ref
     const sliderRef = useRef(null);
 
+    // 슬라이드 여부
+    const [isSlide, setIsSlide] = useState(false)
+
+    // pullToRequest
+    const [isPull, setIsPull] = useState(false)
+
     // 슬라이더
     const index = useSelector((state) => state.main.index)
     const entry = useSelector((state) => state.main.entry)
 
     // 모든 데이터의 로드 확인
     const [dataLoaded, setDataLoaded] = useState(false);
-    const categoryRef = useRef(category);
 
-    // 슬라이드 여부
-    const [isSlide, setIsSlide] = useState(false)
+    // 로그인 여부
+    const isLogin = useSelector((state) => state.main.isLogin)
 
     const dispatch = useDispatch()
 
@@ -59,11 +64,19 @@ const BodyContents = React.memo((props) => {
                 const promises = props.categoryData.map(async (ele) => {
                     return Promise.all(
                         ele.bookmark_sub_categories.map(async (data) => {
-                            if (data.selected) {
+                            if (isLogin) {
+                                if (data.selected) {
+                                    return data.sub_category_id;
+                                }
+                            }
+                            else{
                                 return data.sub_category_id;
                             }
                         })
                     ).then((trueList) => {
+
+                        console.log("trueList= ", trueList)
+
                         const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
                         return new Promise((resolve, reject) => {
                             fetchTasks(
@@ -141,7 +154,6 @@ const BodyContents = React.memo((props) => {
     const setDataOrder = () =>{
         const temp = mainData.map((ele) => {
             const sortdData = sortType === "new"
-                // ? [...ele.values].sort((a, b) => a.title - b.title)
                 ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
                 : [...ele.values].sort((a, b) => b.board_like.total_like_count - a.board_like.total_like_count);
 
@@ -158,59 +170,70 @@ const BodyContents = React.memo((props) => {
         setCategory(temp);
     }
 
-    const getMoreDatas = (props) =>{
-        fetchTasks({
-                url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=selected`,
+    const getMoreDatas = (element) =>{
+        if(isLogin) {
+
+            fetchTasks({
+                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=selected`,
+                },
+                (object) => {
+                    const filterArr = object.filter(ele => ele.main_category_id === element.id)
+                    const subCategoryIds = filterArr[0].bookmark_sub_categories.map((category) => {
+                        return category.sub_category_id;
+                    });
+
+                    handleMoreData(subCategoryIds,element)
+                }
+            )
+        }
+        else{
+            const categoryData = props.data.find(ele => ele.categoryId === element.id)
+            const subCategoryIds = categoryData.subCategories.map(element => element.id);
+
+            handleMoreData(subCategoryIds,element)
+        }
+
+        setPageNum(prev => prev + 1)
+    }
+
+    const handleMoreData = (subCategoryIds,element) => {
+        fetchTasks(
+            {
+                url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum + 1}&paging_count=5`,
             },
-            (object) => {
-                const filterArr = object.filter(ele => ele.main_category_id === props.id)
-                const subCategoryIds = filterArr[0].bookmark_sub_categories.map((category) => {
-                    return category.sub_category_id;
-                });
+            (taskObj) => {
+                if (taskObj.length > 0) {
+                    const temp = category.map((ele) => {
 
-                fetchTasks(
-                    {
-                        url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum+1}&paging_count=5`,
-                    },
-                    (taskObj) => {
-                        if(taskObj.length > 0) {
-                            const temp = category.map((ele) => {
+                        if (ele.id === element.id) {
+                            const originalValues = Array.from(ele.values);
+                            taskObj.map((data) => {
+                                originalValues.push(data)
+                            })
 
-                                if (ele.id === props.id) {
-                                    const originalValues = Array.from(ele.values);
-                                    taskObj.map((data) => {
-                                        originalValues.push(data)
-                                    })
-
-                                    return {
-                                        ...ele,
-                                        values: originalValues,
-                                    };
-                                }
-
-                                return ele;
-                            });
-
-                            setTimeout(() => {
-                                dispatch(mainDataActions.handleContent({contentList: temp}))
-                            }, 700)
-
+                            return {
+                                ...ele,
+                                values: originalValues,
+                            };
                         }
-                        else{
-                            setPageEnd(prev => prev.map(item => {
-                                if (item.id === props.id) {
-                                    return { id: item.id, end: true };
-                                } else {
-                                    return item;
-                                }
-                            }));
+
+                        return ele;
+                    });
+                    setTimeout(() => {
+                        dispatch(mainDataActions.handleContent({contentList: temp}))
+                    }, 700)
+
+                } else {
+                    setPageEnd(prev => prev.map(item => {
+                        if (item.id === element.id) {
+                            return {id: item.id, end: true};
+                        } else {
+                            return item;
                         }
-                    }
-                );
+                    }));
+                }
             }
-        )
-
-        setPageNum(prev => prev +1)
+        );
     }
 
     const handleReload = () => {
@@ -254,7 +277,6 @@ const BodyContents = React.memo((props) => {
             return ele;
         });
 
-        // setDataLoaded(false)
         dispatch(mainDataActions.handleContent({ contentList: temp }));
     }
 
@@ -282,6 +304,12 @@ const BodyContents = React.memo((props) => {
     useEffect(() => {
         handleIndexChange()
     }, [index, sortType]);
+
+    const handleRefresh = async () => {
+        // refresh 로직 구현
+        setIsPull(true)
+        console.log("asdasdas")
+    }
 
     const handleIsScroll = () => {
         setIsSlide(true)
@@ -323,7 +351,6 @@ const BodyContents = React.memo((props) => {
                                     category.map((ele, index) => {
                                         return (
                                             <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
-                                                {/*<PullToRefresh  onRefresh={handleRefresh}>*/}
                                                     <InfiniteScroll
                                                         dataLength={ele.values.length}
                                                         next={() => getMoreData(ele)}
@@ -335,11 +362,20 @@ const BodyContents = React.memo((props) => {
                                                         height={"0"}
                                                         onScroll={!isSlide ? handleIsScroll : ""}
                                                     >
+
+                                                        {/*<PullToRefresh*/}
+                                                        {/*    onRefresh={handleRefresh}*/}
+                                                        {/*    // canFetchMore={true}*/}
+                                                        {/*    style={{ height:"fit-content"}}*/}
+                                                        {/*>*/}
+
                                                         {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
-                                                            <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
+                                                                <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
                                                         ))}
+                                                        {/*</PullToRefresh >*/}
+
+
                                                     </InfiniteScroll>
-                                                {/*</PullToRefresh>*/}
                                             </div>
 
                                         )
@@ -347,13 +383,16 @@ const BodyContents = React.memo((props) => {
                                 }
                         </Slider>
                 </div>
+
+                { isLogin ?
                 <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
                     <img src={"/images/icons/writeAdd.png"}/>
                     {!isSlide ? <span>글쓰기</span>: ""}
-                </div>
+                </div> : ""}
             </>
         )
     }
+
 })
 
 export default BodyContents

@@ -14,59 +14,38 @@ function Home(){
     const [mainData, setMainData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
 
-    // const { isLoading, error, sendRequest: fetch } = useHttp();
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState(false)
+    const { isLoading, error, sendRequest: fetchData } = useHttp();
+    const [isLoad, setIsLoad] = useState(false)
+
+    const subs = useSelector((state) => state.main.subCategoryList)
 
     // subcategory 변경 시 리렌더링 위한 selector
-    const subs = useSelector((state) => state.main.subCategoryList)
     const reloadSwitch = useSelector((state) => state.main.reloadSwitch)
 
-    console.log("aaa1")
-
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAxNzYyMDcsImV4cCI6MTY4MDc4MTAwNywiaXNzIjoidGVzdCIsInN1YiI6InJsMDQyNUBuYXZlci5jb20ifQ.B_Or_wcOO29kibHx0Bed5q59jkPsFbdU-bj_YuQKFo4"
-    const header ={"Authorization":`Bearer ${token}`}
-
     useEffect(() => {
-        Promise.all([
-            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/main',{
-                headers: header
-            }),
-            axios.get('http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all',{
-                headers: header
-            }),
-        ])
-            .then(([mainData, categoryData]) => {
-                setMainData(mainData.data);
-                setCategoryData(categoryData.data);
-                dispatch(mainDataActions.addCategoryData({ data: categoryData.data }));
+        fetchData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/main`}, (obj) => {
+            setMainData(obj);
+
+            fetchData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=all`}, (obj) => {
+                setCategoryData(obj);
+                dispatch(mainDataActions.addCategoryData({ data: obj }));
+
+                setIsLoad(true)
             })
-            .catch(error => {
-                console.log('Error: ', error);
-                setError(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        })
     }, [subs])
 
-
-    if(isLoading){
-        return <div></div>
-    }
-
-    else if(error){
-        return <div>error</div>
-    }
-
-    else {
+    if(isLoad){
         return (
+
             <Fragment>
                 <BodyHead subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>
                 <BodyContents subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>
             </Fragment>
         )
+
     }
+
 
 }
 

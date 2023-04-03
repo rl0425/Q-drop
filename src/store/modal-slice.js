@@ -17,6 +17,9 @@ const modalSlice = createSlice({
             state.postOpen = action.payload.open
             state.dataInfo = action.payload.dataInfo
         },
+        changeOnlyPostOpen(state,action){
+            state.postOpen = action.payload.open
+        },
         changeDetailOpen(state,action){
             state.detailOpen = action.payload.open
             state.dataId = action.payload.dataId

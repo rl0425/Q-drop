@@ -19,6 +19,7 @@ function Home(){
 
     const subs = useSelector((state) => state.main.subCategoryList)
 
+
     // subcategory 변경 시 리렌더링 위한 selector
     const reloadSwitch = useSelector((state) => state.main.reloadSwitch)
 
@@ -37,7 +38,6 @@ function Home(){
 
     if(isLoad){
         return (
-
             <Fragment>
                 <BodyHead subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>
                 <BodyContents subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>

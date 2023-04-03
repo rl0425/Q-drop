@@ -35,7 +35,7 @@ function Write(){
     }, [])
 
     const handleGetContents = () => {
-        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.categoryId}/${dataInfo.id}`}, (taskObj) => {
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.subCategory}/${dataInfo.id}`}, (taskObj) => {
             setCategory(taskObj.subCategory.sub_category_name)
             setCategoryId(taskObj.subCategory.sub_category_id)
             setTitle(taskObj.title)
@@ -98,8 +98,8 @@ function Write(){
         }
         else {
             fetchTasks({
-                url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/0`,
-                type: "patch",
+                url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/update/${dataInfo.id}`,
+                type: "post",
                 data: {"title": title, "content": content}
             }, (taskObj) => {
                 handleExit()

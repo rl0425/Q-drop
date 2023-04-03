@@ -124,6 +124,7 @@ function PostModal(){
             dataInfo:{
                 id:data.id,
                 categoryId: data.mainCategory.main_category_id,
+                subCategory: data.subCategory.sub_category_id,
                 author:data.author
             }
         }))

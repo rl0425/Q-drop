@@ -54,10 +54,11 @@ const BodyContents = React.memo((props) => {
     const mainData = useSelector((state) => state.main.contentList)
 
     const getData = () => {
+        setPageNum(0)
 
         if(pageEnd.length > 0){
             setPageEnd(prev => prev.map(item => ({ ...item, end: false })));
-            setPageNum(0)
+            // setPageNum(0)
         }
         const subCategoryPromise = new Promise(async (resolve, reject) => {
             try {
@@ -75,13 +76,11 @@ const BodyContents = React.memo((props) => {
                         })
                     ).then((trueList) => {
 
-                        console.log("trueList= ", trueList)
-
                         const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {
-                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${pageNum}&paging_count=5`,
+                                    url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
                                     // url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5&sortTarget=createTime&sortType=desc`,
                                 },
                                 (taskObj) => {
@@ -238,6 +237,13 @@ const BodyContents = React.memo((props) => {
 
     const handleReload = () => {
         setCategory(mainData)
+
+        const temp = JSON.parse(JSON.stringify(mainData))
+        temp.sort((a, b) => {
+            return a.id - b.id;
+        });
+
+        setCategory(temp);
     }
 
     // 메인 카테고리 선택 이벤트
@@ -286,11 +292,12 @@ const BodyContents = React.memo((props) => {
 
     useEffect(() => {
         getData();
-    }, [props.data, props.reloadSwitch]);
+    }, [props.categoryData, props.reloadSwitch]);
 
     useEffect(() =>{
         if (category.length > 0) {
             handleReload()
+
         }
     }, [mainData])
 
@@ -299,17 +306,11 @@ const BodyContents = React.memo((props) => {
             setDataOrder();
             setDataLoaded(true)
         }
-    }, [sortType, mainData]);
+    }, [sortType]);
 
     useEffect(() => {
         handleIndexChange()
     }, [index, sortType]);
-
-    const handleRefresh = async () => {
-        // refresh 로직 구현
-        setIsPull(true)
-        console.log("asdasdas")
-    }
 
     const handleIsScroll = () => {
         setIsSlide(true)
@@ -338,6 +339,8 @@ const BodyContents = React.memo((props) => {
     }
 
     else {
+        console.log("category = ", category)
+
         return (
             <>
                 <div className={classes.box}>
@@ -351,11 +354,14 @@ const BodyContents = React.memo((props) => {
                                     category.map((ele, index) => {
                                         return (
                                             <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
+                                                {ele.values.length === 0 ?
+                                                    <div className={classes.emptyItemBox}>empty</div> :
+
                                                     <InfiniteScroll
                                                         dataLength={ele.values.length}
                                                         next={() => getMoreData(ele)}
                                                         hasMore={!pageEnd[index].end}
-                                                        style={{ overflow: "scroll", height: "100%" }}
+                                                        style={{overflow: "scroll", height: "100%"}}
                                                         loader={<div className={classes.loadingDiv}><Lottie options={{
                                                             animationData: animationData
                                                         }}/></div>}
@@ -369,13 +375,14 @@ const BodyContents = React.memo((props) => {
                                                         {/*    style={{ height:"fit-content"}}*/}
                                                         {/*>*/}
 
-                                                        {ele.values.length === 0 ? <div className={classes.emptyItemBox}>empty</div> : ele.values.map((data, index) => (
-                                                                <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
+                                                        {ele.values.map((data, index) => (
+                                                        <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
                                                         ))}
                                                         {/*</PullToRefresh >*/}
 
 
                                                     </InfiniteScroll>
+                                                }
                                             </div>
 
                                         )

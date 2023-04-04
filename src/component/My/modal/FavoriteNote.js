@@ -1,6 +1,6 @@
 import classes from "./FavoriteNote.module.css"
 import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {myPageActions} from "../../../store/myPage-slice";
 import {useEffect} from "react";
 import {v4 as uuidv4} from "uuid";
@@ -33,9 +33,13 @@ function FavoriteNote(){
     // 모든 데이터의 로드 확인
     const [dataLoaded, setDataLoaded] = useState(false);
 
+    // 리렌더링
+    const reload = useSelector((state) => state.main.reloadSwitch)
+    const isLogin = useSelector((state) => state.main.isLogin)
+
     useEffect(()=>{
         handleGetData()
-    }, [])
+    }, [reload])
 
     const handlePrevBtn = () => {
         setOpen(false)
@@ -140,7 +144,9 @@ function FavoriteNote(){
                             <span>즐겨찾기한 노트 </span>
                         </div>
                         <div className={classes.body}>
-                            {data.length > 0 ?
+                            {!isLogin ?
+                                <div className={classes.emptyBox}><span>로그인을 해주세요.</span></div>
+                                : data.length > 0 ?
                                 <div className={classes.scrollDiv}>
                                     <PullToRefresh
                                         onRefresh={handleRefresh}

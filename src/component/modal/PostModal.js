@@ -158,10 +158,7 @@ function PostModal(){
                 </div>
             </div>
             <div className={classes.body}>
-                <textarea>
-                    {data.content}
-
-                </textarea>
+                <textarea value={data.content} readOnly={true}/>
             </div>
             <div className={classes.footer}>
                 <div onClick={handleLike} className={classes.likeDiv}>

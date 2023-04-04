@@ -27,6 +27,7 @@ function WrittenNote(){
 
     // 리렌더링
     const reload = useSelector((state) => state.main.reloadSwitch)
+    const isLogin = useSelector((state) => state.main.isLogin)
 
     useEffect(()=>{
         setTimeout(()=> {
@@ -90,7 +91,9 @@ function WrittenNote(){
                         <span>내가 쓴 노트</span>
                     </div>
                     <div className={classes.body}>
-                        {data.length > 0 ?
+                        {!isLogin ?
+                            <div className={classes.emptyBox}><span>로그인을 해주세요.</span></div>
+                            : data.length > 0 ?
                             <div className={classes.scrollDiv}>
                                 <InfiniteScroll
                                     dataLength={data.length}

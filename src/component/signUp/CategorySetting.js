@@ -15,8 +15,8 @@ function CategorySetting({rederPage}) {
         rederPage(0)
     }
     const handleNextBtn = () => {
-        window.history.pushState("", "", `/signup?page=1`)
-        rederPage(1)
+        //todo 선택한 카테고리의 대한 검증을 끝내고 북마크에 추가한 뒤 후처리 기찬
+
     }
 
 
@@ -39,9 +39,12 @@ function CategorySetting({rederPage}) {
             </div>
 
             <div className={classes.footer}>
-                    <div onClick={handleNextBtn} className={classes.disabled_next_btn}>
-                        시작해 볼까요?
-                    </div>
+                    {/*<div onClick={handleNextBtn} className={classes.disabled_next_btn}>*/}
+                    {/*    시작해 볼까요?*/}
+                    {/*</div>*/}
+                <div onClick={handleNextBtn} className={classes.enable_next_btn}>
+                    시작해 볼까요?
+                </div>
             </div>
         </div>
 

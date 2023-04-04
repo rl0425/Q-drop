@@ -6,6 +6,9 @@ import {useEffect} from "react";
 import {v4 as uuidv4} from "uuid";
 import useHttp from "../../../hooks/use-http";
 import {modalActions} from "../../../store/modal-slice";
+import {useCookies} from "react-cookie";
+import {mainSectorActions} from "../../../store/mainSector-slice";
+import {toastActions} from "../../../store/toast-slice";
 
 function Withdrawal(){
     const [open, setOpen] = useState(false)
@@ -14,7 +17,8 @@ function Withdrawal(){
 
     const reason = useSelector((state => state.myPage.withdrawalReason.reason))
 
-    const { isLoading, error, sendRequest: getData } = useHttp();
+    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 
     useEffect(()=>{
         setTimeout(()=> {
@@ -34,6 +38,19 @@ function Withdrawal(){
 
     const handleModalOpen = () => {
         dispatch(myPageActions.changeWithdrawalReason({open:true, reason:reason}))
+    }
+
+    const handleWithdrawalOkBtn = () => {
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users`, type:"delete", data: {reason:reason}})
+        removeCookie('jwt');
+
+        handlePrevBtn()
+
+        setTimeout(()=> {
+            dispatch(mainSectorActions.changeSector({type: "home"}))
+            dispatch(toastActions.handleToastOpt({msg:"회원탈퇴가 완료되었어요.", open:true}))
+        },150)
+
     }
 
     return (
@@ -57,7 +74,7 @@ function Withdrawal(){
                     </div>
                 </div>
                 <div className={classes.btn}>
-                    <div className={reason ? classes.submitBtn : classes.noSelect}><span>회원 탈퇴하기</span></div>
+                    <div onClick={handleWithdrawalOkBtn} className={reason ? classes.submitBtn : classes.noSelect}><span>회원 탈퇴하기</span></div>
                     <div onClick={handlePrevBtn} className={classes.cancelBtn}><span>게속 이용하기</span></div>
                 </div>
             </div>

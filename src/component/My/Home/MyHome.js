@@ -8,9 +8,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {useEffect, useState} from "react";
 import useHttp from "../../../hooks/use-http";
+import {mainSectorActions} from "../../../store/mainSector-slice";
+import {toastActions} from "../../../store/toast-slice";
+import {useCookies} from "react-cookie";
 
 function MyHome(){
-    const [cookies, setCookies] = useState("")
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
     const isLogin = useSelector((state) => state.main.isLogin)
@@ -36,6 +39,14 @@ function MyHome(){
 
     const handleMyInformation = (e) => {
         dispatch(myPageActions.changeMyInformationOpen({myInformation:true}))
+    }
+
+    const handleLogout = (e) => {
+
+        removeCookie('jwt');
+
+        dispatch(mainSectorActions.changeSector({type: "home"}))
+        dispatch(toastActions.handleToastOpt({msg:"로그아웃 되었어요.", open:true}))
     }
 
 
@@ -93,8 +104,8 @@ function MyHome(){
                         <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
                         <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
                         {isLogin ?
-                            <div className={classes.logout}><span>로그아웃</span></div> : <div className={classes.logout}><span>로그인</span></div>}
-                        <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div>
+                            <div onClick={handleLogout} className={classes.logout}><span>로그아웃</span></div> : <div className={classes.logout}><span>로그인</span></div>}
+                        {isLogin ? <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div> : ""}
                     </div>
                 </div>
             </div>

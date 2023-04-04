@@ -37,7 +37,7 @@ function Post(){
 
         setTimeout(()=>{
             dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
-            dispatch(modalActions.changeDetailOpen({open:false, data:null}))
+            // dispatch(modalActions.changeDetailOpen({open:false, data:null}))
         },200)
 
     }

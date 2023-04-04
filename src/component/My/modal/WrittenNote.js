@@ -1,6 +1,6 @@
 import classes from "./WrittenNote.module.css"
 import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {myPageActions} from "../../../store/myPage-slice";
 import {useEffect} from "react";
 import {v4 as uuidv4} from "uuid";
@@ -25,6 +25,9 @@ function WrittenNote(){
     // 모든 데이터의 로드 확인
     const [dataLoaded, setDataLoaded] = useState(false);
 
+    // 리렌더링
+    const reload = useSelector((state) => state.main.reloadSwitch)
+
     useEffect(()=>{
         setTimeout(()=> {
             setOpen(true)
@@ -33,7 +36,7 @@ function WrittenNote(){
 
     useEffect(()=>{
         handleGetData()
-    }, [])
+    }, [reload])
 
     const handlePrevBtn = () => {
         setOpen(false)

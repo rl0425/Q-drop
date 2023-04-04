@@ -195,7 +195,7 @@ function FavoriteNote(){
 
 
                                 </div>
-                                : "no"
+                                : <div className={classes.emptyBox}><span>게시글이 없어요.</span></div>
                             }
 
                         </div>

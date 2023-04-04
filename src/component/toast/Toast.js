@@ -17,12 +17,12 @@ function Toast() {
             setTimeout(() => {
                 dispatch(toastActions.handleToastOpt({msg:"", open:false}))
             }, 400)
-        }, 3000)
+        }, 2000)
     }, [])
 
     return (
         <div className={open ? classes.box : classes.unBox}>
-            <span>{msg}</span>
+            <div className={classes.toastTag}>{msg}</div>
         </div>
     )
 }

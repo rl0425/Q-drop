@@ -18,7 +18,7 @@
 }
 
 .unBlackBox{
-    /*opacity: 0;*/
+    opacity: 0;
 }
 
 .contentBox, .unContentBox, .noAuthorBox{
@@ -165,6 +165,11 @@
     font-weight: 600;
     font-size: 16px;
     color: #1A1B1E;
+    transition: all 0.1s linear;
+}
+
+.reportFooter > div:active{
+    background: #1B6088;
 }
 
 .deleteDiv, .unDeleteDiv{
@@ -216,11 +221,20 @@
 .deleteCancel{
     width: 45%;
     background: #43464F;
+    transition: all 0.1s linear;
+}
+
+.deleteCancel:active{
+    background: #323439;
 }
 
 .deleteBtn{
     width: 45%;
     background: #48BAFB;
     color: #1A1B1E;
+    transition: all 0.1s linear;
 }
 
+.deleteBtn:active{
+    background: #1B6088;
+}

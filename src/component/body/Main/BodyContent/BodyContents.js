@@ -339,8 +339,6 @@ const BodyContents = React.memo((props) => {
     }
 
     else {
-        console.log("category = ", category)
-
         return (
             <>
                 <div className={classes.box}>
@@ -355,7 +353,10 @@ const BodyContents = React.memo((props) => {
                                         return (
                                             <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
                                                 {ele.values.length === 0 ?
-                                                    <div className={classes.emptyItemBox}>empty</div> :
+                                                    <div className={classes.emptyItemBox}>
+                                                        <span>게시글이 존재하지 않습니다.</span>
+                                                        <label>카테고리를 설정해주세요.</label>
+                                                    </div> :
 
                                                     <InfiniteScroll
                                                         dataLength={ele.values.length}

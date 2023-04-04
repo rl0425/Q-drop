@@ -140,7 +140,7 @@ function WriteCategory(props){
                                                         )
                                                     })
                                                     :
-                                                    <div className={classes.noContents}><span>카테고리가 존재하지 않습니다.</span></div>
+                                                    <div className={classes.noContents}><span>카테고리가 존재하지 않아요.</span></div>
                                                 }
                                             </div>
                                         )

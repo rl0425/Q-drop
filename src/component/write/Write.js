@@ -57,6 +57,7 @@ function Write(){
         dispatch(modalActions.changeDetailOpen({open:false, data:null}))
 
         setTimeout(() => {
+            dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
             dispatch(writeActions.handleOpen({open:false}))
         }, 400)
     }
@@ -70,6 +71,10 @@ function Write(){
 
         }
         else if(!content){
+            const lines = content.split('\n');
+            console.log("content ", content)
+            console.log("lines ", lines)
+
             dispatch(toastActions.handleToastOpt({msg:"내용을 입력해주세요.", open:true}))
         }
         else {
@@ -79,7 +84,16 @@ function Write(){
                 data: {"title": title, "content": content}
             }, (taskObj) => {
                 handleExit()
-                dispatch(toastActions.handleToastOpt({msg:"새로운 글을 작성하였습니다.", open:true}))
+                dispatch(toastActions.handleToastOpt({
+                    msg:
+                        <div>
+                            <span style={{color:"#DADCE1", fontWeight:"800"}}>안내</span>
+                            <span>작성한 노트는 <label>관라자 승인 후 게시</label>됩니다. 관련사항은 <label>마이페이지 > 내가 쓴 노트</label>에서 확인하실 수 있습니다.</span>
+                        </div>,
+                    open: true
+                }))
+
+                dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
                 dispatch(mainDataActions.handleReload())
             })
         }
@@ -104,9 +118,14 @@ function Write(){
             }, (taskObj) => {
                 handleExit()
                 dispatch(toastActions.handleToastOpt({msg:"수정을 완료했습니다", open:true}))
+                dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
                 dispatch(mainDataActions.handleReload())
             })
         }
+    }
+
+    const handleTextAreaEvt = (e) => {
+        setContent(e.target.value)
     }
 
     return (
@@ -129,7 +148,7 @@ function Write(){
                         <input onChange={(e) => setTitle(e.target.value)} value={title} placeholder={"질문을 입력하세요"} />
                     </div>
                     <div className={classes.answerBox}>
-                        <textarea onChange={(e) => setContent(e.target.value)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />
+                        <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />
                     </div>
                 </div>
             </div>

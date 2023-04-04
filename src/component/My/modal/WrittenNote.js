@@ -87,51 +87,56 @@ function WrittenNote(){
                         <span>내가 쓴 노트</span>
                     </div>
                     <div className={classes.body}>
-                        <div className={classes.scrollDiv}>
-                            <InfiniteScroll
-                                dataLength={data.length}
-                                next={() => handleMoreData()}
-                                hasMore={pageEnd}
-                                style={{
-                                    overflow: "scroll",
-                                    height: "100%",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "16px"
-                                }}
-                                loader={<div className={classes.loadingDiv}><Lottie options={{
-                                    animationData: animationData
-                                }}/></div>}
-                                height={"0"}
-                            >
-                            {data.map((ele) => {
-                                return (
-                                    <div onClick={() => handlePostDetail(ele)} key={uuidv4()}
-                                         className={classes.content}>
-                                        <div className={classes.contentHead}>
-                                            <img
-                                                src={ele.approval === 0 ?
-                                                    "/images/mypage/icons/approvalReady.png" : ele.approval === 1 ?
-                                                        "/images/mypage/icons/approvalCheck.png" :
-                                                        "/images/mypage/icons/approvalReject.png"
-                                                }/>
-                                            <span
-                                                className={ele.approval === 0 ? classes.readyNote : ele.approval === 1 ? classes.completeNote : classes.rejectNote}>
+                        {data.length > 0 ?
+                            <div className={classes.scrollDiv}>
+                                <InfiniteScroll
+                                    dataLength={data.length}
+                                    next={() => handleMoreData()}
+                                    hasMore={pageEnd}
+                                    style={{
+                                        overflow: "scroll",
+                                        height: "100%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "16px"
+                                    }}
+                                    loader={<div className={classes.loadingDiv}><Lottie options={{
+                                        animationData: animationData
+                                    }}/></div>}
+                                    height={"0"}
+                                >
+                                    {data.map((ele) => {
+                                        return (
+                                            <div onClick={() => handlePostDetail(ele)} key={uuidv4()}
+                                                 className={classes.content}>
+                                                <div className={classes.contentHead}>
+                                                    <img
+                                                        src={ele.approval === 0 ?
+                                                            "/images/mypage/icons/approvalReady.png" : ele.approval === 1 ?
+                                                                "/images/mypage/icons/approvalCheck.png" :
+                                                                "/images/mypage/icons/approvalReject.png"
+                                                        }/>
+                                                    <span
+                                                        className={ele.approval === 0 ? classes.readyNote : ele.approval === 1 ? classes.completeNote : classes.rejectNote}>
                                                 {ele.approval === 0 ? "승인대기중" : ele.approval === 1 ? "승인" : "거절"}
                                             </span>
+                                                </div>
+                                                <div className={classes.contentBody}>
+                                                    <div className={classes.contentTitle}><span>Q. {ele.title}</span>
                                                     </div>
-                                        <div className={classes.contentBody}>
-                                            <div className={classes.contentTitle}><span>Q. {ele.title}</span></div>
-                                            <div className={classes.contentMain}><span>{ele.content}</span></div>
-                                            <div className={classes.contentSub}>
-                                                <span>{ele.subCategory.sub_category_name}</span></div>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                            </InfiniteScroll>
+                                                    <div className={classes.contentMain}><span>{ele.content}</span>
+                                                    </div>
+                                                    <div className={classes.contentSub}>
+                                                        <span>{ele.subCategory.sub_category_name}</span></div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </InfiniteScroll>
 
-                        </div>
+                            </div> :
+                            <div className={classes.emptyBox}><span>게시글이 없어요.</span></div>
+                        }
 
                     </div>
                 </div>

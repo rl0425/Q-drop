@@ -112,6 +112,11 @@ li > div > img{
     font-weight: 600;
     font-size: 16px;
     color: #1A1B1E;
+    transition: all 0.1s linear;
+}
+
+.submit:active{
+    background: #1B6088;
 }
 
 .noSelect{

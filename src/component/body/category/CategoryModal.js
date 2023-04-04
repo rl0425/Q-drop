@@ -164,7 +164,7 @@ function CategoryModal(){
             completePost
         );
 
-        dispatch(toastActions.handleToastOpt({msg:"관심 카테고리가 변경되었습니다.", open:true}))
+        dispatch(toastActions.handleToastOpt({msg:"관심 카테고리가 변경되었어요.", open:true}))
     }
 
     const handleAllSelect = (ele) => {
@@ -277,15 +277,13 @@ function CategoryModal(){
                                                     {
                                                         ele.subCategories.map((data) => {
                                                             return (
-                                                                <Content key={uuidv4()} data={data}
-                                                                         mainId={ele.categoryId} subs={subs}
-                                                                         selectEvt={subSelectEvt}/>
+                                                                <Content key={uuidv4()} data={data} mainId={ele.categoryId} subs={subs} selectEvt={subSelectEvt}/>
                                                             )
                                                         })
                                                     }
                                                     </>
                                                     :
-                                                    <div className={classes.noContents}><span>카테고리가 존재하지 않습니다.</span></div>
+                                                    <div className={classes.noContents}><span>카테고리가 존재하지 않아요.</span></div>
                                                 }
                                             </div>
                                         )

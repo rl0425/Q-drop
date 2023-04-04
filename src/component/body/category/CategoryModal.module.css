@@ -95,6 +95,12 @@
     color: rgba(26, 27, 30, 1);
     font-weight: 600;
     font-size: 14px;
+    transition: all 0.1s linear;
+}
+
+.footerBox:active{
+    background: #1B6088;
+    color: #1A1B1E;
 }
 
 .categorySet {

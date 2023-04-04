@@ -134,8 +134,15 @@
     height: 40px;
 }
 
-
 .body > div,
 .body > div > div{
     height: 100%;
+}
+
+
+.body .emptyBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
 }

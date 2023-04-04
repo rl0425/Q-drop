@@ -124,6 +124,7 @@ function PostModal(){
             dataInfo:{
                 id:data.id,
                 categoryId: data.mainCategory.main_category_id,
+                subCategory: data.subCategory.sub_category_id,
                 author:data.author
             }
         }))
@@ -157,10 +158,7 @@ function PostModal(){
                 </div>
             </div>
             <div className={classes.body}>
-                <span>
-                    {data.content}
-
-                </span>
+                <textarea value={data.content} readOnly={true}/>
             </div>
             <div className={classes.footer}>
                 <div onClick={handleLike} className={classes.likeDiv}>

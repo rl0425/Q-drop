@@ -101,13 +101,12 @@ const ContentList = forwardRef((props, ref) => {
         e.stopPropagation()
         e.preventDefault()
 
-        console.log("ele =", ele)
-
         dispatch(modalActions.changePostOpen({
             open: true,
             dataInfo:{
                 id:ele.data.id,
                 categoryId: data.mainCategory.main_category_id,
+                subCategory: data.subCategory.sub_category_id,
                 author:data.author
             }
         }))
@@ -116,7 +115,6 @@ const ContentList = forwardRef((props, ref) => {
     // 내용 자세히 보기 이벤트
     const openDetail = (e) => {
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:temp.id, mainCategory:temp.mainCategory.main_category_id,  subcategory:temp.subCategory.sub_category_id}}))
-
     }
 
     return (

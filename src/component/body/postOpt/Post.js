@@ -6,6 +6,7 @@ import {safePreventDefault} from "react-slick/lib/utils/innerSliderUtils";
 import useHttp from "../../../hooks/use-http";
 import {mainDataActions} from "../../../store/mianData-slice";
 import {writeActions} from "../../../store/write-slice";
+import {toastActions} from "../../../store/toast-slice";
 
 function Post(){
     const dispatch = useDispatch()
@@ -13,6 +14,9 @@ function Post(){
 
     const dataInfo = useSelector((state) => state.modal.dataInfo)
     const mainData = useSelector((state) => state.main.contentList)
+
+    // 로그인 여부
+    const isLogin = useSelector((state) => state.main.isLogin)
 
     const [openAnimation, setOpenAnimation] = useState(false);
     const [blackAnimation, setBlackAnimation] = useState(false);
@@ -30,8 +34,10 @@ function Post(){
     const removeModalClickEvt = () => {
         setOpenAnimation(false)
         setBlackAnimation(false)
+
         setTimeout(()=>{
             dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
+            // dispatch(modalActions.changeDetailOpen({open:false, data:null}))
         },200)
 
     }
@@ -44,8 +50,10 @@ function Post(){
         },200)
     }
     const removeClickEvt = () =>{
-        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.id}`, type:"delete"})
+        setDeleteAnimation(false)
+        setBlackAnimation(false)
 
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/${dataInfo.id}`, type:"delete"})
 
         const temp = JSON.parse(JSON.stringify(mainData))
         const category = temp.find(item => item.id === dataInfo.categoryId);
@@ -53,8 +61,13 @@ function Post(){
         const value = category.values || [];
         category.values = value.filter(post => post.id !== dataInfo.id);
 
-        dispatch(mainDataActions.handleContent({ contentList: temp }));
-        removeModalClickEvt()
+        dispatch(mainDataActions.handleReload())
+        dispatch(toastActions.handleToastOpt({msg:"게시글이 삭제되었어요.", open:true}))
+
+        setTimeout(()=>{
+            dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
+            dispatch(modalActions.changeDetailOpen({open:false, data:null}))
+        },200)
     }
 
     const deleteOpenClickEvt = (e) => {
@@ -74,6 +87,7 @@ function Post(){
         setOpenAnimation(false)
         setBlackAnimation(false)
         dispatch(modalActions.changeOnlyPostOpen({open: false}))
+        dispatch(modalActions.changeDetailOpen({open:false, data:null}))
 
         dispatch(writeActions.handleOpen({open:true}))
     }
@@ -95,13 +109,24 @@ function Post(){
         },200)
     }
 
+    const handleReportCompleteBtn = () => {
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/report`, type:"post", data:{board_id:dataInfo.id, report_reason:selectedIndex}})
+        dispatch(toastActions.handleToastOpt({msg:"게시글이 신고되었어요.", open:true}))
+
+        setReportAnimation(false)
+
+        setTimeout(()=>{
+            removeModalClickEvt()
+        },200)
+    }
+
     return (
         <div className={classes.box}>
             <div onClick={removeModalClickEvt} className={blackAnimation ? classes.blackBox : classes.unBlackBox}>
 
             </div>
-            <div className={!openAnimation ? classes.unContentBox : dataInfo.author ? classes.contentBox : classes.noAuthorBox}>
-                {dataInfo.author ?
+            <div className={!openAnimation ? classes.unContentBox : dataInfo.author && isLogin ? classes.contentBox : classes.noAuthorBox}>
+                {dataInfo.author && isLogin ?
                     <>
                     <div onClick={handlePatchClickEvt}><span>수정하기</span></div>
                     <div onClick={deleteOpenClickEvt} className={classes.deleteBox}><span>삭제하기</span></div>
@@ -138,7 +163,7 @@ function Post(){
                         <li onClick={()=>{setSelectedIndex(4)}}><img src={selectedIndex === 4 ? "/images/icons/reportCheck.png" :  "/images/icons/circle.png" }/><span>스팸 및 광고</span></li>
                     </ul>
                 </div>
-                <div className={classes.reportFooter}>
+                <div onClick={handleReportCompleteBtn} className={classes.reportFooter}>
                     <div><span>완료</span></div>
                 </div>
             </div>

@@ -84,6 +84,14 @@
     overflow: scroll;
 }
 
+.body > textarea{
+    font-size: 16px;
+    font-weight: 400;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+}
+
 .footer{
     display: flex;
     justify-content: center;

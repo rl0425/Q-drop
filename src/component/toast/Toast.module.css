@@ -21,8 +21,19 @@
     margin: 0 20px;
 }
 
-.box > span,
-.unBox > span{
+.box > div,
+.unBox > div{
     padding: 12px 16px;
     box-sizing: border-box;
+}
+
+.toastTag > div{
+    display: flex;
+    flex-direction: column;
+    color: rgba(156, 158, 167, 1);
+    gap: 8px;
+}
+
+.toastTag > div label{
+    color: rgba(218, 220, 225, 1);
 }

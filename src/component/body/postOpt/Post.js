@@ -62,7 +62,7 @@ function Post(){
         category.values = value.filter(post => post.id !== dataInfo.id);
 
         dispatch(mainDataActions.handleReload())
-        dispatch(toastActions.handleToastOpt({msg:"게시글이 삭제되었습니다.", open:true}))
+        dispatch(toastActions.handleToastOpt({msg:"게시글이 삭제되었어요.", open:true}))
 
         setTimeout(()=>{
             dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
@@ -109,6 +109,17 @@ function Post(){
         },200)
     }
 
+    const handleReportCompleteBtn = () => {
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/report`, type:"post", data:{board_id:dataInfo.id, report_reason:selectedIndex}})
+        dispatch(toastActions.handleToastOpt({msg:"게시글이 신고되었어요.", open:true}))
+
+        setReportAnimation(false)
+
+        setTimeout(()=>{
+            removeModalClickEvt()
+        },200)
+    }
+
     return (
         <div className={classes.box}>
             <div onClick={removeModalClickEvt} className={blackAnimation ? classes.blackBox : classes.unBlackBox}>
@@ -152,7 +163,7 @@ function Post(){
                         <li onClick={()=>{setSelectedIndex(4)}}><img src={selectedIndex === 4 ? "/images/icons/reportCheck.png" :  "/images/icons/circle.png" }/><span>스팸 및 광고</span></li>
                     </ul>
                 </div>
-                <div className={classes.reportFooter}>
+                <div onClick={handleReportCompleteBtn} className={classes.reportFooter}>
                     <div><span>완료</span></div>
                 </div>
             </div>

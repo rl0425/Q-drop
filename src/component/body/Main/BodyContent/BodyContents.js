@@ -1,5 +1,7 @@
 import {v4 as uuidv4} from "uuid";
 import classes from "./BodyContents.module.css"
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -17,10 +19,11 @@ import Lottie from 'lottie-react-web';
 import PullToRefresh from "react-pull-to-refresh";
 import animationData from '../../../../jsons/spinner.json';
 import {writeActions} from "../../../../store/write-slice";
+import ReactPullToRefresh from "react-pull-to-refresh";
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
-    const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+    const {isLoading, error, sendRequest: fetchTasks} = useHttp();
 
     // 정렬 이벤트
     const [sortType, setSortType] = useState("")
@@ -56,8 +59,8 @@ const BodyContents = React.memo((props) => {
     const getData = () => {
         setPageNum(0)
 
-        if(pageEnd.length > 0){
-            setPageEnd(prev => prev.map(item => ({ ...item, end: false })));
+        if (pageEnd.length > 0) {
+            setPageEnd(prev => prev.map(item => ({...item, end: false})));
             // setPageNum(0)
         }
         const subCategoryPromise = new Promise(async (resolve, reject) => {
@@ -69,8 +72,7 @@ const BodyContents = React.memo((props) => {
                                 if (data.selected) {
                                     return data.sub_category_id;
                                 }
-                            }
-                            else{
+                            } else {
                                 return data.sub_category_id;
                             }
                         })
@@ -117,11 +119,11 @@ const BodyContents = React.memo((props) => {
             }, []);
 
             props.categoryData.map((ele) => {
-                if(ele.bookmark_sub_categories.length > 0){
+                if (ele.bookmark_sub_categories.length > 0) {
                     const hasId = groupedData.find(u => u.id === ele.main_category_id)
-                    if(!hasId){
+                    if (!hasId) {
                         groupedData.push({
-                            id:  ele.main_category_id,
+                            id: ele.main_category_id,
                             values: []
                         })
                     }
@@ -138,7 +140,7 @@ const BodyContents = React.memo((props) => {
                     if (prev.some(item => item.id === data.id)) {
                         return prev; // 이미 해당 id가 있는 경우 이전 배열을 반환합니다.
                     } else {
-                        return [...prev, { id: data.id, end: false }]; // 해당 id가 없는 경우 새로운 요소를 추가합니다.
+                        return [...prev, {id: data.id, end: false}]; // 해당 id가 없는 경우 새로운 요소를 추가합니다.
                     }
                 });
             })
@@ -150,7 +152,7 @@ const BodyContents = React.memo((props) => {
 
     }
 
-    const setDataOrder = () =>{
+    const setDataOrder = () => {
         const temp = mainData.map((ele) => {
             const sortdData = sortType === "new"
                 ? [...ele.values].sort((a, b) => new Date(b.createTime) - new Date(a.createTime))
@@ -169,8 +171,8 @@ const BodyContents = React.memo((props) => {
         setCategory(temp);
     }
 
-    const getMoreDatas = (element) =>{
-        if(isLogin) {
+    const getMoreDatas = (element) => {
+        if (isLogin) {
 
             fetchTasks({
                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark?option=selected`,
@@ -181,21 +183,20 @@ const BodyContents = React.memo((props) => {
                         return category.sub_category_id;
                     });
 
-                    handleMoreData(subCategoryIds,element)
+                    handleMoreData(subCategoryIds, element)
                 }
             )
-        }
-        else{
+        } else {
             const categoryData = props.data.find(ele => ele.categoryId === element.id)
             const subCategoryIds = categoryData.subCategories.map(element => element.id);
 
-            handleMoreData(subCategoryIds,element)
+            handleMoreData(subCategoryIds, element)
         }
 
         setPageNum(prev => prev + 1)
     }
 
-    const handleMoreData = (subCategoryIds,element) => {
+    const handleMoreData = (subCategoryIds, element) => {
         fetchTasks(
             {
                 url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${subCategoryIds.join(",")}&search=&paging_num=${pageNum + 1}&paging_count=5`,
@@ -248,18 +249,20 @@ const BodyContents = React.memo((props) => {
 
     // 메인 카테고리 선택 이벤트
     const handleIndexChange = () => {
-        if(!entry && sliderRef.current) {
+        if (!entry && sliderRef.current) {
             sliderRef.current.slickGoTo(index, true);
         }
     };
 
     // 메인에서 슬라이드 이벤트
     const handleSlideChange = (index) => {
-        dispatch(mainDataActions.handleIndex({index:index, entry:false}))
+        dispatch(mainDataActions.handleIndex({index: index, entry: false}))
     };
 
     const handleSortChange = () => {
-        if(sortType === "new") setSortType("like")
+        setDataLoaded(false);
+
+        if (sortType === "new") setSortType("like")
         else setSortType("new")
     }
 
@@ -272,7 +275,7 @@ const BodyContents = React.memo((props) => {
             if (ele.id === data.data.mainCategory.main_category_id) {
                 const originalValues = ele.values.findIndex(item => item.id === data.data.id)
                 const updatedValues = ele.values.filter(item => item.id !== data.data.id);
-                updatedValues.splice(originalValues,0,data.data);
+                updatedValues.splice(originalValues, 0, data.data);
 
                 return {
                     ...ele,
@@ -283,7 +286,7 @@ const BodyContents = React.memo((props) => {
             return ele;
         });
 
-        dispatch(mainDataActions.handleContent({ contentList: temp }));
+        dispatch(mainDataActions.handleContent({contentList: temp}));
     }
 
     const getMoreData = (props) => {
@@ -294,7 +297,7 @@ const BodyContents = React.memo((props) => {
         getData();
     }, [props.categoryData, props.reloadSwitch]);
 
-    useEffect(() =>{
+    useEffect(() => {
         if (category.length > 0) {
             handleReload()
 
@@ -304,7 +307,9 @@ const BodyContents = React.memo((props) => {
     useEffect(() => {
         if (category.length > 0) {
             setDataOrder();
-            setDataLoaded(true)
+            setTimeout(() => {
+                setDataLoaded(true)
+            }, 3000)
         }
     }, [sortType]);
 
@@ -317,28 +322,77 @@ const BodyContents = React.memo((props) => {
     };
 
     const handleWritePage = () => {
-        dispatch(writeActions.handleOpen({open:true}))
+        dispatch(writeActions.handleOpen({open: true}))
     }
 
     const settings = {
         dots: false,
         infinite: false,
-        speed:200,
+        speed: 200,
         slidesToShow: 1,
         slidesToScroll: 1,
-        initialSlide:0,
-        afterChange:  handleSlideChange
+        initialSlide: 0,
+        afterChange: handleSlideChange
     };
 
-    if(isLoading || !dataLoaded){
-        return <div></div>
-    }
 
-    else if(error){
+    if (isLoading || !dataLoaded) {
+        return (
+            <>
+
+                <div className={classes.box}>
+                    <div className={classes.sortBox}>
+                        <Skeleton animation="wave"
+                                  sx={{bgcolor: 'rgba(255, 255, 255, 0.13)'}}
+                                  width={'25%'}
+                                  height={40}/>
+                    </div>
+                    <Slider {...settings} ref={sliderRef}>
+                        {(!category || category.length === 0) ? <div></div> :
+                            category.map((ele, index) => {
+                                return (
+                                    <div key={uuidv4()} className={classes.scrollDiv} style={{height: "fit-content"}}>
+                                        {ele.values.length === 0 ?
+                                            <div className={classes.emptyItemBox}>
+                                                <span>게시글이 존재하지 않습니다.</span>
+                                                <label>카테고리를 설정해주세요.</label>
+                                            </div> :
+
+                                            <InfiniteScroll
+                                                dataLength={ele.values.length}
+                                                next={() => getMoreData(ele)}
+                                                hasMore={!pageEnd[index].end}
+                                                style={{overflow: "scroll", height: "100%"}}
+                                                loader={<div className={classes.loadingDiv}><Lottie options={{
+                                                    animationData: animationData
+                                                }}/></div>}
+                                                height={"0"}
+                                                onScroll={!isSlide ? handleIsScroll : ""}
+                                            >
+
+                                                {ele.values.map((data, index) => (
+                                                    <ContentList key={uuidv4()} data={data}
+                                                                 onUpdateCategory={handleCategoryUpdate}
+                                                                 dataLoaded={false}/>
+                                                ))}
+
+
+                                            </InfiniteScroll>
+                                        }
+                                    </div>
+
+                                )
+                            })
+                        }
+                    </Slider>
+                </div>
+
+
+            </>
+        );
+    } else if (error) {
         return <div>error</div>
-    }
-
-    else {
+    } else {
         return (
             <>
                 <div className={classes.box}>
@@ -346,57 +400,51 @@ const BodyContents = React.memo((props) => {
                         <span>{sortType === "new" ? "최신순" : "좋아요 순"}</span>
                         <img src={"/images/icons/arrowBox.png"}/>
                     </div>
+                    <Slider {...settings} ref={sliderRef}>
+                        {(!category || category.length === 0) ? <div></div> :
+                            category.map((ele, index) => {
+                                return (
+                                    <div key={uuidv4()} className={classes.scrollDiv} style={{height: "fit-content"}}>
+                                        {ele.values.length === 0 ?
+                                            <div className={classes.emptyItemBox}>
+                                                <span>게시글이 존재하지 않습니다.</span>
+                                                <label>카테고리를 설정해주세요.</label>
+                                            </div> :
 
-                        <Slider {...settings} ref={sliderRef}>
-                                {(!category || category.length === 0) ? <div></div>:
-                                    category.map((ele, index) => {
-                                        return (
-                                            <div key={uuidv4()} className={classes.scrollDiv} style={{height:"fit-content"}}>
-                                                {ele.values.length === 0 ?
-                                                    <div className={classes.emptyItemBox}>
-                                                        <span>게시글이 존재하지 않습니다.</span>
-                                                        <label>카테고리를 설정해주세요.</label>
-                                                    </div> :
+                                            <InfiniteScroll
+                                                dataLength={ele.values.length}
+                                                next={() => getMoreData(ele)}
+                                                hasMore={!pageEnd[index].end}
+                                                style={{overflow: "scroll", height: "100%"}}
+                                                loader={<div className={classes.loadingDiv}><Lottie options={{
+                                                    animationData: animationData
+                                                }}/></div>}
+                                                height={"0"}
+                                                onScroll={!isSlide ? handleIsScroll : ""}
+                                            >
 
-                                                    <InfiniteScroll
-                                                        dataLength={ele.values.length}
-                                                        next={() => getMoreData(ele)}
-                                                        hasMore={!pageEnd[index].end}
-                                                        style={{overflow: "scroll", height: "100%"}}
-                                                        loader={<div className={classes.loadingDiv}><Lottie options={{
-                                                            animationData: animationData
-                                                        }}/></div>}
-                                                        height={"0"}
-                                                        onScroll={!isSlide ? handleIsScroll : ""}
-                                                    >
-
-                                                        {/*<PullToRefresh*/}
-                                                        {/*    onRefresh={handleRefresh}*/}
-                                                        {/*    // canFetchMore={true}*/}
-                                                        {/*    style={{ height:"fit-content"}}*/}
-                                                        {/*>*/}
-
-                                                        {ele.values.map((data, index) => (
-                                                        <ContentList key={uuidv4()} data={data} onUpdateCategory={handleCategoryUpdate}/>
-                                                        ))}
-                                                        {/*</PullToRefresh >*/}
+                                                {ele.values.map((data, index) => (
+                                                    <ContentList key={uuidv4()} data={data}
+                                                                 onUpdateCategory={handleCategoryUpdate}
+                                                                 dataLoaded={true}/>
+                                                ))}
 
 
-                                                    </InfiniteScroll>
-                                                }
-                                            </div>
+                                            </InfiniteScroll>
+                                        }
+                                    </div>
 
-                                        )
-                                    })
-                                }
-                        </Slider>
+                                )
+                            })
+                        }
+                    </Slider>
                 </div>
 
-                { isLogin ?
-                <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
-                    <img src={"/images/icons/writeAdd.png"}/>
-                    {!isSlide ? <span>글쓰기</span>: ""}
-                </div> : ""}
+                {isLogin ?
+                    <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
+                        <img src={"/images/icons/writeAdd.png"}/>
+                        {!isSlide ? <span>글쓰기</span> : ""}
+                    </div> : ""}
             </>
         )
     }

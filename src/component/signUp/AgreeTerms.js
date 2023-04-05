@@ -52,7 +52,6 @@ function AgreeTerms({rederPage}) {
     }
 
     const handleOpenTerms = () => {
-        console.log("12312")
         dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
     }
 

@@ -18,9 +18,11 @@ body{
     justify-content: center;
     --vh: 100%;
     --vw: 100%;
+    transform: translate3d(0, 0, 0);
 }
 
 *{
+    transform: translate3d(0, 0, 0);
     -webkit-tap-highlight-color : rgba(0,0,0,0);
     font-family: "Pretendard";
 }

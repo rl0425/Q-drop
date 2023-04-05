@@ -29,6 +29,8 @@ function CategoryModal(){
 
     const categoryData = useSelector((state) => state.main.categoryData)
 
+    const elementRef = useRef(null);
+
     useEffect(() => {
         console.log("11")
 
@@ -48,9 +50,7 @@ function CategoryModal(){
 
 
     useEffect(() => {
-        console.log("22")
         if(tasks.length > 0) {
-            console.log("33")
             setSubjectList()
         }
 
@@ -188,10 +188,6 @@ function CategoryModal(){
                 return [...acc, cur];
             }, []);
 
-            // const newSubCategories = data[0].subCategories.filter(subCategory => {
-            //     return !subs.includes(subCategory.id);
-            // });
-
             console.log("newCate= ", newCate)
 
             setSubs(newCate)
@@ -211,8 +207,6 @@ function CategoryModal(){
         }
 
         removeData.splice(index,0,data[0])
-
-
         setTasks(removeData)
     }
 
@@ -242,7 +236,7 @@ function CategoryModal(){
                 {/*<div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>*/}
 
                 </div>
-                <div className={openAnimation ? classes.box : classes.nonBox}>
+                <div ref={elementRef} className={openAnimation ? classes.box : classes.nonBox}>
                 {/*<div className={openAnimation ? classes.box : classes.nonBox}>*/}
                     <div className={classes.head}>
                         <div className={classes.header}>

@@ -5,13 +5,15 @@
     width: 100%;
     height: 100%;
     top: 0;
-    left: 0;
+    /*left: 0;*/
+    transform: translateX(0);
     opacity: 1;
     background: #1A1B1E;
     transition: all 0.3s ease;
 }
 .unBox{
-    left: 100%;
+    transform: translateX(100%);
+    /*left: 100%;*/
 }
 
 .head{

@@ -74,7 +74,7 @@ function WrittenNote(){
         setPageNum((prev) => prev+1)
     }
 
-    if(isLoading || !dataLoaded){
+    if(isLoading){
         return <div></div>
     }
 

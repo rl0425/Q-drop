@@ -1,5 +1,5 @@
 import classes from "./Search.module.css"
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch} from "react-redux";
 import {searchActions} from "../../store/search-slice";
 import useHttp from "../../hooks/use-http";
@@ -18,9 +18,43 @@ function Search(){
 
     const { isLoading, error, sendRequest: getData } = useHttp();
 
+    const ref = useRef(null);
+    const [left, setLeft] = useState(100);
+
     useEffect(()=>{
         setOpen(true)
+        // requestAnimationFrame(() => {
+        //     ref.current.style.left = "0%"
+        // });
     }, [])
+
+    // useEffect(() => {
+    //     const handleOpen = () => {
+    //         requestAnimationFrame(() => {
+    //             ref.current.classList.add(classes.box);
+    //             setOpen(true);
+    //         });
+    //     };
+    //
+    //     const handleClose = () => {
+    //         // ref.current.classList.remove(classes.box);
+    //         // setOpen(false);
+    //     };
+    //
+    //     const handleClick = () => {
+    //         if (!open) {
+    //             handleOpen();
+    //         } else {
+    //             handleClose();
+    //         }
+    //     };
+    //
+    //     ref.current.addEventListener("transitionend", handleClose);
+    //
+    //     return () => {
+    //         ref.current.removeEventListener("transitionend", handleClose);
+    //     };
+    // }, [classes.box, open]);
 
     const prevBtnEvt = () => {
         setOpen(false)
@@ -63,7 +97,8 @@ function Search(){
     }
 
     return (
-        <div className={open ? classes.box : classes.unBox}>
+        // <div ref={boxRef} className={open ? classes.box : classes.unBox}>
+        <div ref={ref} className={open ? classes.box : classes.unBox} style={{ transform: open ? 'translateX(0)' : 'translateX(100%)' }}>
             <div className={classes.head}>
                 <div onClick={prevBtnEvt}><img src={"/images/icons/prevBtn.png"}/></div>
                 <div className={classes.searchBarBox}>

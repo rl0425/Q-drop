@@ -38,6 +38,8 @@ function FavoriteNote(){
     const isLogin = useSelector((state) => state.main.isLogin)
 
     useEffect(()=>{
+        setOpen(true)
+
         handleGetData()
     }, [reload])
 
@@ -54,9 +56,9 @@ function FavoriteNote(){
                 setData(taskObj)
             }
             setDataLoaded(true)
-            setTimeout(()=> {
-                setOpen(true)
-            },20)
+            // setTimeout(()=> {
+            //     setOpen(true)
+            // },300)
         })
     }
 
@@ -126,7 +128,7 @@ function FavoriteNote(){
         console.log("123123")
     };
 
-    if(isLoading || !dataLoaded){
+    if(isLoading){
         return <div>sss</div>
     }
 

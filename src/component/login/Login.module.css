@@ -2,7 +2,8 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: 0;
+    /*top: 0;*/
+    transform: translateY(0);
     width: 100%;
     height: 100%;
     background: #1A1B1E;
@@ -10,7 +11,8 @@
 }
 
 .unBox{
-    top: 100%;
+    transform: translateY(calc(var(--vh, 1vh) * 100));
+    /*top: 100%;*/
 }
 
 .head{

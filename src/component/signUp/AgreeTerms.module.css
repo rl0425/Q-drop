@@ -25,10 +25,9 @@
 .body{
     display: flex;
     flex-direction: column;
-    height: calc(var(--vh, 1vh) * 100 - 123px);
-    min-height: calc(var(--vh, 1vh) * 100 - 123px);
-    max-height: calc(var(--vh, 1vh) * 100 - 123px);
-    box-sizing: border-box;
+    height: calc(var(--vh, 1vh) * 100 - 122px);
+    min-height: calc(var(--vh, 1vh) * 100 - 122px);
+    max-height: calc(var(--vh, 1vh) * 100 - 122px);   box-sizing: border-box;
     position: relative;
     overflow: hidden;
     overflow-x: hidden;

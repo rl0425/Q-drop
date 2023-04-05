@@ -3,6 +3,7 @@ import {KakaoLogin} from "../My/Login/kakaoLoginHandler";
 import {useDispatch} from "react-redux";
 import classes from "./AgreeTerms.module.css";
 import {all} from "axios";
+import {myPageActions} from "../../store/myPage-slice";
 
 
 function AgreeTerms({rederPage}) {
@@ -50,6 +51,11 @@ function AgreeTerms({rederPage}) {
         }
     }
 
+    const handleOpenTerms = () => {
+        console.log("12312")
+        dispatch(myPageActions.changeTermsOpen({termsOpen:true}))
+    }
+
     useEffect(() => {
         if(serviceCheck && privateCheck) {
             setAllCheck(true)
@@ -63,7 +69,7 @@ function AgreeTerms({rederPage}) {
     return (
         <div className={classes.box}>
             <div className={classes.head}>
-                <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
+                {/*<img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>*/}
             </div>
             <div className={classes.body}>
                 <div className={classes.body_header}>
@@ -91,7 +97,7 @@ function AgreeTerms({rederPage}) {
                             <span>서비스 이용약관</span>
                             <span>(필수)</span>
                         </div>
-                        <div className = {classes.right_btn}>
+                        <div onClick={handleOpenTerms} className = {classes.right_btn}>
                             <img src = "/images/icons/right_btn.png" />
                         </div>
                     </div>

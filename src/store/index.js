@@ -7,6 +7,7 @@ import searchSlice from "./search-slice";
 import myPageSlice from "./myPage-slice";
 import toastSlice from "./toast-slice";
 import writeSlice from "./write-slice";
+import loginSlice from "./login-slice";
 
 const store = configureStore({
     reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
         search: searchSlice.reducer,
         myPage: myPageSlice.reducer,
         toast: toastSlice.reducer,
-        write: writeSlice.reducer
+        write: writeSlice.reducer,
+        login: loginSlice.reducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false })
 })

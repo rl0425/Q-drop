@@ -1,0 +1,96 @@
+.box ,.unBox{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    background: #1A1B1E;
+    transition: all 0.3s ease;
+}
+.unBox{
+    left: 100%;
+}
+
+.head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding:32px 20px 32px 20px;
+}
+
+.head > img{
+    position: absolute;
+    left: 15px;
+    top: 23px;
+    width: 36px;
+}
+
+.head > span{
+    font-weight: 600;
+    font-size: 18px;
+    color: #DADCE1;;
+}
+
+.body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.bodyTop{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    min-height: 32px;
+    margin-bottom: 16px;
+}
+
+.sectorBox{
+    display: flex;
+}
+
+.sectorBox > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.sector, .unSector{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #DADCE1;
+}
+
+.unSector{
+    color: #9C9EA7;
+}
+
+.bottomOne, .bottomTwo{
+    position: absolute;
+    width: 50%;
+    top: 28px;
+    left: 0;
+    height: 3px;
+    background: #DADCE1;
+    transition: all 0.15s ease;
+}
+
+.bottomTwo{
+    left: 50%;
+}
+
+.contents{
+    display: flex;
+    padding: 20px;
+    box-sizing: border-box;
+}

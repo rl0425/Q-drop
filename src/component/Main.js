@@ -14,6 +14,7 @@ import WriteWrapper from "./write/WriteWrapper";
 import {useCookies} from 'react-cookie'
 import {useEffect} from "react";
 import {mainDataActions} from "../store/mianData-slice";
+import LoginWrapper from "./login/LoginWrapper";
 
 function Main(){
     const dispatch = useDispatch()
@@ -42,7 +43,6 @@ function Main(){
                     <div className={classes.body}>
                         <HomeWrapper />
                     </div>
-
                 </>
             :
                 <MyWrapper />
@@ -55,6 +55,7 @@ function Main(){
             <WriteWrapper />
             <ModalSetWrapper />
             <ToastWrapper />
+            <LoginWrapper />
 
         </div>
     )

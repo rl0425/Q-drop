@@ -114,7 +114,7 @@ function Write(){
             fetchTasks({
                 url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/update/${dataInfo.id}`,
                 type: "post",
-                data: {"title": title, "content": content}
+                data: {"title": title, "content": content, "subcategory_id": categoryId}
             }, (taskObj) => {
                 handleExit()
                 dispatch(toastActions.handleToastOpt({msg:"수정을 완료했습니다", open:true}))
@@ -129,29 +129,28 @@ function Write(){
     }
 
     return (
-
         <>
             <div className={open ? classes.box : classes.unBox}>
-            <div className={classes.head}>
-                <img onClick={handleExit} src={"/images/icons/exit.png"}/>
-                <span>노트 작성</span>
-                {dataInfo.author ?
-                    <label onClick={handleEditCompleteBtn}>수정</label> :  <label onClick={handleCompleteBtn}>완료</label>}
-            </div>
-            <div className={classes.body}>
-                <div onClick={handleOpenCategory} className={classes.categoryBox}>
-                    <span>{category ? category : "노트의 카테고리를 선택해 주세요."}</span>
-                    <img src={"/images/icons/prevBtn.png"}/>
+                <div className={classes.head}>
+                    <img onClick={handleExit} src={"/images/icons/exit.png"}/>
+                    <span>노트 작성</span>
+                    {dataInfo.author ?
+                        <label onClick={handleEditCompleteBtn}>수정</label> :  <label onClick={handleCompleteBtn}>완료</label>}
                 </div>
-                <div className={classes.contentBox}>
-                    <div className={classes.questionBox}>
-                        <input onChange={(e) => setTitle(e.target.value)} value={title} placeholder={"질문을 입력하세요"} />
+                <div className={classes.body}>
+                    <div onClick={handleOpenCategory} className={classes.categoryBox}>
+                        <span>{category ? category : "노트의 카테고리를 선택해 주세요."}</span>
+                        <img src={"/images/icons/prevBtn.png"}/>
                     </div>
-                    <div className={classes.answerBox}>
-                        <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />
+                    <div className={classes.contentBox}>
+                        <div className={classes.questionBox}>
+                            <input onChange={(e) => setTitle(e.target.value)} value={title} placeholder={"질문을 입력하세요"} />
+                        </div>
+                        <div className={classes.answerBox}>
+                            <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             <WriteCategoryWrapper setCateogry={handleSetCategory} activeNum={categoryId}/>
         </>

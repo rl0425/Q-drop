@@ -30,6 +30,7 @@ function WrittenNote(){
     const isLogin = useSelector((state) => state.main.isLogin)
 
     useEffect(()=>{
+        // setOpen(true)
         setTimeout(()=> {
             setOpen(true)
         },50)
@@ -43,12 +44,15 @@ function WrittenNote(){
         setOpen(false)
         setTimeout(()=>{
             dispatch(myPageActions.changeWrittenOpen({writtenOpen:false}))
-        }, 150)
+        }, 300)
     }
 
     const handleGetData = () => {
         getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my?paging_num=${pageNum}&paging_count=7&sortType=desc`}, (taskObj) => {
-            setData(taskObj)
+            if(taskObj) {
+                setData(taskObj)
+            }
+            // setOpen(true)
             setDataLoaded(true)
         })
     }

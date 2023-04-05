@@ -39,7 +39,9 @@ function FavoriteNote(){
 
     useEffect(()=>{
         setOpen(true)
+    }, [])
 
+    useEffect(()=>{
         handleGetData()
     }, [reload])
 
@@ -55,10 +57,8 @@ function FavoriteNote(){
             if(taskObj) {
                 setData(taskObj)
             }
+
             setDataLoaded(true)
-            // setTimeout(()=> {
-            //     setOpen(true)
-            // },300)
         })
     }
 
@@ -123,11 +123,6 @@ function FavoriteNote(){
 
     }
 
-    const handleRefresh = () => {
-        // refresh 로직을 작성합니다.
-        console.log("123123")
-    };
-
     if(isLoading){
         return <div>sss</div>
     }
@@ -150,16 +145,16 @@ function FavoriteNote(){
                                 <div className={classes.emptyBox}><span>로그인을 해주세요.</span></div>
                                 : data.length > 0 ?
                                 <div className={classes.scrollDiv}>
-                                    <PullToRefresh
-                                        onRefresh={handleRefresh}
-                                        style={{
-                                            // overflow:"scroll"
-                                            // height: "100%",
-                                            // display: "flex",
-                                            // flexDirection: "column",
-                                            // gap: "16px"
-                                        }}
-                                    >
+                                    {/*<PullToRefresh*/}
+                                    {/*    onRefresh={handleRefresh}*/}
+                                    {/*    style={{*/}
+                                    {/*        // overflow:"scroll"*/}
+                                    {/*        // height: "100%",*/}
+                                    {/*        // display: "flex",*/}
+                                    {/*        // flexDirection: "column",*/}
+                                    {/*        // gap: "16px"*/}
+                                    {/*    }}*/}
+                                    {/*>*/}
                                     <InfiniteScroll
                                         dataLength={data.length}
                                         next={() => handleMoreData()}
@@ -199,7 +194,7 @@ function FavoriteNote(){
                                             {/*</div>*/}
 
                                     </InfiniteScroll>
-                                    </PullToRefresh>
+                                    {/*</PullToRefresh>*/}
 
 
                                 </div>

@@ -2,7 +2,10 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: calc(100vh - 63px);
+    height: calc(var(--vh, 1vh) * 100 - 63px);
+    min-height: calc(var(--vh, 1vh) * 100 - 63px);
+    max-height: calc(var(--vh, 1vh) * 100 - 63px);
+    box-sizing: border-box;
     /*padding-bottom: calc(env(safe-area-inset-bottom) + 20px);*/
 }
 
@@ -12,7 +15,9 @@
     font-size: 20px;
     font-weight: 600;
     box-sizing: border-box;
-    padding-top: calc(env(safe-area-inset-top));;
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 
 .body{

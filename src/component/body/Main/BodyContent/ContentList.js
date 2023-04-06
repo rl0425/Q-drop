@@ -10,7 +10,6 @@ import Skeleton from "@mui/material/Skeleton";
 
 const ContentList = forwardRef((props, ref) => {
     const dispatch = useDispatch()
-    console.log("props",props)
 
     const [data, setData] = useState(props.data)
     const [dataLoaded, setDataLoaded] = useState(props.dataLoaded)

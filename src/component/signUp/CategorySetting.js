@@ -2,11 +2,11 @@ import React, {useEffect, useRef, useState} from "react";
 import {KakaoLogin} from "../My/Login/kakaoLoginHandler";
 import {useDispatch} from "react-redux";
 import classes from "./CategorySetting.module.css";
-import {all} from "axios";
 import {v4 as uuidv4} from "uuid";
 import Slider from "react-slick";
 import Content from "../body/category/Content";
 import useHttp from "../../hooks/use-http";
+import {toastActions} from "../../store/toast-slice";
 
 
 function CategorySetting({rederPage}) {
@@ -182,6 +182,12 @@ function CategorySetting({rederPage}) {
 
     const handleNextBtn = () => {
         //todo 선택한 카테고리의 대한 검증을 끝내고 북마크에 추가한 뒤 후처리 기찬
+        fetchTasks(
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post",  data: {"id":subs}},
+        );
+        window.location.href = '/'
+
+        dispatch(toastActions.handleToastOpt({msg:"가입이 완료 되었어요.", open:true}))
 
     }
 
@@ -198,6 +204,7 @@ function CategorySetting({rederPage}) {
         speed:200,
         slidesToShow: 1,
         slidesToScroll: 1,
+        arrows:false,
         afterChange:  handleSlideChange
     };
 
@@ -238,15 +245,15 @@ function CategorySetting({rederPage}) {
                                                 <>
                                                     <div onClick={() => handleAllSelect(ele)}
                                                          className={classes.allSelect}>
-                                                        {ele.allSelect ? <img src={"/images/icons/fullCircle.png"}/> :
-                                                            <img src={"/images/icons/circle.png"}/>}
-                                                        <span>전체 선택</span>
+                                                        {ele.allSelect ? <img src={"/images/icons/allSelectActive.png"}/> :
+                                                            <img src={"/images/icons/allSelectDefault.png"}/>}
+                                                        <span style={{color: ele.allSelect  ? "#48BAFB" : "#DADCE1"}}>전체 선택</span>
                                                     </div>
 
                                                     {
                                                         ele.subCategories.map((data) => {
                                                             return (
-                                                                <Content key={uuidv4()} data={data} mainId={ele.categoryId} subs={subs} selectEvt={subSelectEvt}/>
+                                                                <Content key={uuidv4()} data={data} mainId={ele.categoryId} subs={subs} selectEvt={subSelectEvt} type={"register"}/>
                                                             )
                                                         })
                                                     }

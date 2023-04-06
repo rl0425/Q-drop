@@ -1,7 +1,15 @@
 import classes from "./Content.module.css"
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 function Content(props){
+
+    const ref = useRef(null)
+
+    useEffect(()=>{
+        if(props.type && props.type === "register"){
+            ref.current.classList.add(classes.register)
+        }
+    }, [])
 
     const clickEvt = (e,ele) => {
         e.stopPropagation()
@@ -13,7 +21,8 @@ function Content(props){
 
     return (
 
-        <div onClick={hasChecked ? (e) => clickEvt(e,"remove") : (e) => clickEvt(e,"add")} className={hasChecked ? `${classes.box} ${classes.active}` : classes.box}>
+        <div ref={ref} onClick={hasChecked ? (e) => clickEvt(e,"remove") : (e) => clickEvt(e,"add")}
+             className={hasChecked ? `${classes.box} ${classes.active}` : classes.box}>
             {hasChecked ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
             <span>{props.data.name}</span>
         </div>

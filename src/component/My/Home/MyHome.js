@@ -79,7 +79,7 @@ function MyHome(){
                         :
                             <div>
                                 <div className={classes.hasLogoImg}>
-                                    <img src={profile.image} />
+                                    <img src={profile.image ? profile.image : "/images/icons/noProfile.png"} />
                                 </div>
                                 <div className={classes.logoSpan}>
                                     <div className={classes.logoSpanHead}><span>{profile.nickname}</span></div>

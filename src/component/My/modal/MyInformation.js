@@ -74,7 +74,7 @@ function MyInformation(){
             </div>
             <div className={classes.body}>
                 <div className={classes.profile}>
-                    <img src={profile.image} />
+                    <img src={profile.image ? profile.image : "/images/icons/noProfile.png"} />
                 </div>
                 <div className={classes.nickname}>
                     <div className={classes.nicknameHead}>

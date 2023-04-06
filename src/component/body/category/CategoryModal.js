@@ -2,7 +2,7 @@ import classes from "./CategoryModal.module.css"
 import {v4 as uuidv4} from "uuid";
 import {useSelector, useDispatch} from "react-redux";
 import {categoryActions} from "../../../store/category-slice";
-import {useEffect, useState, useRef, useContext} from "react";
+import React, {useEffect, useState, useRef, useContext} from "react";
 import useHttp from "../../../hooks/use-http";
 import Content from "./Content";
 
@@ -263,9 +263,9 @@ function CategoryModal(){
                                                     <>
                                                     <div onClick={() => handleAllSelect(ele)}
                                                          className={classes.allSelect}>
-                                                        {ele.allSelect ? <img src={"/images/icons/fullCircle.png"}/> :
-                                                            <img src={"/images/icons/circle.png"}/>}
-                                                        <span>전체 선택</span>
+                                                        {ele.allSelect ? <img src={"/images/icons/allSelectActive.png"}/> :
+                                                            <img src={"/images/icons/allSelectDefault.png"}/>}
+                                                        <span style={{color: ele.allSelect  ? "#48BAFB" : "#DADCE1"}}>전체 선택</span>
                                                     </div>
 
                                                     {

@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import {modalActions} from "../../store/modal-slice";
 import {mainDataActions} from "../../store/mianData-slice";
 import useHttp from "../../hooks/use-http";
+import {toastActions} from "../../store/toast-slice";
 
 function PostModal(){
     const dispatch = useDispatch()
@@ -86,6 +87,13 @@ function PostModal(){
         });
 
         dispatch(mainDataActions.handleContent({contentList: temp }))
+
+        if(type){
+            dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
+        }
+        else{
+            dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
+        }
     }
 
     const handleFavorite = async () => {
@@ -119,6 +127,13 @@ function PostModal(){
         });
 
         dispatch(mainDataActions.handleContent({ contentList: temp }))
+
+        if(type){
+            dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에 추가했어요.", open:true}))
+        }
+        else{
+            dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에서 삭제했어요", open:true}))
+        }
     }
 
     const handleOption = (e) => {

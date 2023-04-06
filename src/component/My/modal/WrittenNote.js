@@ -38,6 +38,7 @@ function WrittenNote(){
 
     useEffect(()=>{
         handleGetData()
+        setPageNum(0)
     }, [reload])
 
     const handlePrevBtn = () => {
@@ -48,7 +49,9 @@ function WrittenNote(){
     }
 
     const handleGetData = () => {
-        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my?paging_num=${pageNum}&paging_count=7&sortType=desc`}, (taskObj) => {
+
+        console.log("12312312")
+        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my?paging_num=${0}&paging_count=7&sortType=desc`}, (taskObj) => {
             if(taskObj) {
                 setData(taskObj)
             }

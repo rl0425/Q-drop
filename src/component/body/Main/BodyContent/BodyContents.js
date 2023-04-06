@@ -294,6 +294,7 @@ const BodyContents = React.memo((props) => {
     }
 
     useEffect(() => {
+        console.log("1112")
         getData();
     }, [props.categoryData, props.reloadSwitch]);
 

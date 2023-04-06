@@ -66,8 +66,10 @@ function PostModal(){
 
         const temp = contentList.map((ele) => {
             if (ele.id === id.mainCategory) {
+                const updatedIndex = ele.values.findIndex(item => item.id === id.id);
                 const updatedValues = ele.values.filter(item => item.id !== id.id);
-                updatedValues.push({
+
+                updatedValues.splice(updatedIndex, 0, {
                     ...data,
                     board_like:{
                         total_like_count:newLikeCount,
@@ -83,7 +85,7 @@ function PostModal(){
             return ele;
         });
 
-        dispatch(mainDataActions.handleContent({ contentList: temp }))
+        dispatch(mainDataActions.handleContent({contentList: temp }))
     }
 
     const handleFavorite = async () => {
@@ -98,9 +100,10 @@ function PostModal(){
 
         const temp = contentList.map((ele) => {
             if (ele.id === id.mainCategory) {
+                const updatedIndex = ele.values.findIndex(item => item.id === id.id);
                 const updatedValues = ele.values.filter(item => item.id !== id.id);
 
-                updatedValues.push({
+                updatedValues.splice(updatedIndex, 0, {
                     ...data,
                     bookmark_info:{
                         user_bookmark_status:type
@@ -158,7 +161,7 @@ function PostModal(){
                 </div>
             </div>
             <div className={classes.body}>
-                <textarea value={data.content} readOnly={true}/>
+                <textarea value={data.content ?? ""} readOnly={true}/>
             </div>
             <div className={classes.footer}>
                 <div onClick={handleLike} className={classes.likeDiv}>

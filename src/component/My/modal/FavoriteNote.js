@@ -43,6 +43,7 @@ function FavoriteNote(){
 
     useEffect(()=>{
         handleGetData()
+        setPageNum(0)
     }, [reload])
 
     const handlePrevBtn = () => {
@@ -53,7 +54,7 @@ function FavoriteNote(){
     }
 
     const handleGetData = () => {
-        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${pageNum}&paging_count=7&sortType=asc`}, (taskObj) => {
+        fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/my?paging_num=${0}&paging_count=7&sortType=asc`}, (taskObj) => {
             if(taskObj) {
                 setData(taskObj)
             }

@@ -8,6 +8,7 @@ import {modalActions} from "../../../store/modal-slice";
 function WithdrawalReason(){
     const [open, setOpen] = useState(false)
     const [blackAnimation, setBlackAnimation] = useState(false);
+    const [etcOpen, setEtcOpen] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -27,6 +28,13 @@ function WithdrawalReason(){
 
         },50)
     }, [])
+
+    useEffect(()=>{
+        if(selectedItem === "기타"){
+            setEtcOpen(open)
+        }
+
+    }, [selectedItem])
 
     const handlePrevBtn = () => {
         setOpen(false)

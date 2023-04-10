@@ -104,6 +104,23 @@
     box-sizing: border-box;
 }
 
+.etcBox{
+    display: flex;
+    /*align-items: center;*/
+    justify-content: space-between;
+    width: 100%;
+    height: 170px;
+    padding: 16px;
+    border: 1px solid #373C42;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.etcBox > textarea {
+    resize: none;
+    overflow: hidden;
+}
+
 .selectBox > span{
     font-size: 16px;
     color: #64666D;

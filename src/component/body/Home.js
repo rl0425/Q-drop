@@ -19,7 +19,6 @@ function Home(){
 
     const subs = useSelector((state) => state.main.subCategoryList)
 
-
     // subcategory 변경 시 리렌더링 위한 selector
     const reloadSwitch = useSelector((state) => state.main.reloadSwitch)
 

@@ -229,3 +229,13 @@
     border:none;
     padding: 0;
 }
+
+.noResultCont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40%;
+    font-weight: 500;
+    font-size: 15px;
+    color: #DADCE1;
+}

@@ -7,6 +7,7 @@ import useHttp from "../../../hooks/use-http";
 import {mainDataActions} from "../../../store/mianData-slice";
 import {writeActions} from "../../../store/write-slice";
 import {toastActions} from "../../../store/toast-slice";
+import {loginActions} from "../../../store/login-slice";
 
 function Post(){
     const dispatch = useDispatch()
@@ -68,6 +69,15 @@ function Post(){
             dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
             dispatch(modalActions.changeDetailOpen({open:false, data:null}))
         },200)
+    }
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        removeModalClickEvt()
+
+        dispatch(loginActions.handleOpen({open:true}))
     }
 
     const deleteOpenClickEvt = (e) => {
@@ -134,7 +144,7 @@ function Post(){
                     :
                     ""
                 }
-                <div onClick={reportOpenClickEvt} className={classes.reportBtnBox}><span>신고하기</span></div>
+                <div onClick={isLogin ? reportOpenClickEvt : handleLogin} className={classes.reportBtnBox}><span>신고하기</span></div>
                 <div className={classes.linkBox}><span>링크 공유하기</span></div>
             </div>
 

@@ -2,12 +2,13 @@ import React, {useEffect, useState, useRef, forwardRef} from "react"
 import {v4 as uuidv4} from "uuid";
 import classes from "./ContentList.module.css"
 import {modalActions} from "../../../../store/modal-slice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import useHttp from "../../../../hooks/use-http";
 import {logDOM} from "@testing-library/react";
 import moment from "moment";
 import Skeleton from "@mui/material/Skeleton";
 import {toastActions} from "../../../../store/toast-slice";
+import {loginActions} from "../../../../store/login-slice";
 
 const ContentList = forwardRef((props, ref) => {
     const dispatch = useDispatch()
@@ -16,18 +17,24 @@ const ContentList = forwardRef((props, ref) => {
     const [dataLoaded, setDataLoaded] = useState(props.dataLoaded)
     const [temp, setTemp] = useState(data)
 
-    const [refreshing, setRefreshing] = useState(false);
-
-
     const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png")
     const [likeCount, setLikeCount] = useState(data.board_like.total_like_count)
     const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png")
 
     const {isLoading, error, sendRequest: fetchTasks} = useHttp();
 
+    const isLogin = useSelector((state) => state.main.isLogin)
+
     useEffect(() => {
         setData(props.data)
     }, [likeSrc, favoriteSrc])
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        dispatch(loginActions.handleOpen({open:true}))
+    }
 
     const handleLikeClick = (e) => {
         e.stopPropagation()
@@ -185,12 +192,12 @@ const ContentList = forwardRef((props, ref) => {
                         </div>
                         <div className={classes.answerBox}><span>{data.content}</span></div>
                         <div className={classes.optBox}>
-                            <div className={classes.heartBox} onClick={handleLikeClick}>
+                            <div className={classes.heartBox} onClick={isLogin ? handleLikeClick : handleLogin}>
                                 <img style={{width: "20px", height: "17px"}}
                                      src={likeSrc}/>
                                 <span>{likeCount}</span>
                             </div>
-                            <div onClick={handleFavoriteClick}>
+                            <div onClick={isLogin ? handleFavoriteClick : handleLogin}>
                                 <img style={{width: "20px", height: "17px"}}
                                      src={favoriteSrc}/>
                             </div>

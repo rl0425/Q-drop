@@ -12,6 +12,7 @@ function Search(){
     const [searchValue, setSearchValue] = useState("")
     const [hasSearch, setHasSearch] = useState(false)
     const [searchData, setSearchData] = useState("")
+    const [rankData, setRankData] = useState("")
     const [cookies, setCookie, removeCookie] = useCookies(['search']);
 
     const dispatch = useDispatch()
@@ -19,42 +20,26 @@ function Search(){
     const { isLoading, error, sendRequest: getData } = useHttp();
 
     const ref = useRef(null);
+    const inputRef = useRef(null)
+
     const [left, setLeft] = useState(100);
 
     useEffect(()=>{
-        setOpen(true)
-        // requestAnimationFrame(() => {
-        //     ref.current.style.left = "0%"
-        // });
+        getRankData()
     }, [])
 
-    // useEffect(() => {
-    //     const handleOpen = () => {
-    //         requestAnimationFrame(() => {
-    //             ref.current.classList.add(classes.box);
-    //             setOpen(true);
-    //         });
-    //     };
-    //
-    //     const handleClose = () => {
-    //         // ref.current.classList.remove(classes.box);
-    //         // setOpen(false);
-    //     };
-    //
-    //     const handleClick = () => {
-    //         if (!open) {
-    //             handleOpen();
-    //         } else {
-    //             handleClose();
-    //         }
-    //     };
-    //
-    //     ref.current.addEventListener("transitionend", handleClose);
-    //
-    //     return () => {
-    //         ref.current.removeEventListener("transitionend", handleClose);
-    //     };
-    // }, [classes.box, open]);
+    useEffect(() => {
+        console.log("searchData= ", searchValue)
+        inputRef.current.value = searchValue;
+    }, [searchValue]);
+
+    const getRankData = () => {
+        getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/search/rank`}, (taskObj) => {
+            setRankData(taskObj.rank)
+            setOpen(true)
+        })
+
+    }
 
     const prevBtnEvt = () => {
         setOpen(false)
@@ -70,7 +55,7 @@ function Search(){
                 setSearchData(taskObj)
             })
             const names = cookies.search || [];
-            const newNames = [...names, searchValue];
+            const newNames = [searchValue, ...names];
 
             setCookie("search", newNames, { path: "/"});
         }
@@ -83,14 +68,20 @@ function Search(){
     const handleClickRecord = (element) => {
         getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=${element}&sortTarget=createTime&sortType=desc`}, (taskObj) => {
             setHasSearch(true)
+            console.log("element= ", element)
+            setSearchValue(element)
             setSearchData(taskObj)
         })
+
+        const names = cookies.search || [];
+        const newNames = [element, ...names];
+
+        setCookie("search", newNames, { path: "/"});
     }
 
     const handleDataDetail = (data) => {
         dispatch(modalActions.changeDetailOpen({open:true, dataId: {id:data.id, mainCategory:data.mainCategory.main_category_id, subcategory:data.subCategory.sub_category_id}}))
     }
-
 
     const handleSearchChange = (e) => {
         setSearchValue('');
@@ -102,7 +93,7 @@ function Search(){
             <div className={classes.head}>
                 <div onClick={prevBtnEvt}><img src={"/images/icons/prevBtn.png"}/></div>
                 <div className={classes.searchBarBox}>
-                    <input type={"string"} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={"궁금한 내용을 검색해보세요."}/>
+                    <input ref={inputRef} type={"string"} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={"궁금한 내용을 검색해보세요."}/>
                     <img onClick={handleSearchChange} src={"/images/icons/searchRemove.png"}/>
                 </div>
             </div>
@@ -125,23 +116,24 @@ function Search(){
                     </div>
                     <div className={classes.famousContent}>
                         <ul>
-                            <li><div><span>1</span></div><label>디자인</label></li>
-                            <li><div><span>2</span></div><label>디자인</label></li>
-                            <li><div><span>3</span></div><label>디자인</label></li>
-                            <li><div><span>4</span></div><label>디자인</label></li>
-                            <li><div><span>5</span></div><label>디자인</label></li>
-                            <li><div><span>6</span></div><label>디자인</label></li>
-                            <li><div><span>7</span></div><label>디자인</label></li>
-                            <li><div><span>8</span></div><label>디자인</label></li>
-                            <li><div><span>9</span></div><label>디자인</label></li>
-                            <li><div><span>10</span></div><label>디자인</label></li>
+                            {
+                                rankData && rankData.map((ele, index) => (
+                                <li onClick={() => handleClickRecord(ele)} key={uuidv4()} >
+                                    <div>
+                                        <span>{index+1}</span>
+                                    </div>
+                                    <label>{ele}</label>
+                                </li>
+                                ))
+                            }
+
                         </ul>
                     </div>
                 </div>
             </div> :
 
             searchData.length === 0 ?
-                <div><span>검색 결과가 없어요.</span></div>
+                <div className={classes.noResultCont}><span>검색 결과가 없어요.</span></div>
                 :
                 <div className={classes.afterBox}>
                     <div className={classes.numDiv}>

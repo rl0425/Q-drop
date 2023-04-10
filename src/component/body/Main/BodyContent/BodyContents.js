@@ -26,8 +26,7 @@ const BodyContents = React.memo((props) => {
     const {isLoading, error, sendRequest: fetchTasks} = useHttp();
 
     // 정렬 이벤트
-    const [sortType, setSortType] = useState("new")
-    // const [sortType, setSortType] = useState("first")
+    const [sortType, setSortType] = useState("first")
 
     // 스크롤 이벤트 ref
     const [pageNum, setPageNum] = useState(0)

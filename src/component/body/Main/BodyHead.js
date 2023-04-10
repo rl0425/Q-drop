@@ -37,9 +37,9 @@ function BodyHead(props){
                     if(ele.bookmark_sub_categories.length === 0){ return }
                     else {
                         return (
-                            <div key={uuidv4()} onClick={() => categoryClickEvt(index)}
-                                 className={activeIndex === index ? `${classes.categoryBox} ${classes.active}` : classes.categoryBox}>
-                                {ele.main_category_name}
+                            <div key={uuidv4()} onClick={() => categoryClickEvt(index)} className={activeIndex === index ? `${classes.categoryBox} ${classes.active}` : classes.categoryBox}>
+                                <img className={classes.headImg} src={`/images/icons/mainCategory/${index}.svg` }/>
+                                <span>{ele.main_category_name}</span>
                             </div>
                         )
                     }

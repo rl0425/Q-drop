@@ -53,18 +53,27 @@
     justify-content: center;
     align-items: center;
     min-width: 79px;
-    width: 79px;
     height: 40px;
+    padding: 10px 13px;
     border: 0.75px solid #373C42;
     border-radius: 30px;
     box-sizing: border-box;
     color: #9C9EA7;
     font-weight: 600;
     transition: all 0.2s linear;
+    gap: 4px;
 }
 
 .categoryBox.active{
-    background: #48BAFB;
+    background: #33363F;
     color: #1A1B1E;
     transition: all 0.2s linear;
+    font-weight: 600;
+    font-size: 16px;
+    color: #DADCE1;
+}
+
+.headImg{
+    width: 15px;
+    height: 15px;
 }

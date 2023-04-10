@@ -11,7 +11,7 @@ function Head(){
 
     return (
         <div className={classes.box}>
-            <div><img />Logo</div>
+            <div><img src={"/images/icons/logo/whiteLogo.svg"}/></div>
             <div onClick={searchClickEvt} className={classes.search}><img src={"/images/icons/mainSearch.png"}/></div>
         </div>
     )

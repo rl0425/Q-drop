@@ -26,7 +26,8 @@ const BodyContents = React.memo((props) => {
     const {isLoading, error, sendRequest: fetchTasks} = useHttp();
 
     // 정렬 이벤트
-    const [sortType, setSortType] = useState("")
+    const [sortType, setSortType] = useState("new")
+    // const [sortType, setSortType] = useState("first")
 
     // 스크롤 이벤트 ref
     const [pageNum, setPageNum] = useState(0)
@@ -340,13 +341,10 @@ const BodyContents = React.memo((props) => {
     if (isLoading || !dataLoaded) {
         return (
             <>
-
                 <div className={classes.box}>
-                    <div className={classes.sortBox}>
-                        <Skeleton animation="wave"
-                                  sx={{bgcolor: 'rgba(255, 255, 255, 0.13)'}}
-                                  width={'25%'}
-                                  height={40}/>
+                    <div onClick={handleSortChange} className={classes.sortBox}>
+                        <span>{sortType === "new" || sortType === "first" ? "최신순" : "좋아요 순"}</span>
+                        <img src={"/images/icons/arrowBox.png"}/>
                     </div>
                     <Slider {...settings} ref={sliderRef}>
                         {(!category || category.length === 0) ? <div></div> :
@@ -387,6 +385,12 @@ const BodyContents = React.memo((props) => {
                         }
                     </Slider>
                 </div>
+
+                {isLogin ?
+                    <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
+                        <img src={"/images/icons/writeAdd.png"}/>
+                        {!isSlide ? <span>글쓰기</span> : ""}
+                    </div> : ""}
 
 
             </>

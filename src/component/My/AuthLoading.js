@@ -3,6 +3,10 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import {useCookies} from 'react-cookie'
 import {KakaoLogin} from "./Login/kakaoLoginHandler";
+import classes from "./AuthLoading.module.css"
+
+import animationData from "../../jsons/spinner.json";
+import Lottie from "lottie-react-web";
 
 //사용자가 로그인 요청시 로딩화면 컴포넌트 입니다.
 const AuthLoading = () => {
@@ -30,11 +34,8 @@ const AuthLoading = () => {
                 } else {
                     //todo 이미 가입된 사용자임, 토큰 쿠키에 세팅 후 사용자 정보로 화면 세팅
                     console.log("user_profile22", response.data.token)
-                    //JWT token cookie
                     setCookie('jwt', response.data.token.data.token, {path: '/'});
-                    // window.location.reload();
                     window.location.href = '/signup?page=0'
-                    // history("/signup")
                 }
             }
         }).catch(function (error) {
@@ -48,8 +49,8 @@ const AuthLoading = () => {
     }, [])
 
     return (
-            <div>
-                카카오 로그인 인증 진행 중입니다.
+            <div className={classes.ingBox}>
+                <div className={classes.loadingDiv}><Lottie options={{animationData: animationData}}/></div>
             </div>
     );
 }

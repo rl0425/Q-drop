@@ -54,6 +54,11 @@ function MyHome(){
         dispatch(loginActions.handleOpen({open:true}))
     }
 
+    const handleVersion = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+    }
+
 
     return (
         <div className={classes.box}>
@@ -107,7 +112,7 @@ function MyHome(){
                     </div>
                     <div className={classes.guideBody}>
                         <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
-                        <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
+                        <div onClick={handleVersion} className={classes.version}><span>앱 버전</span><label>1.0</label></div>
                         {isLogin ?
                             <div onClick={handleLogout} className={classes.logout}><span>로그아웃</span></div> : <div onClick={handleLogin} className={classes.logout}><span>로그인</span></div>}
                         {isLogin ? <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div> : ""}

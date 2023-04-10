@@ -21,7 +21,7 @@ function Login() {
             <div className={classes.body}>
                 <div className={classes_login.app_logo_area}>
                     <div className={classes_login.app_log}>
-                        <img src="/images/mypage/icons/approvalReady.png"/>
+                        <img src="/images/icons/logo/mainLogo.svg"/>
                     </div>
                 </div>
 

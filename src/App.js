@@ -1,4 +1,5 @@
 import Main from "./component/Main";
+import Entry from "./component/entry/Entry";
 import {useEffect} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import AuthLoading from "./component/My/AuthLoading";
@@ -47,7 +48,8 @@ function App() {
             <div className="App">
             <Router>
                 <Routes>
-                        <Route path="/" element={<Main/>}/>
+                        <Route path="/" element={<Entry/>}/>
+                        <Route path="/main" element={<Main/>}/>
                         <Route path="/signup" element={<UserAppSetWrapper />}/>
                         <Route path="/login/auth/code" element={<AuthLoading />}/>
                 </Routes>

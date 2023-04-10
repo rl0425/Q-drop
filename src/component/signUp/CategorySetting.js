@@ -185,7 +185,7 @@ function CategorySetting({rederPage}) {
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post",  data: {"id":subs}},
         );
-        window.location.href = '/'
+        window.location.href = '/main'
 
         dispatch(toastActions.handleToastOpt({msg:"가입이 완료 되었어요.", open:true}))
 

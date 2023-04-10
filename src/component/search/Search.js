@@ -94,7 +94,7 @@ function Search(){
                 <div onClick={prevBtnEvt}><img src={"/images/icons/prevBtn.png"}/></div>
                 <div className={classes.searchBarBox}>
                     <input ref={inputRef} type={"string"} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} onKeyPress={searchEvt} placeholder={"궁금한 내용을 검색해보세요."}/>
-                    <img onClick={handleSearchChange} src={"/images/icons/searchRemove.png"}/>
+                    <img onClick={handleSearchChange} src={searchValue ? "/images/icons/searchRemove.png" : ""}/>
                 </div>
             </div>
             {!hasSearch ? <div className={classes.beforeBox}>
@@ -126,7 +126,6 @@ function Search(){
                                 </li>
                                 ))
                             }
-
                         </ul>
                     </div>
                 </div>

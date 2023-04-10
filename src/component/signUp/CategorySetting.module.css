@@ -117,7 +117,10 @@
     overflow: scroll;
     box-sizing: border-box;
     gap: 24px;
+}
 
+.categorySet::-webkit-scrollbar {
+    display: none;
 }
 
 .category{

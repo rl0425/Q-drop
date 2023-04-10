@@ -108,7 +108,7 @@
     height: fit-content;
 }
 
-.writeBox, .smallWriteBox{
+.writeBox, .smallWriteBox, .upArrowBoxWith, upArrowBoxWithout{
     position: absolute;
     display: flex;
     align-items: center;
@@ -127,6 +127,18 @@
     box-sizing: border-box;
     gap: 16px;
     transition: all 0.2s ease;
+}
+
+.upArrowBoxWithout, .upArrowBoxWith{
+    margin: 0;
+    width: auto;
+    height: auto;
+    background: none;
+}
+
+.upArrowBoxWith{
+    bottom: 65px;
+    right: 4px;
 }
 
 .smallWriteBox{

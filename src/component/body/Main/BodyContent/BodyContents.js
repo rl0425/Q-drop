@@ -34,6 +34,7 @@ const BodyContents = React.memo((props) => {
 
     // 슬라이더 ref
     const sliderRef = useRef(null);
+    const infRef = useRef(null);
 
     // 슬라이드 여부
     const [isSlide, setIsSlide] = useState(false)
@@ -326,6 +327,31 @@ const BodyContents = React.memo((props) => {
         dispatch(writeActions.handleOpen({open: true}))
     }
 
+    const handleTopClick = () =>{
+        const sliderElement = infRef.current;
+        // sliderElement.onStart()
+        // sliderElement.lastScrollTop = 0
+        sliderElement.scrollTop = 0; // scrollTop을 0으로 설정하여 스크롤을 가장 위로 이동
+
+
+        console.log("infRef.current ", sliderElement)
+
+
+        // console.log(" sliderRef.current =",  sliderRef.current)
+        // if(sliderRef.current) {
+        //     sliderRef.current.slickGoTo(0, true); // slickGoTo 메소드를 사용하여 슬라이더의 스크롤을 가장 위로 이동
+        //
+        //
+        //     const sliderInner = sliderRef.current.innerSlider;
+        //
+        //     console.log("sliderInner= ", sliderInner)
+        //     if (sliderInner) {
+        //         sliderInner.list.style.top = '0';
+        //     }
+        //     // sliderRef.current.scrollTo({top: 0, behavior: 'smooth'});
+        // }
+    }
+
     const settings = {
         dots: false,
         infinite: false,
@@ -366,6 +392,7 @@ const BodyContents = React.memo((props) => {
                                                 }}/></div>}
                                                 height={"0"}
                                                 onScroll={!isSlide ? handleIsScroll : ""}
+
                                             >
 
                                                 {ele.values.map((data, index) => (
@@ -384,14 +411,6 @@ const BodyContents = React.memo((props) => {
                         }
                     </Slider>
                 </div>
-
-                {isLogin ?
-                    <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
-                        <img src={"/images/icons/writeAdd.png"}/>
-                        {!isSlide ? <span>글쓰기</span> : ""}
-                    </div> : ""}
-
-
             </>
         );
     } else if (error) {
@@ -423,8 +442,9 @@ const BodyContents = React.memo((props) => {
                                                 loader={<div className={classes.loadingDiv}><Lottie options={{
                                                     animationData: animationData
                                                 }}/></div>}
-                                                height={"0"}
+                                                height={"100%"}
                                                 onScroll={!isSlide ? handleIsScroll : ""}
+                                                ref={infRef}
                                             >
 
                                                 {ele.values.map((data, index) => (
@@ -445,10 +465,22 @@ const BodyContents = React.memo((props) => {
                 </div>
 
                 {isLogin ?
-                    <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
-                        <img src={"/images/icons/writeAdd.png"}/>
-                        {!isSlide ? <span>글쓰기</span> : ""}
-                    </div> : ""}
+                    <>
+                        <div onClick={handleWritePage} className={!isSlide ? classes.writeBox : classes.smallWriteBox}>
+                            <img src={"/images/icons/writeAdd.png"}/>
+                            {!isSlide ? <span>글쓰기</span> : ""}
+                        </div>
+                        {isSlide ?
+                            <div onClick={handleTopClick} className={classes.upArrowBoxWith}>
+                                <img src={"/images/icons/upBtn.svg"}/>
+                            </div> : ""
+                        }
+                    </>
+                    :
+                    <div onClick={handleTopClick} className={classes.upArrowBoxWithout}>
+                        <img src={"/images/icons/upBtn.svg"}/>
+                    </div>
+                }
             </>
         )
     }

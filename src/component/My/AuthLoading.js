@@ -35,6 +35,7 @@ const AuthLoading = () => {
 
                 } else {
                     //todo 이미 가입된 사용자임, 토큰 쿠키에 세팅 후 사용자 정보로 화면 세팅
+                    setCookie('jwt', response.data.token.data.token, {path: '/'});
                     window.location.href = '/main'
                 }
             }

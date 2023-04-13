@@ -6,6 +6,7 @@ import {modalActions} from "../../store/modal-slice";
 import {mainDataActions} from "../../store/mianData-slice";
 import useHttp from "../../hooks/use-http";
 import {toastActions} from "../../store/toast-slice";
+import {loginActions} from "../../store/login-slice";
 
 function PostModal(){
     const dispatch = useDispatch()
@@ -23,6 +24,8 @@ function PostModal(){
     const [setting, setSetting] = useState(false)
 
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
+
+    const isLogin = useSelector((state) => state.main.isLogin)
 
     useEffect(()=>{
         if(openType) {
@@ -148,6 +151,13 @@ function PostModal(){
         }))
     }
 
+    const handleLogin = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        dispatch(loginActions.handleOpen({open:true}))
+    }
+
     return (
         !setting ? "" :
         <div className={open ? classes.box : classes.unBox}>
@@ -179,13 +189,13 @@ function PostModal(){
                 <textarea value={data.content ?? ""} readOnly={true}/>
             </div>
             <div className={classes.footer}>
-                <div onClick={handleLike} className={classes.likeDiv}>
+                <div onClick={isLogin ? handleLike : handleLogin} className={classes.likeDiv}>
                     <img src={like ? "/images/icons/colorHeart.png" : "/images/icons/heart.png"}/>
                     <span>
                         {likeNum}
                     </span>
                 </div>
-                <div onClick={handleFavorite} className={classes.favoriteDiv}>
+                <div onClick={isLogin ? handleFavorite : handleLogin} className={classes.favoriteDiv}>
                     <img src={favorite ? "/images/icons/colorStar.png" : "/images/icons/star.png"}/>
                 </div>
             </div>

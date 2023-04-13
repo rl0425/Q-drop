@@ -13,7 +13,7 @@ const AuthLoading = () => {
     const url = "sungwoo-net.p-e.kr"
     const location = useLocation();
     const KAKAO_CODE = location.search.split('=')[1];
-    const [cokkies, setCookie] = useCookies(['jwt']);
+    const [cookies, setCookie] = useCookies(['jwt']);
     const history = useNavigate();
 
     //카카오 로그인 관련한 클래스 주입

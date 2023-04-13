@@ -37,3 +37,40 @@ body{
     height: fit-content;
     max-height: fit-content;
 }
+
+
+::-webkit-scrollbar {
+    width: 3px;
+    background-color: #1A1B1E;
+    border-radius: 10px;
+    right: 10px;
+    transition: opacity 0.5s ease-in-out;
+    /*margin-right: 4px;*/
+}
+
+/* 수직 스크롤바 thumb(스크롤바 핸들)에 대한 스타일 설정 */
+::-webkit-scrollbar-thumb {
+    background-color: #929292;
+    border-radius: 5px;
+    /*margin-right: 4px;*/
+    right: 10px;
+
+}
+
+/* 수평 스크롤바 전체에 대한 스타일 설정 */
+::-webkit-scrollbar {
+    height: 0px;
+    background-color: none;
+    border-radius: 5px;
+    margin-right: 4px;
+    right: 10px;
+
+}
+
+/* 수평 스크롤바 thumb에 대한 스타일 설정 */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+    right: 10px;
+
+}

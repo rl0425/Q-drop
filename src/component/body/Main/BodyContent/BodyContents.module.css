@@ -30,6 +30,14 @@
     overflow: scroll;
 }
 
+.scrollDiv::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollComponentDiv::-webkit-scrollbar {
+    /*display: none;*/
+}
+
 .infinite-scroll-component{
     overflow: scroll !important;
 }
@@ -108,7 +116,7 @@
     height: fit-content;
 }
 
-.writeBox, .smallWriteBox, .upArrowBoxWith, upArrowBoxWithout{
+.writeBox, .smallWriteBox, .upArrowBoxWith, .upArrowBoxWithout{
     position: absolute;
     display: flex;
     align-items: center;
@@ -136,6 +144,11 @@
     background: none;
 }
 
+.upArrowBoxWithout{
+    bottom: 0px;
+    right: 0px;
+}
+
 .upArrowBoxWith{
     bottom: 65px;
     right: 4px;
@@ -143,6 +156,7 @@
 
 .smallWriteBox{
     width: 56px;
+
 }
 
 .writeBox > img,

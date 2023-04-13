@@ -16,10 +16,8 @@ import ContentList from "./ContentList";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Lottie from 'lottie-react-web';
 
-import PullToRefresh from "react-pull-to-refresh";
 import animationData from '../../../../jsons/spinner.json';
 import {writeActions} from "../../../../store/write-slice";
-import ReactPullToRefresh from "react-pull-to-refresh";
 
 const BodyContents = React.memo((props) => {
     const [category, setCategory] = useState([])
@@ -39,9 +37,6 @@ const BodyContents = React.memo((props) => {
     // 슬라이드 여부
     const [isSlide, setIsSlide] = useState(false)
 
-    // pullToRequest
-    const [isPull, setIsPull] = useState(false)
-
     // 슬라이더
     const index = useSelector((state) => state.main.index)
     const entry = useSelector((state) => state.main.entry)
@@ -56,6 +51,38 @@ const BodyContents = React.memo((props) => {
 
     // reducer data
     const mainData = useSelector((state) => state.main.contentList)
+
+    // 스크롤바 표시 여부
+    const [showScrollbar, setShowScrollbar] = useState(false);
+
+
+    const [refCount, setRefCount] = useState(0); // useRef 개수를 나타내는 상태 변수
+    const infiniteScrollRefs = useRef([]); // useRef를 저장할 배열 ref
+
+
+    useEffect(() => {
+        getData();
+    }, [props.categoryData, props.reloadSwitch]);
+
+    useEffect(() => {
+        if (category.length > 0) {
+            handleReload()
+
+        }
+    }, [mainData])
+
+    useEffect(() => {
+        if (category.length > 0) {
+            setDataOrder();
+            setTimeout(() => {
+                setDataLoaded(true)
+            }, 3000)
+        }
+    }, [sortType]);
+
+    useEffect(() => {
+        handleIndexChange()
+    }, [index, sortType]);
 
     const getData = () => {
         setPageNum(0)
@@ -294,62 +321,43 @@ const BodyContents = React.memo((props) => {
         getMoreDatas(props)
     }
 
-    useEffect(() => {
-        console.log("1112")
-        getData();
-    }, [props.categoryData, props.reloadSwitch]);
-
-    useEffect(() => {
-        if (category.length > 0) {
-            handleReload()
-
-        }
-    }, [mainData])
-
-    useEffect(() => {
-        if (category.length > 0) {
-            setDataOrder();
-            setTimeout(() => {
-                setDataLoaded(true)
-            }, 3000)
-        }
-    }, [sortType]);
-
-    useEffect(() => {
-        handleIndexChange()
-    }, [index, sortType]);
 
     const handleIsScroll = () => {
         setIsSlide(true)
+
+        setShowScrollbar(true); // 스크롤바 보이기
+        // 일정 시간(여기서는 3초) 후에 스크롤바 숨기기
+        setTimeout(() => {
+            setShowScrollbar(false);
+        }, 3000);
     };
+
+    // 스크롤 이벤트 핸들러
+    const handleScroll = () => {
+        setShowScrollbar(true); // 스크롤바 보이기
+        // 일정 시간(여기서는 3초) 후에 스크롤바 숨기기
+        setTimeout(() => {
+            setShowScrollbar(false);
+        }, 3000);
+    };
+
+    const loader = (
+        <div className={classes.loadingDiv}>
+            {/* Lottie 애니메이션 컴포넌트 */}
+            <Lottie options={{ animationData: animationData }} />
+        </div>
+    );
 
     const handleWritePage = () => {
         dispatch(writeActions.handleOpen({open: true}))
     }
 
     const handleTopClick = () =>{
-        const sliderElement = infRef.current;
-        // sliderElement.onStart()
-        // sliderElement.lastScrollTop = 0
-        sliderElement.scrollTop = 0; // scrollTop을 0으로 설정하여 스크롤을 가장 위로 이동
+        const firstDiv = infiniteScrollRefs.current[index]?.el?.querySelector('div:first-child')
+        if (firstDiv) {
+            firstDiv.scrollIntoView({ behavior: 'smooth' });
+        }
 
-
-        console.log("infRef.current ", sliderElement)
-
-
-        // console.log(" sliderRef.current =",  sliderRef.current)
-        // if(sliderRef.current) {
-        //     sliderRef.current.slickGoTo(0, true); // slickGoTo 메소드를 사용하여 슬라이더의 스크롤을 가장 위로 이동
-        //
-        //
-        //     const sliderInner = sliderRef.current.innerSlider;
-        //
-        //     console.log("sliderInner= ", sliderInner)
-        //     if (sliderInner) {
-        //         sliderInner.list.style.top = '0';
-        //     }
-        //     // sliderRef.current.scrollTo({top: 0, behavior: 'smooth'});
-        // }
     }
 
     const settings = {
@@ -361,7 +369,6 @@ const BodyContents = React.memo((props) => {
         initialSlide: 0,
         afterChange: handleSlideChange
     };
-
 
     if (isLoading || !dataLoaded) {
         return (
@@ -392,7 +399,6 @@ const BodyContents = React.memo((props) => {
                                                 }}/></div>}
                                                 height={"0"}
                                                 onScroll={!isSlide ? handleIsScroll : ""}
-
                                             >
 
                                                 {ele.values.map((data, index) => (
@@ -427,7 +433,10 @@ const BodyContents = React.memo((props) => {
                         {(!category || category.length === 0) ? <div></div> :
                             category.map((ele, index) => {
                                 return (
-                                    <div key={uuidv4()} className={classes.scrollDiv} style={{height: "fit-content"}}>
+                                    <div
+                                        key={uuidv4()}
+                                        className={classes.scrollDiv}
+                                        style={{height: "fit-content"}}>
                                         {ele.values.length === 0 ?
                                             <div className={classes.emptyItemBox}>
                                                 <span>게시글이 존재하지 않습니다.</span>
@@ -435,16 +444,15 @@ const BodyContents = React.memo((props) => {
                                             </div> :
 
                                             <InfiniteScroll
+                                                ref={(el) => (infiniteScrollRefs.current[index] = el)}
+                                                className={classes.scrollComponentDiv}
                                                 dataLength={ele.values.length}
                                                 next={() => getMoreData(ele)}
                                                 hasMore={!pageEnd[index].end}
                                                 style={{overflow: "scroll", height: "100%"}}
-                                                loader={<div className={classes.loadingDiv}><Lottie options={{
-                                                    animationData: animationData
-                                                }}/></div>}
+                                                loader={showScrollbar ? loader : null} // 스크롤바 보이는 동안만 로더 컴포넌트 렌더링
                                                 height={"100%"}
                                                 onScroll={!isSlide ? handleIsScroll : ""}
-                                                ref={infRef}
                                             >
 
                                                 {ele.values.map((data, index) => (
@@ -452,7 +460,6 @@ const BodyContents = React.memo((props) => {
                                                                  onUpdateCategory={handleCategoryUpdate}
                                                                  dataLoaded={true}/>
                                                 ))}
-
 
                                             </InfiniteScroll>
                                         }

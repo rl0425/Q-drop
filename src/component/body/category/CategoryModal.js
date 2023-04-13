@@ -241,7 +241,9 @@ function CategoryModal(){
                     <div className={classes.head}>
                         <div className={classes.header}>
                             <div className={classes.spanHeader}><span>관심 카테고리 설정</span></div>
-                            <div onClick={closeEvt} className={classes.exit}><span>닫기</span><img/></div>
+                            <div onClick={closeEvt} className={classes.exit}>
+                                <img src={"/images/icons/exit.png"}/>
+                            </div>
                         </div>
                         <div className={classes.categorySet}>
                             {tasks.map((ele, index) => {

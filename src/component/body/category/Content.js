@@ -23,7 +23,7 @@ function Content(props){
 
         <div ref={ref} onClick={hasChecked ? (e) => clickEvt(e,"remove") : (e) => clickEvt(e,"add")}
              className={hasChecked ? `${classes.box} ${classes.active}` : classes.box}>
-            {hasChecked ? <img src={"/images/icons/fullCircle.png"}/> : <img src={"/images/icons/circle.png"}/>}
+            {!hasChecked ? <img src={"/images/icons/circle.png"}/> : (props.type && props.type === "write") ? <img src={"/images/icons/radioActive.svg"}/> : <img src={"/images/icons/fullCircle.png"}/> }
             <span>{props.data.name}</span>
         </div>
 

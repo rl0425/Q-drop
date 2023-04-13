@@ -29,7 +29,6 @@ function Search(){
     }, [])
 
     useEffect(() => {
-        console.log("searchData= ", searchValue)
         inputRef.current.value = searchValue;
     }, [searchValue]);
 
@@ -68,7 +67,6 @@ function Search(){
     const handleClickRecord = (element) => {
         getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=&search=${element}&sortTarget=createTime&sortType=desc`}, (taskObj) => {
             setHasSearch(true)
-            console.log("element= ", element)
             setSearchValue(element)
             setSearchData(taskObj)
         })
@@ -85,6 +83,7 @@ function Search(){
 
     const handleSearchChange = (e) => {
         setSearchValue('');
+        setHasSearch(false)
     }
 
     return (
@@ -129,7 +128,9 @@ function Search(){
                         </ul>
                     </div>
                 </div>
-            </div> :
+            </div>
+
+            :
 
             searchData.length === 0 ?
                 <div className={classes.noResultCont}><span>검색 결과가 없어요.</span></div>

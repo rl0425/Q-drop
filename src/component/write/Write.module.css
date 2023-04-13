@@ -121,5 +121,23 @@ input:focus, textarea:focus {
 
 input::placeholder{
     color: #64666D;
+}
+
+.completeDiv {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    color: #64666D;
+    transition: all 0.3s linear;
+}
+
+.completeDiv > .completeActive{
+    color: #48BAFB;
+    transition: all 0.3s linear;
 
 }

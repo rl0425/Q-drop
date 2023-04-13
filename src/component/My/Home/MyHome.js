@@ -27,11 +27,21 @@ function MyHome(){
     }
 
     const handleWritten = (e) => {
-        dispatch(myPageActions.changeWrittenOpen({writtenOpen:true}))
+        if(isLogin) {
+            dispatch(myPageActions.changeWrittenOpen({writtenOpen: true}))
+        }
+        else{
+            dispatch(loginActions.handleOpen({open:true}))
+        }
     }
 
     const handleFavorite = (e) => {
-        dispatch(myPageActions.changeFavoriteOpen({favoriteOpen:true}))
+        if(isLogin) {
+            dispatch(myPageActions.changeFavoriteOpen({favoriteOpen: true}))
+        }
+        else{
+            dispatch(loginActions.handleOpen({open:true}))
+        }
     }
 
     const handleWithdrawal = (e) => {

@@ -18,6 +18,7 @@ function Write(){
     const [content, setContent] = useState("")
     const [category, setCategory] = useState("")
     const [categoryId, setCategoryId] = useState("")
+    const [completeActive, setCompleteActive] = useState(false)
 
     const dataInfo = useSelector((state) => state.modal.dataInfo)
 
@@ -28,6 +29,7 @@ function Write(){
 
         if(dataInfo.author){
             handleGetContents()
+            setCompleteActive(true)
         }
         else{
             dispatch(writeActions.handleCategoryOpen({categoryOpen:true}))
@@ -126,6 +128,24 @@ function Write(){
 
     const handleTextAreaEvt = (e) => {
         setContent(e.target.value)
+
+        if(title && e.target.value){
+            setCompleteActive(true)
+        }
+        if(!e.target.value){
+            setCompleteActive(false)
+        }
+    }
+
+    const handleTitleEvt = (e) => {
+        setTitle(e.target.value)
+
+        if(content && e.target.value){
+            setCompleteActive(true)
+        }
+        if(!e.target.value){
+            setCompleteActive(false)
+        }
     }
 
     return (
@@ -135,7 +155,14 @@ function Write(){
                     <img onClick={handleExit} src={"/images/icons/exit.png"}/>
                     <span>노트 작성</span>
                     {dataInfo.author ?
-                        <label onClick={handleEditCompleteBtn}>수정</label> :  <label onClick={handleCompleteBtn}>완료</label>}
+                        <div className={classes.completeDiv}>
+                            <label className={completeActive ? classes.completeActive : ""} onClick={handleEditCompleteBtn}>수정</label>
+                        </div>
+                        :
+                        <div className={classes.completeDiv}>
+                            <label className={completeActive ? classes.completeActive : ""} onClick={handleCompleteBtn}>완료</label>
+                        </div>
+                    }
                 </div>
                 <div className={classes.body}>
                     <div onClick={handleOpenCategory} className={classes.categoryBox}>
@@ -144,7 +171,7 @@ function Write(){
                     </div>
                     <div className={classes.contentBox}>
                         <div className={classes.questionBox}>
-                            <input onChange={(e) => setTitle(e.target.value)} value={title} placeholder={"질문을 입력하세요"} />
+                            <input onChange={(e) =>handleTitleEvt(e)} value={title} placeholder={"질문을 입력하세요"} />
                         </div>
                         <div className={classes.answerBox}>
                             <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />

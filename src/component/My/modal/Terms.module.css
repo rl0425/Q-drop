@@ -85,6 +85,7 @@
     height: 3px;
     background: #DADCE1;
     transition: all 0.15s ease;
+    border-radius: 10px;
 }
 
 .bottomTwo{

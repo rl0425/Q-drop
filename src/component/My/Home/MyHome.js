@@ -53,7 +53,6 @@ function MyHome(){
     }
 
     const handleLogout = (e) => {
-
         removeCookie('jwt');
 
         dispatch(mainSectorActions.changeSector({type: "home"}))
@@ -72,9 +71,6 @@ function MyHome(){
 
     return (
         <div className={classes.box}>
-            {/*<div className={classes.box}>*/}
-            {/*    <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>*/}
-            {/*</div>*/}
             <div className={classes.head}>
                 <span>마이페이지</span>
             </div>

@@ -233,11 +233,9 @@ function CategoryModal(){
         return (
             <>
                 <div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>
-                {/*<div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>*/}
 
                 </div>
                 <div ref={elementRef} className={openAnimation ? classes.box : classes.nonBox}>
-                {/*<div className={openAnimation ? classes.box : classes.nonBox}>*/}
                     <div className={classes.head}>
                         <div className={classes.header}>
                             <div className={classes.spanHeader}><span>관심 카테고리 설정</span></div>

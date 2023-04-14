@@ -32,14 +32,12 @@ function CategoryModal(){
     const elementRef = useRef(null);
 
     useEffect(() => {
-        console.log("11")
 
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' }, (taskObj) =>{
                 taskObj.map((ele) => (
                     ele.allSelect = false
                 ))
-                console.log("taskObj = ", taskObj)
                 setTasks(taskObj);
 
                 setSubjectList(taskObj)

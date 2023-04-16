@@ -192,16 +192,16 @@ const ContentList = forwardRef((props, ref) => {
                         </div>
                         <div className={classes.answerBox}><span>{data.content}</span></div>
                         <div className={classes.optBox}>
-                            <div className={classes.heartBox} onClick={isLogin ? handleLikeClick : handleLogin}>
+                            <div className={classes.heartBox} onClick={isLogin ? handleLikeClick : handleLogin} style={{width:"48px"}}>
                                 <img style={{width: "20px", height: "17px"}}
                                      src={likeSrc}/>
                                 <span>{likeCount}</span>
                             </div>
-                            <div onClick={isLogin ? handleFavoriteClick : handleLogin}>
+                            <div onClick={isLogin ? handleFavoriteClick : handleLogin} style={{width:"57px"}}>
                                 <img style={{width: "20px", height: "17px"}}
                                      src={favoriteSrc}/>
                             </div>
-                            <div onClick={(e) => optClickEvt(e, props)}>
+                            <div onClick={(e) => optClickEvt(e, props)} style={{width:"19px"}}>
                                 <img style={{width: "3px", height: "14px"}}
                                      src={"/images/icons/option.png"}/>
                             </div>

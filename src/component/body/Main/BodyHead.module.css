@@ -61,7 +61,12 @@
     color: #9C9EA7;
     font-weight: 600;
     transition: all 0.2s linear;
+    cursor: pointer;
     gap: 4px;
+}
+
+.categoryBox > span{
+    cursor: pointer;
 }
 
 .categoryBox.active{

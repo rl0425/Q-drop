@@ -78,12 +78,13 @@
     align-items: center;
     width: 100%;
     justify-content: flex-end;
-    gap: 24px;
+    /*gap: 24px;*/
 }
 
 .optBox > div{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 22px;
     gap: 6px;
 }

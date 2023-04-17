@@ -55,6 +55,11 @@ const BodyContents = React.memo((props) => {
     // 스크롤바 표시 여부
     const [showScrollbar, setShowScrollbar] = useState(false);
 
+    // 스크롤바 액션
+    const [scrollAction, setScrollAction] = useState(false)
+    // 스크롤 타이머 이벤트를 저장할 변수
+    const [timeoutId, setTimeoutId] = useState(null);
+
 
     const [refCount, setRefCount] = useState(0); // useRef 개수를 나타내는 상태 변수
     const infiniteScrollRefs = useRef([]); // useRef를 저장할 배열 ref
@@ -323,20 +328,17 @@ const BodyContents = React.memo((props) => {
     const handleIsScroll = () => {
         setIsSlide(true)
 
-        setShowScrollbar(true); // 스크롤바 보이기
-        // 일정 시간(여기서는 3초) 후에 스크롤바 숨기기
-        setTimeout(() => {
-            setShowScrollbar(false);
-        }, 3000);
-    };
+        setScrollAction(true); // 스크롤바 보이기
 
-    // 스크롤 이벤트 핸들러
-    const handleScroll = () => {
-        setShowScrollbar(true); // 스크롤바 보이기
-        // 일정 시간(여기서는 3초) 후에 스크롤바 숨기기
-        setTimeout(() => {
-            setShowScrollbar(false);
+        if (timeoutId) {
+            clearTimeout(timeoutId); // 이전 타임아웃 취소
+        }
+
+        const newTimeoutId = setTimeout(() => {
+            setScrollAction(false);
         }, 3000);
+
+        setTimeoutId(newTimeoutId); // 새로운 타임아웃 ID 저장
     };
 
     const loader = (
@@ -355,7 +357,6 @@ const BodyContents = React.memo((props) => {
         if (firstDiv) {
             firstDiv.scrollIntoView({ behavior: 'smooth' });
         }
-
     }
 
     const settings = {
@@ -395,6 +396,7 @@ const BodyContents = React.memo((props) => {
                                                 loader={<div className={classes.loadingDiv}><Lottie options={{
                                                     animationData: animationData
                                                 }}/></div>}
+                                                className={classes.noScrollComponent}
                                                 height={"0"}
                                                 onScroll={!isSlide ? handleIsScroll : ""}
                                             >
@@ -443,14 +445,14 @@ const BodyContents = React.memo((props) => {
 
                                             <InfiniteScroll
                                                 ref={(el) => (infiniteScrollRefs.current[index] = el)}
-                                                className={classes.scrollComponentDiv}
+                                                className={scrollAction ? classes.scrollComponentDiv : classes.noScrollComponent}
                                                 dataLength={ele.values.length}
                                                 next={() => getMoreData(ele)}
                                                 hasMore={!pageEnd[index].end}
                                                 style={{overflow: "scroll", height: "100%"}}
                                                 loader={showScrollbar ? loader : null} // 스크롤바 보이는 동안만 로더 컴포넌트 렌더링
                                                 height={"100%"}
-                                                onScroll={!isSlide ? handleIsScroll : ""}
+                                                onScroll={handleIsScroll}
                                             >
 
                                                 {ele.values.map((data, index) => (

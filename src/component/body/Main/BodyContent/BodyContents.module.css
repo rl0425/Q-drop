@@ -32,10 +32,32 @@
 
 .scrollDiv::-webkit-scrollbar {
     display: none;
+    transition: all 0.3s linear;
 }
 
-.scrollComponentDiv::-webkit-scrollbar {
+.scrollComponentDiv, .noScrollComponent{
+    transition: all 0.3s linear;
+}
+
+.scrollComponentDiv::-webkit-scrollbar,
+.noScrollComponent::-webkit-scrollbar{
+    opacity: 0;
+    transition: all 0.3s linear;
     /*display: none;*/
+}
+
+.scrollComponentDiv::-webkit-scrollbar-thumb {
+    background-color: #929292;
+    /*background-color: #1A1B1E;*/
+    border-radius: 5px;
+    transition: all 0.3s linear;
+}
+
+.noScrollComponent::-webkit-scrollbar-thumb {
+    /*background-color: #929292;*/
+    background-color: #1A1B1E;
+    border-radius: 5px;
+    transition: all 0.3s linear;
 }
 
 .infinite-scroll-component{

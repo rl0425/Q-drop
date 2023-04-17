@@ -25,8 +25,6 @@ function Write(){
     useEffect(()=>{
         setOpen(true)
 
-        console.log("dataInfo ", dataInfo)
-
         if(dataInfo.author){
             handleGetContents()
             setCompleteActive(true)

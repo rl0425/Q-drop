@@ -76,7 +76,7 @@ const BodyContents = React.memo((props) => {
             setDataOrder();
             setTimeout(() => {
                 setDataLoaded(true)
-            }, 3000)
+            }, 1000)
         }
     }, [sortType]);
 
@@ -89,7 +89,6 @@ const BodyContents = React.memo((props) => {
 
         if (pageEnd.length > 0) {
             setPageEnd(prev => prev.map(item => ({...item, end: false})));
-            // setPageNum(0)
         }
         const subCategoryPromise = new Promise(async (resolve, reject) => {
             try {
@@ -111,7 +110,6 @@ const BodyContents = React.memo((props) => {
                             fetchTasks(
                                 {
                                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
-                                    // url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5&sortTarget=createTime&sortType=desc`,
                                 },
                                 (taskObj) => {
                                     resolve(taskObj);

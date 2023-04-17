@@ -154,7 +154,7 @@ const ContentList = forwardRef((props, ref) => {
 
     if (!dataLoaded) {
        return(<>
-            <div onClick={openDetail} className={classes.itemBox} style={{paddingLeft:"0px"}} data={data} ref={ref}>
+            <div onClick={openDetail} className={classes.itemBox} style={{marginLeft:"0px"}} data={data} ref={ref}>
                 <div className={classes.qSpanBox}>
                     <div className={classes.qSpan}><span></span></div>
                 </div>

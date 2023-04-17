@@ -36,9 +36,21 @@ function MyInformation(){
 
     const handleSaveNickname = () => {
         if(change) {
+            const regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣\s]*$/; // 허용되는 문자 패턴 정규식
+
             if (searchValue === profile.nickname) {
                 dispatch(toastActions.handleToastOpt({msg:"기존 닉네임과 동일해요.", open:true}))
-            } else {
+            }
+
+            else if (searchValue.length < 2 || searchValue.length > 50) {
+                dispatch(toastActions.handleToastOpt({msg:"입력값은 2~50자 이상이어야 해요.", open:true}))
+            }
+
+            else if (!regex.test(searchValue)) {
+                dispatch(toastActions.handleToastOpt({msg:"닉네임은 특수문자를 포함하면 안돼요.", open:true}))
+            }
+
+            else {
                 fetchTasks({
                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users/profile`,
                     type:"post",

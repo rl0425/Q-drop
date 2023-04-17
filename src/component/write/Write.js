@@ -72,8 +72,6 @@ function Write(){
         }
         else if(!content){
             const lines = content.split('\n');
-            console.log("content ", content)
-            console.log("lines ", lines)
 
             dispatch(toastActions.handleToastOpt({msg:"내용을 입력해주세요.", open:true}))
         }
@@ -115,7 +113,7 @@ function Write(){
                 url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/update/${dataInfo.id}`,
                 type: "post",
                 data: {"title": title, "content": content, "subcategory_id": categoryId}
-            }, (taskObj) => {
+            }, () => {
                 handleExit()
                 dispatch(toastActions.handleToastOpt({msg:"수정을 완료했습니다", open:true}))
                 dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))

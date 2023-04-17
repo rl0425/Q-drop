@@ -4,10 +4,8 @@ import classes from "./ContentList.module.css"
 import {modalActions} from "../../../../store/modal-slice";
 import {useDispatch, useSelector} from "react-redux";
 import useHttp from "../../../../hooks/use-http";
-import {logDOM} from "@testing-library/react";
 import moment from "moment";
 import Skeleton from "@mui/material/Skeleton";
-import {toastActions} from "../../../../store/toast-slice";
 import {loginActions} from "../../../../store/login-slice";
 
 const ContentList = forwardRef((props, ref) => {
@@ -69,13 +67,6 @@ const ContentList = forwardRef((props, ref) => {
         };
 
         props.onUpdateCategory(e, {type: "like", kind: type, data: tempData})
-
-        // if(type === "check"){
-        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
-        // }
-        // else{
-        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
-        // }
     }
 
     const handleFavoriteClick = (e) => {
@@ -101,14 +92,6 @@ const ContentList = forwardRef((props, ref) => {
             }
         };
         props.onUpdateCategory(e, {type: "like", kind: type, data: tempData})
-
-        // if(type === "check"){
-        //     dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에 추가했어요.", open:true}))
-        // }
-        // else{
-        //     dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에서 삭제했어요", open:true}))
-        // }
-
     }
 
     const changeData = () => {

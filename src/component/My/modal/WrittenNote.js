@@ -148,7 +148,10 @@ function WrittenNote(){
                                 </InfiniteScroll>
 
                             </div> :
-                            <div className={classes.emptyBox}><span>게시글이 없어요.</span></div>
+                            <div className={classes.emptyBox}>
+                                <img src={"/images/mypage/icons/noPost.svg"}/>
+                                <span>게시글이 없어요.</span>
+                            </div>
                         }
 
                     </div>

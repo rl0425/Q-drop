@@ -17,9 +17,9 @@ const ContentList = forwardRef((props, ref) => {
     const [dataLoaded, setDataLoaded] = useState(props.dataLoaded)
     const [temp, setTemp] = useState(data)
 
-    const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.png" : "images/icons/heart.png")
+    const [likeSrc, setLikeSrc] = useState(data.board_like.user_like_status ? "images/icons/colorHeart.svg" : "images/icons/heart.svg")
     const [likeCount, setLikeCount] = useState(data.board_like.total_like_count)
-    const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.png" : "images/icons/star.png")
+    const [favoriteSrc, setFavoriteSrc] = useState(data.bookmark_info.user_bookmark_status ? "images/icons/colorStar.svg" : "images/icons/star.svg")
 
     const {isLoading, error, sendRequest: fetchTasks} = useHttp();
 
@@ -41,7 +41,7 @@ const ContentList = forwardRef((props, ref) => {
         e.preventDefault()
 
         // Update like status and count
-        const type = likeSrc === "images/icons/colorHeart.png" ? "uncheck" : "check"
+        const type = likeSrc === "images/icons/colorHeart.svg" ? "uncheck" : "check"
         const newLikeCount = likeCount + (type === "uncheck" ? -1 : 1);
 
         // Make API call to update like status
@@ -70,22 +70,21 @@ const ContentList = forwardRef((props, ref) => {
 
         props.onUpdateCategory(e, {type: "like", kind: type, data: tempData})
 
-        if(type === "check"){
-            dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
-        }
-        else{
-            dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
-        }
-
+        // if(type === "check"){
+        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
+        // }
+        // else{
+        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
+        // }
     }
 
     const handleFavoriteClick = (e) => {
         e.stopPropagation()
         e.preventDefault()
 
-        const type = favoriteSrc === "images/icons/colorStar.png" ? "uncheck" : "check"
+        const type = favoriteSrc === "images/icons/colorStar.svg" ? "uncheck" : "check"
 
-        const newLikeSrc = type === "uncheck" ? "images/icons/star.png" : "images/icons/colorStar.png";
+        const newLikeSrc = type === "uncheck" ? "images/icons/star.svg" : "images/icons/colorStar.svg";
         setFavoriteSrc(newLikeSrc);
 
         if (type === "check") {
@@ -103,12 +102,12 @@ const ContentList = forwardRef((props, ref) => {
         };
         props.onUpdateCategory(e, {type: "like", kind: type, data: tempData})
 
-        if(type === "check"){
-            dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에 추가했어요.", open:true}))
-        }
-        else{
-            dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에서 삭제했어요", open:true}))
-        }
+        // if(type === "check"){
+        //     dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에 추가했어요.", open:true}))
+        // }
+        // else{
+        //     dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에서 삭제했어요", open:true}))
+        // }
 
     }
 

@@ -91,12 +91,12 @@ function PostModal(){
 
         dispatch(mainDataActions.handleContent({contentList: temp }))
 
-        if(type){
-            dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
-        }
-        else{
-            dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
-        }
+        // if(type){
+        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 눌렀어요", open:true}))
+        // }
+        // else{
+        //     dispatch(toastActions.handleToastOpt({msg:"좋아요를 취소했어요", open:true}))
+        // }
     }
 
     const handleFavorite = async () => {
@@ -131,12 +131,12 @@ function PostModal(){
 
         dispatch(mainDataActions.handleContent({ contentList: temp }))
 
-        if(type){
+/*        if(type){
             dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에 추가했어요.", open:true}))
         }
         else{
             dispatch(toastActions.handleToastOpt({msg:"즐겨찾기에서 삭제했어요", open:true}))
-        }
+        }*/
     }
 
     const handleOption = (e) => {
@@ -190,13 +190,13 @@ function PostModal(){
             </div>
             <div className={classes.footer}>
                 <div onClick={isLogin ? handleLike : handleLogin} className={classes.likeDiv}>
-                    <img src={like ? "/images/icons/colorHeart.png" : "/images/icons/heart.png"}/>
+                    <img src={like ? "/images/icons/colorHeart.svg" : "/images/icons/heart.svg"}/>
                     <span>
                         {likeNum}
                     </span>
                 </div>
                 <div onClick={isLogin ? handleFavorite : handleLogin} className={classes.favoriteDiv}>
-                    <img src={favorite ? "/images/icons/colorStar.png" : "/images/icons/star.png"}/>
+                    <img src={favorite ? "/images/icons/colorStar.svg" : "/images/icons/star.svg"}/>
                 </div>
             </div>
         </div>

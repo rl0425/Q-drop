@@ -9,7 +9,6 @@ function Entry(){
 
     }, [])
 
-
     return (
         <div className={classes.main}>
             <img src={"/images/icons/logo/mainLogo.svg"} />

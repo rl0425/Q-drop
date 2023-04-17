@@ -80,7 +80,7 @@ function MyHome(){
                         {!isLogin ?
                             <div>
                                 <div className={classes.logoImg}>
-                                    <img src={"/images/icons/tempLogo.png"} />
+                                    <img src={"/images/icons/logo/myPageLogo.svg"} />
                                 </div>
                                 <div className={classes.logoSpan}>
                                     <div className={classes.logoSpanHead}><span>로그인 / 회원가입</span></div>

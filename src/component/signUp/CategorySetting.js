@@ -31,7 +31,6 @@ function CategorySetting({rederPage}) {
                 taskObj.map((ele) => (
                     ele.allSelect = false
                 ))
-                console.log("taskObj = ", taskObj)
                 setTasks(taskObj);
 
                 setSubjectList(taskObj)
@@ -39,19 +38,6 @@ function CategorySetting({rederPage}) {
             }
         );
     }, [fetchTasks]);
-
-    // const animate = () => {
-    //     // 애니메이션 처리
-    //     elementRef.current.style.left = '100px';
-    //
-    //     // requestAnimationFrame으로 다시 애니메이션 호출
-    //     requestAnimationFrame(animate);
-    // };
-    //
-    // useEffect(() => {
-    //     // 컴포넌트가 마운트될 때 애니메이션 시작
-    //     requestAnimationFrame(animate);
-    // }, []);
 
     const setSubjectList = (taskObj) => {
         const selectedSubs = []
@@ -104,8 +90,6 @@ function CategorySetting({rederPage}) {
 
             const tempSet = data[0].subCategories
 
-            console.log("tempSet ", tempSet)
-
             const newCate = subs.reduce((acc, cur) => {
                 if (data[0].subCategories.some(item => item.id === cur)) {
                     // 현재 요소가 b 배열에 포함되어 있다면 제거
@@ -115,7 +99,6 @@ function CategorySetting({rederPage}) {
                 return [...acc, cur];
             }, []);
 
-            console.log("newCate= ", newCate)
             setSubs(newCate)
 
         }
@@ -164,6 +147,7 @@ function CategorySetting({rederPage}) {
             if(result) {
                 const updatedObj = {...tasks[taskIndex], allSelect: true};
                 const updatedArr = [...tasks.slice(0, taskIndex), updatedObj, ...tasks.slice(taskIndex + 1)];
+
                 setTasks(updatedArr);
             }
         }

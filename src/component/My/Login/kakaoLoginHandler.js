@@ -28,7 +28,7 @@ class KakaoLogin {
 
     loginWithKakao() {
         window.Kakao.Auth.authorize({
-            redirectUri: 'http://sungwoo-net.p-e.kr:3000/login/auth/code',
+            redirectUri: 'http://explorer-cat-api.p-e.kr:3000/login/auth/code',
             state: 'userme',
         });
     }

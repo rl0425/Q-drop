@@ -26,11 +26,11 @@ function Login() {
                 </div>
 
                 <div className={classes_login.login_btn_group}>
-                    <div className={classes_login.withKakao}>
+                    <div onClick={()=> {kakao.loginWithKakao()}} className={classes_login.withKakao}>
                         <div className={classes_login.logo_area}>
                             <img src="/images/icons/with_kakao.png"/>
                         </div>
-                        <div onClick={()=> {kakao.loginWithKakao()}} className={classes_login.login_text_area}>
+                        <div className={classes_login.login_text_area}>
                             <span>카카오로 3초만에 시작하기</span>
                         </div>
                         <div className={classes_login.btn_blank}>

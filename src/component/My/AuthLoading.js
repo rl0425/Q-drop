@@ -10,7 +10,6 @@ import Lottie from "lottie-react-web";
 
 //사용자가 로그인 요청시 로딩화면 컴포넌트 입니다.
 const AuthLoading = () => {
-    const url = "sungwoo-net.p-e.kr"
     const location = useLocation();
     const KAKAO_CODE = location.search.split('=')[1];
     const [cookies, setCookie] = useCookies(['jwt']);
@@ -29,12 +28,9 @@ const AuthLoading = () => {
                 console.log("user_profile22", response.data.token)
 
                 if (response.data.code === 1001) {
-                    //todo 회원가입 페이지로 이동 시켜야함 , 약관동의 및 닉네임 정도 받고
-                    setCookie('jwt', response.data.token.data.token, {path: '/'});
                     window.location.href = '/signup?page=0'
 
                 } else {
-                    //todo 이미 가입된 사용자임, 토큰 쿠키에 세팅 후 사용자 정보로 화면 세팅
                     setCookie('jwt', response.data.token.data.token, {path: '/'});
                     window.location.href = '/main'
                 }

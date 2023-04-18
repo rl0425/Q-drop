@@ -10,6 +10,8 @@ function UserAppSetWrapper() {
     const location = useLocation().search
     const [page,setPage] = useState(location.replace("?page=", ""))
 
+    console.log("page= ", page)
+
 
     const handlePageRender = (page) => {
         setPage(page);
@@ -19,11 +21,11 @@ function UserAppSetWrapper() {
         <>
             <ToastWrapper/>
             <div className={classes.wrapper_main}>
-                <div style ={{left: `${(100 * (0 - page))}%`}}>
+                <div style ={{left: `${(100 * (0 - page))}%`, display: `${page === "0" || page === 0 ? "block" : "none"}`}}>
                     <AgreeTerms rederPage = {handlePageRender}/>
                     <TermsWrapper />
                 </div>
-                <div style ={{left: `${(100 * (1 - page))}%`}}>
+                <div style ={{left: `${(100 * (1 - page))}%`, display: `${page === "1" || page === 1 ? "block" : "none"}`}}>
                     <CategorySetting  rederPage = {handlePageRender}/>
                 </div>
             </div>

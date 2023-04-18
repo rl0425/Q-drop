@@ -97,3 +97,27 @@
     padding: 20px;
     box-sizing: border-box;
 }
+
+.sliderDiv{
+    display: flex;
+    overflow: scroll;
+    height: calc(100% - 125px);
+}
+
+.sliderDiv > div{
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    height: 100%;
+    /*height: calc(100% - 125px);*/
+}
+
+.sliderDiv > div > div{
+    overflow: hidden;
+    height: 100%;
+}
+
+.sliderDiv > div > div > div{
+    overflow: scroll;
+    /*height: 100%;*/
+}

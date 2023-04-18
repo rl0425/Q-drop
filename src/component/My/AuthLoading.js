@@ -7,9 +7,12 @@ import classes from "./AuthLoading.module.css"
 
 import animationData from "../../jsons/spinner.json";
 import Lottie from "lottie-react-web";
+import {useDispatch} from "react-redux";
+import {loginActions} from "../../store/login-slice";
 
 //사용자가 로그인 요청시 로딩화면 컴포넌트 입니다.
 const AuthLoading = () => {
+    const dispatch = useDispatch()
     const location = useLocation();
     const KAKAO_CODE = location.search.split('=')[1];
     const [cookies, setCookie] = useCookies(['jwt']);
@@ -26,9 +29,11 @@ const AuthLoading = () => {
             //정상적으로 응답이 왔을 경우 : 토큰 저장 및 사용자 데이터 가입 유무 확인
             if(response.status === 200) {
                 console.log("user_profile22", response.data.token)
+                console.log("response= ", response)
 
                 if (response.data.code === 1001) {
-                    window.location.href = '/signup?page=0'
+                    dispatch(loginActions.handleTempData({data:response.data.data}))
+                    // window.location.href = '/signup?page=0'
 
                 } else {
                     setCookie('jwt', response.data.token.data.token, {path: '/'});

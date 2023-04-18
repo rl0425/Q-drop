@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {KakaoLogin} from "../My/Login/kakaoLoginHandler";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import classes from "./CategorySetting.module.css";
 import {v4 as uuidv4} from "uuid";
 import Slider from "react-slick";
@@ -21,22 +21,26 @@ function CategorySetting({rederPage}) {
     const elementRef = useRef(null);
 
     const dispatch = useDispatch()
+    const tempData = useSelector(state => state.login.temp)
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
+    console.log("tempData = ", tempData)
 
     useEffect(() => {
-
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' }, (taskObj) =>{
-                taskObj.map((ele) => (
-                    ele.allSelect = false
-                ))
-                setTasks(taskObj);
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/users/login/signup',
+                data:{email:tempData.email, nickname:tempData.profile.nickname, profileImage:tempData.profile.profile_image_url} }, (taskObj) => {
+                fetchTasks(
+                    {url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main'}, (taskObj) => {
+                        taskObj.map((ele) => (
+                            ele.allSelect = false
+                        ))
+                        setTasks(taskObj);
 
-                setSubjectList(taskObj)
-
-            }
-        );
+                        setSubjectList(taskObj)
+                    }
+                );
+            })
     }, [fetchTasks]);
 
     const setSubjectList = (taskObj) => {
@@ -165,6 +169,9 @@ function CategorySetting({rederPage}) {
     };
 
     const handleNextBtn = () => {
+        console.log("tempData = ", tempData)
+
+
         //todo 선택한 카테고리의 대한 검증을 끝내고 북마크에 추가한 뒤 후처리 기찬
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post",  data: {"id":subs}},

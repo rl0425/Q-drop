@@ -50,6 +50,9 @@ function Write(){
     const handleSetCategory = (ele) => {
         setCategory(ele.text)
         setCategoryId(ele.id[0])
+
+        console.log("ele = " , ele)
+
     }
 
     const handleExit = () => {
@@ -63,7 +66,7 @@ function Write(){
     }
 
     const handleCompleteBtn = () => {
-        if(!categoryId){
+        if(!category){
             dispatch(toastActions.handleToastOpt({msg:"카테고리를 설정해주세요.", open:true}))
         }
         else if(!title){

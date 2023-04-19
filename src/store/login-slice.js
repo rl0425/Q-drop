@@ -5,14 +5,10 @@ const loginSlice = createSlice({
     initialState: {
         msg:"",
         open:false,
-        temp:""
     },
     reducers: {
         handleOpen(state,action){
             state.open = action.payload.open
-        },
-        handleTempData(state,action){
-            state.temp = action.payload.data
         }
     }
 })

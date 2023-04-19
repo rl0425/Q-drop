@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import Content from "../body/category/Content";
 import useHttp from "../../hooks/use-http";
 import {toastActions} from "../../store/toast-slice";
+import {useCookies} from "react-cookie";
 
 
 function CategorySetting({rederPage}) {
@@ -21,26 +22,21 @@ function CategorySetting({rederPage}) {
     const elementRef = useRef(null);
 
     const dispatch = useDispatch()
-    const tempData = useSelector(state => state.login.temp)
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-    console.log("tempData = ", tempData)
+    const [cookies, setCookie, removeCookie] = useCookies(['tempData', 'jwt']);
 
     useEffect(() => {
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/users/login/signup',
-                data:{email:tempData.email, nickname:tempData.profile.nickname, profileImage:tempData.profile.profile_image_url} }, (taskObj) => {
-                fetchTasks(
-                    {url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main'}, (taskObj) => {
-                        taskObj.map((ele) => (
-                            ele.allSelect = false
-                        ))
-                        setTasks(taskObj);
+            {url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main'}, (taskObj) => {
+                taskObj.map((ele) => (
+                    ele.allSelect = false
+                ))
+                setTasks(taskObj);
 
-                        setSubjectList(taskObj)
-                    }
-                );
-            })
+                setSubjectList(taskObj)
+            }
+        );
     }, [fetchTasks]);
 
     const setSubjectList = (taskObj) => {
@@ -53,9 +49,7 @@ function CategorySetting({rederPage}) {
                     selectedSubs.push(data.sub_category_id)
                 }
             })
-
             const hasFalse = ele.bookmark_sub_categories.find((data) => data.selected === false)
-
 
             if(!hasFalse){
                 allSelectList.push(ele.main_category_id)
@@ -169,17 +163,28 @@ function CategorySetting({rederPage}) {
     };
 
     const handleNextBtn = () => {
-        console.log("tempData = ", tempData)
-
-
         //todo 선택한 카테고리의 대한 검증을 끝내고 북마크에 추가한 뒤 후처리 기찬
         fetchTasks(
-            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',  type:"post",  data: {"id":subs}},
-        );
-        window.location.href = '/main'
+            { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/users/login/signup',
+                type:"post",
+                data:{email:cookies.tempData.email, nickname:cookies.tempData.profile.nickname, profileImage:cookies.tempData.profile.profile_image_url} }, (taskObj) => {
+                console.log("taskObj= ", taskObj)
 
-        dispatch(toastActions.handleToastOpt({msg:"가입이 완료 되었어요.", open:true}))
+                removeCookie("tempData")
+                setCookie('jwt', taskObj.token.data.token, {path: '/'});
 
+                fetchTasks(
+                    {
+                        url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/sub/bookmark',
+                        type: "post",
+                        data: {"id": subs}
+                    },
+                );
+
+                window.location.href = '/main'
+                dispatch(toastActions.handleToastOpt({msg:"가입이 완료 되었어요.", open:true}))
+            }
+        )
     }
 
     // 헤더로 인덱스 변경

@@ -26,10 +26,19 @@
     margin-bottom: 16px;
 }
 
-.head > img{
+.hExitDiv{
     position: absolute;
-    left: 24px;
-    top: 33px;
+    left: 20px;
+    top: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+}
+
+.hExitDiv > img{
+
     width: 16px;
 }
 

@@ -96,8 +96,10 @@ const BodyContents = React.memo((props) => {
         const subCategoryPromise = new Promise(async (resolve, reject) => {
             try {
                 const promises = props.categoryData.map(async (ele) => {
+
                     return Promise.all(
                         ele.bookmark_sub_categories.map(async (data) => {
+
                             if (isLogin) {
                                 if (data.selected) {
                                     return data.sub_category_id;
@@ -107,13 +109,22 @@ const BodyContents = React.memo((props) => {
                             }
                         })
                     ).then((trueList) => {
-                        const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
+                        if(!trueList[0]){
+                            console.log("??")
+                        }
+
+                        const values = trueList.length === 0 ? [1000000000] : [...trueList];
+                        // const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
+                        console.log("trueList =" , trueList)
+                        console.log("values =" , values)
+
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {
                                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
                                 },
                                 (taskObj) => {
+                                    console.log("taskobj = ", taskObj)
                                     resolve(taskObj);
                                 }
                             );

@@ -50,9 +50,6 @@ function Write(){
     const handleSetCategory = (ele) => {
         setCategory(ele.text)
         setCategoryId(ele.id[0])
-
-        console.log("ele = " , ele)
-
     }
 
     const handleExit = () => {
@@ -151,7 +148,9 @@ function Write(){
         <>
             <div className={open ? classes.box : classes.unBox}>
                 <div className={classes.head}>
-                    <img onClick={handleExit} src={"/images/icons/exit.png"}/>
+                    <div className={classes.hExitDiv}>
+                        <img onClick={handleExit} src={"/images/icons/exit.png"}/>
+                    </div>
                     <span>노트 작성</span>
                     {dataInfo.author ?
                         <div className={classes.completeDiv}>

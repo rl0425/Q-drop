@@ -70,8 +70,7 @@ const useHttp = () => {
                         setIsLoading(false);
                     })
                     .catch(error => {
-                        console.log("requestConfig.url= ", requestConfig.url)
-                        console.log("Error= ", error)
+                        console.log(error)
                         setError(error);
                         setIsLoading(false);
                     });

@@ -10,9 +10,6 @@ function UserAppSetWrapper() {
     const location = useLocation().search
     const [page,setPage] = useState(location.replace("?page=", ""))
 
-    console.log("page= ", page)
-
-
     const handlePageRender = (page) => {
         setPage(page);
     }

@@ -168,7 +168,6 @@ function CategorySetting({rederPage}) {
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/users/login/signup',
                 type:"post",
                 data:{email:cookies.tempData.email, nickname:cookies.tempData.profile.nickname, profileImage:cookies.tempData.profile.profile_image_url} }, (taskObj) => {
-                console.log("taskObj= ", taskObj)
 
                 removeCookie("tempData")
                 setCookie('jwt', taskObj.token.data.token, {path: '/'});

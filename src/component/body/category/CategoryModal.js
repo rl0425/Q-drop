@@ -175,8 +175,6 @@ function CategoryModal(){
 
             const tempSet = data[0].subCategories
 
-            console.log("tempSet ", tempSet)
-
             const newCate = subs.reduce((acc, cur) => {
                 if (data[0].subCategories.some(item => item.id === cur)) {
                     // 현재 요소가 b 배열에 포함되어 있다면 제거
@@ -185,8 +183,6 @@ function CategoryModal(){
                 // 현재 요소가 b 배열에 포함되어 있지 않다면 새로운 배열에 추가
                 return [...acc, cur];
             }, []);
-
-            console.log("newCate= ", newCate)
 
             setSubs(newCate)
 

@@ -109,22 +109,13 @@ const BodyContents = React.memo((props) => {
                             }
                         })
                     ).then((trueList) => {
-                        if(!trueList[0]){
-                            console.log("??")
-                        }
-
-                        const values = trueList.length === 0 ? [1000000000] : [...trueList];
-                        // const values = trueList.length === 0 || !trueList[0] ? [1000000000] : [...trueList];
-                        console.log("trueList =" , trueList)
-                        console.log("values =" , values)
-
+                        const values = trueList.length === 0 || trueList[0] === undefined ? [1000000000] : [...trueList];
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {
                                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post?sub_id=${values.join(",")}&search=&paging_num=${0}&paging_count=5`,
                                 },
                                 (taskObj) => {
-                                    console.log("taskobj = ", taskObj)
                                     resolve(taskObj);
                                 }
                             );

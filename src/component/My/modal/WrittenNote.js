@@ -49,8 +49,6 @@ function WrittenNote(){
     }
 
     const handleGetData = () => {
-
-        console.log("12312312")
         getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my?paging_num=${0}&paging_count=7&sortType=desc`}, (taskObj) => {
             if(taskObj) {
                 setData(taskObj)

@@ -72,7 +72,6 @@ function WriteCategory(props){
         }
 
         if(ele.type === "add") {
-            console.log("ele =" ,ele)
             setSubs([ele.id])
             setSubName(ele.text)
         }
@@ -81,9 +80,6 @@ function WriteCategory(props){
     // 변경사항 완료 버튼 이벤트
     const handleComplete = () => {
         closeEvt()
-
-        console.log("subs = ", subs)
-        console.log("subName = ", subName)
         props.setCategory({id:subs, text:subName})
     }
 

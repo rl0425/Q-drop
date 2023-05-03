@@ -60,7 +60,6 @@ const BodyContents = React.memo((props) => {
     // 스크롤 타이머 이벤트를 저장할 변수
     const [timeoutId, setTimeoutId] = useState(null);
 
-    const [refCount, setRefCount] = useState(0); // useRef 개수를 나타내는 상태 변수
     const infiniteScrollRefs = useRef([]); // useRef를 저장할 배열 ref
 
     useEffect(() => {
@@ -109,7 +108,11 @@ const BodyContents = React.memo((props) => {
                             }
                         })
                     ).then((trueList) => {
-                        const values = trueList.length === 0 || trueList[0] === undefined ? [1000000000] : [...trueList];
+                        const values = trueList.length === 0 && trueList[0] === undefined ? [1000000000] : [...trueList];
+
+                        console.log("trueList= ", trueList)
+                        console.log("values= ", values)
+
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {

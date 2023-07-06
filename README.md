@@ -47,3 +47,29 @@
   <img width="700" alt="image" src="https://github.com/rl0425/Q-drop/assets/60688877/f6d21824-c695-4590-bc2d-f864326b969a">
 </p>
 
+<br></br>
+
+## 🗒 개발 스택
+
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/><img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black"/><img src="https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=redux&logoColor=white"/><img src="https://img.shields.io/badge/Spring-339933?style=flat-square&logo=Spring&logoColor=white"/><img src="https://img.shields.io/badge/MariaDB-339933?style=flat-square&logo=MariaDB&logoColor=white"/>
+
+<br></br>
+
+## API Docmument
+
+> https://dantechoi.notion.site/API-Document-dc0a7832c36a46ab9499b0154585a988
+
+<br></br>
+
+## 앱 둘러보기
+
+> <a href="explorer-cat-api.p-e.kr:3000">explorer-cat-api.p-e.kr:3000</a>
+> <a href="https://play.google.com/store/apps/details?id=com.gichan.footballScore">PlayStore</a>
+
+<br></br>
+
+## 개발자
+
+> Back-end 1, Front-end 1
+
+<br></br>

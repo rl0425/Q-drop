@@ -1,70 +1,20 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img src="https://github.com/rl0425/Q-drop/assets/60688877/4279a3d0-6163-4664-b345-a258b1b077e7" width="350" height="350">
+  <br></br>
+  <h2 align="center">Q'drop <br><br/></h2>
+  <p></p>
+  <h4 align="center">새로운 학습 커뮤니티</h4>
+  <p></p>
+  <h4 align="center"><a href="https://play.google.com/store/apps/details?id=com.gichan.footballScore">PlayStore</a></h4>
+<p/>
 
-## Available Scripts
+## 💡 서비스 개요
 
-In the project directory, you can run:
+면접과 기술 질문 대비에 필요한 다양한 리소스와 도구들을 제공하여, 사용자들의 면접 대비를 보다 효과적으로 지원합니다. 기술 질문에 대한 다양한 예시와 모범 답변, 그리고 설명을 제공하여 사용자분들의 면접과 기술 면접 대비를 돕습니다.Qdrop은 실제 면접자들이 받은 면접 질문과 기술 질문을 수집하고, 전문가들이 해당 질문에 대한 모범 답변과 설명을 제공합니다. 이를 통해, 사용자들은 다양한 면접 질문과 기술 질문을 보다 쉽고 효과적으로 대비할 수 있습니다.
 
-### `npm start`
+> Q-drop은 Q&A를 바탕으로 면접과 기술질문을 대비하기 위한 학습 커뮤니티 플랫폼입니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🗒 프로젝트 기간
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> 2023년 2월 ~ 4월 31일

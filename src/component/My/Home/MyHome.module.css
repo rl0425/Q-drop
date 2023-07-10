@@ -6,7 +6,6 @@
     min-height: calc(var(--vh, 1vh) * 100 - 63px);
     max-height: calc(var(--vh, 1vh) * 100 - 63px);
     box-sizing: border-box;
-    /*padding-bottom: calc(env(safe-area-inset-bottom) + 20px);*/
 }
 
 .head{
@@ -16,7 +15,7 @@
     font-weight: 600;
     box-sizing: border-box;
 
-    padding-top: calc(env(safe-area-inset-top) + 20px);
+    /*padding-top: calc(env(safe-area-inset-top) + 20px);*/
     padding-left: calc(env(safe-area-inset-left) + 20px);
     padding-right: calc(env(safe-area-inset-right) + 20px);
 }

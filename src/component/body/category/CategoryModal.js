@@ -53,7 +53,6 @@ function CategoryModal(){
         }
 
     }, [])
-    // }, [categoryData])
 
     useEffect(() => {
         setOpenAnimation(true)
@@ -220,8 +219,6 @@ function CategoryModal(){
             slidesToShow: 1,
             slidesToScroll: 1,
             afterChange:  handleSlideChange
-            // beforeChange: (current,next) => handleSlideChange(next)
-            // beforeChange: (current, next) => setState({ slideIndex: next })
         };
 
         return (

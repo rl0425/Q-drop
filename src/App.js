@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {mainDataActions} from "./store/mianData-slice";
 import UserAppSetWrapper from "./component/signUp/UserAppSetWrapper";
 import AgreeTerms from "./component/signUp/AgreeTerms";
+import { Helmet } from 'react-helmet';
 
 
 function App() {
@@ -44,6 +45,14 @@ function App() {
     }
 
     return (
+        <>
+        <Helmet>
+            <style>{`
+        body {
+          margin-top: 0;
+        }
+      `}</style>
+        </Helmet>
         <CookiesProvider>
             <div className="App">
             <Router>
@@ -56,6 +65,7 @@ function App() {
             </Router>
             </div>
         </CookiesProvider>
+        </>
     );
 }
 

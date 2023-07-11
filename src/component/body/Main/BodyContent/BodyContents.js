@@ -110,9 +110,6 @@ const BodyContents = React.memo((props) => {
                     ).then((trueList) => {
                         const values = trueList.length === 0 && trueList[0] === undefined ? [1000000000] : [...trueList];
 
-                        console.log("trueList= ", trueList)
-                        console.log("values= ", values)
-
                         return new Promise((resolve, reject) => {
                             fetchTasks(
                                 {

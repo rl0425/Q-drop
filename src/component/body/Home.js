@@ -36,9 +36,6 @@ function Home(){
     }, [subs])
 
     if(isLoad){
-        console.log("mainData= ", mainData)
-        console.log("categoryData= ", categoryData)
-
         return (
             <Fragment>
                 <BodyHead subs={subs} data={mainData} categoryData={categoryData} reloadSwitch={reloadSwitch}/>

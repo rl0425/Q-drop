@@ -21,7 +21,7 @@
     opacity: 0;
 }
 
-.contentBox, .unContentBox, .noAuthorBox{
+.contentBox, .unContentBox, .noAuthorBox {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -38,6 +38,7 @@
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 }
+
 
 .noAuthorBox{
     transform: translateY(calc(var(--vh, 1vh) * 100 - 125px));

@@ -3,13 +3,20 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import {useCookies} from 'react-cookie'
 import {KakaoLogin} from "./Login/kakaoLoginHandler";
+import classes from "./AuthLoading.module.css"
+
+import animationData from "../../jsons/spinner.json";
+import Lottie from "lottie-react-web";
+import {useDispatch} from "react-redux";
+import {loginActions} from "../../store/login-slice";
+import {toastActions} from "../../store/toast-slice";
 
 //사용자가 로그인 요청시 로딩화면 컴포넌트 입니다.
 const AuthLoading = () => {
-    const url = "sungwoo-net.p-e.kr"
+    const dispatch = useDispatch()
     const location = useLocation();
     const KAKAO_CODE = location.search.split('=')[1];
-    const [cokkies, setCookie] = useCookies(['jwt']);
+    const [cookies, setCookie] = useCookies(['jwt']);
     const history = useNavigate();
 
     //카카오 로그인 관련한 클래스 주입
@@ -22,19 +29,14 @@ const AuthLoading = () => {
         axios.get(requestURL, {}, {}).then(async function (response) {
             //정상적으로 응답이 왔을 경우 : 토큰 저장 및 사용자 데이터 가입 유무 확인
             if(response.status === 200) {
-                if (response.status === 200 && response.data.code === 1001) {
-                    //todo 회원가입 페이지로 이동 시켜야함 , 약관동의 및 닉네임 정도 받고
-                    //바로 약관 동의 받는 페이지로 이동시켜줌
-                    // window.location.href = '/signup?page=0'
-                    console.log("hi")
-                } else {
-                    //todo 이미 가입된 사용자임, 토큰 쿠키에 세팅 후 사용자 정보로 화면 세팅
-                    console.log("user_profile22", response.data.token)
-                    //JWT token cookie
-                    setCookie('jwt', response.data.token.data.token, {path: '/'});
-                    // window.location.reload();
+
+                if (response.data.code === 1001) {
+                    setCookie('tempData', response.data.data, {path: '/'});
                     window.location.href = '/signup?page=0'
-                    // history("/signup")
+
+                } else {
+                    setCookie('jwt', response.data.token.data.token, {path: '/'});
+                    window.location.href = '/main'
                 }
             }
         }).catch(function (error) {
@@ -48,8 +50,8 @@ const AuthLoading = () => {
     }, [])
 
     return (
-            <div>
-                카카오 로그인 인증 진행 중입니다.
+            <div className={classes.ingBox}>
+                <div className={classes.loadingDiv}><Lottie options={{animationData: animationData}}/></div>
             </div>
     );
 }

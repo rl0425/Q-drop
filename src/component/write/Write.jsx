@@ -18,16 +18,16 @@ function Write(){
     const [content, setContent] = useState("")
     const [category, setCategory] = useState("")
     const [categoryId, setCategoryId] = useState("")
+    const [completeActive, setCompleteActive] = useState(false)
 
     const dataInfo = useSelector((state) => state.modal.dataInfo)
 
     useEffect(()=>{
         setOpen(true)
 
-        console.log("dataInfo ", dataInfo)
-
         if(dataInfo.author){
             handleGetContents()
+            setCompleteActive(true)
         }
         else{
             dispatch(writeActions.handleCategoryOpen({categoryOpen:true}))
@@ -63,7 +63,7 @@ function Write(){
     }
 
     const handleCompleteBtn = () => {
-        if(!categoryId){
+        if(!category){
             dispatch(toastActions.handleToastOpt({msg:"카테고리를 설정해주세요.", open:true}))
         }
         else if(!title){
@@ -72,8 +72,6 @@ function Write(){
         }
         else if(!content){
             const lines = content.split('\n');
-            console.log("content ", content)
-            console.log("lines ", lines)
 
             dispatch(toastActions.handleToastOpt({msg:"내용을 입력해주세요.", open:true}))
         }
@@ -115,7 +113,7 @@ function Write(){
                 url : `http://explorer-cat-api.p-e.kr:8080/api/v1/post/update/${dataInfo.id}`,
                 type: "post",
                 data: {"title": title, "content": content, "subcategory_id": categoryId}
-            }, (taskObj) => {
+            }, () => {
                 handleExit()
                 dispatch(toastActions.handleToastOpt({msg:"수정을 완료했습니다", open:true}))
                 dispatch(modalActions.changePostOpen({open: false, dataInfo:{}}))
@@ -126,16 +124,43 @@ function Write(){
 
     const handleTextAreaEvt = (e) => {
         setContent(e.target.value)
+
+        if(title && e.target.value){
+            setCompleteActive(true)
+        }
+        if(!e.target.value){
+            setCompleteActive(false)
+        }
+    }
+
+    const handleTitleEvt = (e) => {
+        setTitle(e.target.value)
+
+        if(content && e.target.value){
+            setCompleteActive(true)
+        }
+        if(!e.target.value){
+            setCompleteActive(false)
+        }
     }
 
     return (
         <>
             <div className={open ? classes.box : classes.unBox}>
                 <div className={classes.head}>
-                    <img onClick={handleExit} src={"/images/icons/exit.png"}/>
+                    <div className={classes.hExitDiv}>
+                        <img onClick={handleExit} src={"/images/icons/exit.png"}/>
+                    </div>
                     <span>노트 작성</span>
                     {dataInfo.author ?
-                        <label onClick={handleEditCompleteBtn}>수정</label> :  <label onClick={handleCompleteBtn}>완료</label>}
+                        <div className={classes.completeDiv}>
+                            <label className={completeActive ? classes.completeActive : ""} onClick={handleEditCompleteBtn}>수정</label>
+                        </div>
+                        :
+                        <div className={classes.completeDiv}>
+                            <label className={completeActive ? classes.completeActive : ""} onClick={handleCompleteBtn}>완료</label>
+                        </div>
+                    }
                 </div>
                 <div className={classes.body}>
                     <div onClick={handleOpenCategory} className={classes.categoryBox}>
@@ -144,7 +169,7 @@ function Write(){
                     </div>
                     <div className={classes.contentBox}>
                         <div className={classes.questionBox}>
-                            <input onChange={(e) => setTitle(e.target.value)} value={title} placeholder={"질문을 입력하세요"} />
+                            <input onChange={(e) =>handleTitleEvt(e)} value={title} placeholder={"질문을 입력하세요"} />
                         </div>
                         <div className={classes.answerBox}>
                             <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />

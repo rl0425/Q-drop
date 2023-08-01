@@ -49,8 +49,6 @@ function WrittenNote(){
     }
 
     const handleGetData = () => {
-
-        console.log("12312312")
         getData({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/my?paging_num=${0}&paging_count=7&sortType=desc`}, (taskObj) => {
             if(taskObj) {
                 setData(taskObj)
@@ -148,7 +146,10 @@ function WrittenNote(){
                                 </InfiniteScroll>
 
                             </div> :
-                            <div className={classes.emptyBox}><span>게시글이 없어요.</span></div>
+                            <div className={classes.emptyBox}>
+                                <img src={"/images/mypage/icons/noPost.svg"}/>
+                                <span>게시글이 없어요.</span>
+                            </div>
                         }
 
                     </div>

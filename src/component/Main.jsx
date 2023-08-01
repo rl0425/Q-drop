@@ -19,7 +19,6 @@ import LoginWrapper from "./login/LoginWrapper";
 function Main(){
     const dispatch = useDispatch()
     const sector = useSelector((state) => state.sector.type);
-    console.log("sector = ", sector)
     // 쿠키 관련
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 

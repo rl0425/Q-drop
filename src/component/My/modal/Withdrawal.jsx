@@ -20,11 +20,26 @@ function Withdrawal(){
     const { isLoading, error, sendRequest: fetchTasks } = useHttp();
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
 
+    const [etcOpen, setEtcOpen] = useState(false)
+    const [content, setContent] = useState("")
+
     useEffect(()=>{
         setTimeout(()=> {
             setOpen(true)
         },50)
     }, [])
+
+    useEffect(()=>{
+        if(reason === "기타"){
+            setEtcOpen(true)
+        }
+        else{
+            if(etcOpen === true){
+                setEtcOpen(false)
+            }
+        }
+
+    }, [reason])
 
 
     const handlePrevBtn = () => {
@@ -41,7 +56,9 @@ function Withdrawal(){
     }
 
     const handleWithdrawalOkBtn = () => {
-        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users`, type:"delete", data: {reason:reason}})
+        const reasonData = reason === "기타" ? content : reason
+
+        fetchTasks({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users`, type:"delete", data: {reason:reasonData}})
         removeCookie('jwt');
 
         handlePrevBtn()
@@ -51,6 +68,10 @@ function Withdrawal(){
             dispatch(toastActions.handleToastOpt({msg:"회원탈퇴가 완료되었어요.", open:true}))
         },150)
 
+    }
+
+    const handleTextAreaEvt = (e) => {
+        setContent(e.target.value)
     }
 
     return (
@@ -66,12 +87,19 @@ function Withdrawal(){
                     <div><span>1.</span> <label>탈퇴 시 아이디 복구가 불가능 하오니, 신중하게 진행해주시기 바랍니다.</label></div>
                     <div><span>2.</span> <label>탈퇴 후 작성한 게시물과 댓글은 삭제 처리가 불가능합니다.</label></div>
                 </div>
-                <div onClick={handleModalOpen} className={classes.h4}>
+                <div className={classes.h4}>
                     <div><span>탈퇴사유 선택</span></div>
-                    <div className={classes.selectBox}>
+                    <div onClick={handleModalOpen} className={classes.selectBox}>
                         <span>{reason ? reason : "탈퇴사유 선택"}</span>
                         <img src={"/images/icons/prevBtn.png"}/>
                     </div>
+                    {etcOpen ?
+                        <div className={classes.etcBox}>
+                            <textarea onChange={(e) => handleTextAreaEvt(e)} value={content} placeholder={"질문을 대한 답변을 입력하세요."} />
+                        </div>
+                        :
+                        ""
+                    }
                 </div>
                 <div className={classes.btn}>
                     <div onClick={handleWithdrawalOkBtn} className={reason ? classes.submitBtn : classes.noSelect}><span>회원 탈퇴하기</span></div>

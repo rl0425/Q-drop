@@ -9,7 +9,6 @@ const useHttp = () => {
     // 쿠키 관련
     const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
     const token = cookies.jwt || ""
-    // const token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2ODAwMTcwOTEsImV4cCI6MTY4MDYyMTg5MSwiaXNzIjoidGVzdCIsInN1YiI6InNxbHN0eWxlQGtha2FvLmNvbSJ9.U3zdRtjxJkLWCjKciqH40RneZQYPMWcN8CN6HOYzEUQ`
 
     const sendRequest = useCallback(async (requestConfig, applyData) => {
         setIsLoading(true);
@@ -70,8 +69,7 @@ const useHttp = () => {
                         setIsLoading(false);
                     })
                     .catch(error => {
-                        console.log("requestConfig.url= ", requestConfig.url)
-                        console.log("Error= ", error)
+                        console.log(error)
                         setError(error);
                         setIsLoading(false);
                     });

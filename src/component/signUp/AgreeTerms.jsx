@@ -109,7 +109,7 @@ function AgreeTerms({rederPage}) {
                             <span>개인정보 처리 방침</span>
                             <span>(필수)</span>
                         </div>
-                        <div className = {classes.right_btn}>
+                        <div onClick={handleOpenTerms} className = {classes.right_btn}>
                             <img src = "/images/icons/right_btn.png" />
                         </div>
                     </div>

@@ -9,7 +9,6 @@ class KakaoLogin {
             // JavaScript key를 인자로 주고 SDK 초기화
             window.Kakao.init(this.jsKey);
             // SDK 초기화 여부를 확인하자.
-            console.log(window.Kakao.isInitialized());
         }
     }
     get jsKey() {
@@ -31,9 +30,6 @@ class KakaoLogin {
             redirectUri: 'http://sungwoo-net.p-e.kr:3000/login/auth/code',
             state: 'userme',
         });
-    }
-    logOutWithKakao() {
-
     }
 }
 

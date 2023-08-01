@@ -26,7 +26,7 @@
 }
 
 .prevHead{
-    padding-top: env(safe-area-inset-top);
+    /*padding-top: env(safe-area-inset-top);*/
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
     padding-bottom: 15px;
@@ -68,11 +68,17 @@
 }
 
 .qOption{
-    align-self: center;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    /*align-self: center;*/
 }
 
 .qOption > img{
-    height: 18px;
+    height: 15px;
+    width: 3px;
 }
 
 .body{
@@ -83,7 +89,11 @@
     box-sizing: border-box;
     font-size: 16px;
     font-weight: 400;
-    overflow: scroll;
+    overflow-y: scroll;
+}
+
+.body::-webkit-scrollbar {
+    display: none;
 }
 
 .body > textarea{

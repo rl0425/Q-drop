@@ -80,7 +80,6 @@ function FavoriteNote(){
     }
 
     const handleDeleteItems = () => {
-
         fetchTask({url: `http://explorer-cat-api.p-e.kr:8080/api/v1/post/bookmark/${select}`, type:"delete"}, (request) => {
 
             // 데이터 리렌더링
@@ -146,16 +145,6 @@ function FavoriteNote(){
                                 <div className={classes.emptyBox}><span>로그인을 해주세요.</span></div>
                                 : data.length > 0 ?
                                 <div className={classes.scrollDiv}>
-                                    {/*<PullToRefresh*/}
-                                    {/*    onRefresh={handleRefresh}*/}
-                                    {/*    style={{*/}
-                                    {/*        // overflow:"scroll"*/}
-                                    {/*        // height: "100%",*/}
-                                    {/*        // display: "flex",*/}
-                                    {/*        // flexDirection: "column",*/}
-                                    {/*        // gap: "16px"*/}
-                                    {/*    }}*/}
-                                    {/*>*/}
                                     <InfiniteScroll
                                         dataLength={data.length}
                                         next={() => handleMoreData()}
@@ -172,8 +161,6 @@ function FavoriteNote(){
                                         }}/></div>}
                                         height={"0"}
                                     >
-
-                                            {/*<div style={{height:"100%"}}>*/}
                                             {data.map((ele) => {
                                                 return (
                                                     <div onClick={() => handlePostDetail(ele)} key={uuidv4()} className={classes.content}>
@@ -192,14 +179,14 @@ function FavoriteNote(){
                                                  )
 
                                             })}
-                                            {/*</div>*/}
 
                                     </InfiniteScroll>
-                                    {/*</PullToRefresh>*/}
-
-
                                 </div>
-                                : <div className={classes.emptyBox}><span>게시글이 없어요.</span></div>
+                                :
+                                <div className={classes.emptyBox}>
+                                    <img src={"/images/mypage/icons/noPost.svg"}/>
+                                    <span>게시글이 없어요.</span>
+                                </div>
                             }
 
                         </div>

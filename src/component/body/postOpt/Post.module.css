@@ -25,13 +25,13 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    transform: translateY(calc(var(--vh, 1vh) * 100 - 250px));
+    transform: translateY(calc(var(--vh, 1vh) * 100 - 187px));
     /*bottom: 0;*/
     background: #212225;
     width: 100%;
-    min-height: 250px;
-    max-height: 250px;
-    height: 250px;
+    min-height: 187px;
+    max-height: 187px;
+    height: 187px;
     border-radius: 10px 10px 0px 0px;
     transition: all 0.25s ease;
     padding-bottom: env(safe-area-inset-bottom);
@@ -41,9 +41,9 @@
 
 
 .noAuthorBox{
-    transform: translateY(calc(var(--vh, 1vh) * 100 - 125px));
-    min-height: 125px;
-    height: 125px;
+    transform: translateY(calc(var(--vh, 1vh) * 100 - 63px));
+    min-height: 63px;
+    height: 63px;
 }
 
 .unContentBox{

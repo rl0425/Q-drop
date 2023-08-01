@@ -1,4 +1,5 @@
 import Main from "./component/Main";
+import Entry from "./component/entry/Entry";
 import {useEffect} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import AuthLoading from "./component/My/AuthLoading";
@@ -8,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {mainDataActions} from "./store/mianData-slice";
 import UserAppSetWrapper from "./component/signUp/UserAppSetWrapper";
 import AgreeTerms from "./component/signUp/AgreeTerms";
+import { Helmet } from 'react-helmet';
 
 
 function App() {
@@ -43,17 +45,27 @@ function App() {
     }
 
     return (
+        <>
+        <Helmet>
+            <style>{`
+        body {
+          margin-top: 0;
+        }
+      `}</style>
+        </Helmet>
         <CookiesProvider>
             <div className="App">
             <Router>
                 <Routes>
-                        <Route path="/" element={<Main/>}/>
+                        <Route path="/" element={<Entry/>}/>
+                        <Route path="/main" element={<Main/>}/>
                         <Route path="/signup" element={<UserAppSetWrapper />}/>
                         <Route path="/login/auth/code" element={<AuthLoading />}/>
                 </Routes>
             </Router>
             </div>
         </CookiesProvider>
+        </>
     );
 }
 

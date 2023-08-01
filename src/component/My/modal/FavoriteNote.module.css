@@ -242,7 +242,14 @@
 
 .body .emptyBox{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 40%;
+    height: 80%;
+    color: #DADCE1;
+    font-weight: 500;
+    font-size: 15px;
+    gap: 32px;
 }
+
+

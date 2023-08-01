@@ -4,7 +4,7 @@ const loginSlice = createSlice({
     name:'login',
     initialState: {
         msg:"",
-        open:false
+        open:false,
     },
     reducers: {
         handleOpen(state,action){

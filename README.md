@@ -1,70 +1,75 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img src="https://github.com/rl0425/Q-drop/assets/60688877/4279a3d0-6163-4664-b345-a258b1b077e7" width="350" height="350">
+  <br></br>
+  <h2 align="center">Q'drop <br><br/></h2>
+  <p></p>
+  <h4 align="center">새로운 학습 커뮤니티</h4>
+  <p></p>
+  <h4 align="center"><a href="https://play.google.com/store/apps/details?id=com.gichan.footballScore">PlayStore</a></h4>
+<p/>
 
-## Available Scripts
+## 💡 서비스 개요
 
-In the project directory, you can run:
+<p align="center">
+<img width="559" alt="image" src="https://github.com/rl0425/Q-drop/assets/60688877/edefa2b9-0102-4b81-a6f0-218ced36a62a">
+<p/>
+<br></br>
+면접과 기술 질문 대비에 필요한 다양한 리소스와 도구들을 제공하여, 사용자들의 면접 대비를 보다 효과적으로 지원합니다. 기술 질문에 대한 다양한 예시와 모범 답변, 그리고 설명을 제공하여 사용자분들의 면접과 기술 면접 대비를 돕습니다.Qdrop은 실제 면접자들이 받은 면접 질문과 기술 질문을 수집하고, 전문가들이 해당 질문에 대한 모범 답변과 설명을 제공합니다. 이를 통해, 사용자들은 다양한 면접 질문과 기술 질문을 보다 쉽고 효과적으로 대비할 수 있습니다.
 
-### `npm start`
+<p></p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> Q-drop은 Q&A를 바탕으로 면접과 기술질문을 대비하기 위한 학습 커뮤니티 플랫폼입니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<br></br>
 
-### `npm test`
+## 🗒 프로젝트 기간
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> 2023년 2월 ~ 4월 31일
 
-### `npm run build`
+<br></br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🗒 메인 기능
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p align="center">
+  <img width="700" alt="image" src="https://github.com/rl0425/Q-drop/assets/60688877/00b31343-5ca4-4815-b603-0fbebe712c6e">
+</p>
+<br></br>
+카테고리별로 면접 질문/대답을 찾아보거나 노트를 작성할 수 있습니다. 마음에 드는 노트를 즐겨찾기 하거나, 내가 쓴 노트들을 한 곳에서 모아볼 수 있으며 인기 검색어, 최근 검색어를 지원합니다.
 
-### `npm run eject`
+<br></br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🖨 ERD
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<p align="center">
+  <img width="700" alt="image" src="https://github.com/rl0425/Q-drop/assets/60688877/f6d21824-c695-4590-bc2d-f864326b969a">
+</p>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<br></br>
 
-## Learn More
+## 🗒 개발 스택
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/><img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black"/><img src="https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=redux&logoColor=white"/><img src="https://img.shields.io/badge/Spring-339933?style=flat-square&logo=Spring&logoColor=white"/><img src="https://img.shields.io/badge/MariaDB-339933?style=flat-square&logo=MariaDB&logoColor=white"/>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br></br>
 
-### Code Splitting
+## API Docmument
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> https://dantechoi.notion.site/API-Document-dc0a7832c36a46ab9499b0154585a988
 
-### Analyzing the Bundle Size
+<br></br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 앱 둘러보기
 
-### Making a Progressive Web App
+> <a href="explorer-cat-api.p-e.kr:3000">explorer-cat-api.p-e.kr:3000</a>
+> <a href="https://play.google.com/store/apps/details?id=com.gichan.footballScore">PlayStore</a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<br></br>
 
-### Advanced Configuration
+## 개발자
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+> Back-end 1, Front-end 1
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br></br>

@@ -1,10 +1,11 @@
 .itemBox{
     display: flex;
     overflow: hidden;
-    width: calc(var(--vw, 1vw) - 15px);
-    max-width: calc(var(--vw, 1vw) - 15px);
+    /*width: calc(var(--vw, 1vw) - 15px);*/
+    /*max-width: calc(var(--vw, 1vw) - 15px);*/
     height: auto !important;
-    padding: 20px 20px;
+    margin-left: 20px;
+    padding: 20px 20px 20px 0;
     border-bottom: 1px solid #26282C;
     box-sizing: border-box;
 }
@@ -78,12 +79,13 @@
     align-items: center;
     width: 100%;
     justify-content: flex-end;
-    gap: 24px;
+    /*gap: 24px;*/
 }
 
 .optBox > div{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 22px;
     gap: 6px;
 }

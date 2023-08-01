@@ -32,14 +32,12 @@ function CategoryModal(){
     const elementRef = useRef(null);
 
     useEffect(() => {
-        console.log("11")
 
         fetchTasks(
             { url: 'http://explorer-cat-api.p-e.kr:8080/api/v1/category/main' }, (taskObj) =>{
                 taskObj.map((ele) => (
                     ele.allSelect = false
                 ))
-                console.log("taskObj = ", taskObj)
                 setTasks(taskObj);
 
                 setSubjectList(taskObj)
@@ -55,7 +53,6 @@ function CategoryModal(){
         }
 
     }, [])
-    // }, [categoryData])
 
     useEffect(() => {
         setOpenAnimation(true)
@@ -177,8 +174,6 @@ function CategoryModal(){
 
             const tempSet = data[0].subCategories
 
-            console.log("tempSet ", tempSet)
-
             const newCate = subs.reduce((acc, cur) => {
                 if (data[0].subCategories.some(item => item.id === cur)) {
                     // 현재 요소가 b 배열에 포함되어 있다면 제거
@@ -187,8 +182,6 @@ function CategoryModal(){
                 // 현재 요소가 b 배열에 포함되어 있지 않다면 새로운 배열에 추가
                 return [...acc, cur];
             }, []);
-
-            console.log("newCate= ", newCate)
 
             setSubs(newCate)
 
@@ -226,22 +219,20 @@ function CategoryModal(){
             slidesToShow: 1,
             slidesToScroll: 1,
             afterChange:  handleSlideChange
-            // beforeChange: (current,next) => handleSlideChange(next)
-            // beforeChange: (current, next) => setState({ slideIndex: next })
         };
 
         return (
             <>
                 <div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>
-                {/*<div className={openAnimation ? classes.blackBack : classes.nonBlackBack}>*/}
 
                 </div>
                 <div ref={elementRef} className={openAnimation ? classes.box : classes.nonBox}>
-                {/*<div className={openAnimation ? classes.box : classes.nonBox}>*/}
                     <div className={classes.head}>
                         <div className={classes.header}>
                             <div className={classes.spanHeader}><span>관심 카테고리 설정</span></div>
-                            <div onClick={closeEvt} className={classes.exit}><span>닫기</span><img/></div>
+                            <div onClick={closeEvt} className={classes.exit}>
+                                <img src={"/images/icons/exit.png"}/>
+                            </div>
                         </div>
                         <div className={classes.categorySet}>
                             {tasks.map((ele, index) => {

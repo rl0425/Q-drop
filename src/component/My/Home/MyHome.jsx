@@ -27,11 +27,21 @@ function MyHome(){
     }
 
     const handleWritten = (e) => {
-        dispatch(myPageActions.changeWrittenOpen({writtenOpen:true}))
+        if(isLogin) {
+            dispatch(myPageActions.changeWrittenOpen({writtenOpen: true}))
+        }
+        else{
+            dispatch(loginActions.handleOpen({open:true}))
+        }
     }
 
     const handleFavorite = (e) => {
-        dispatch(myPageActions.changeFavoriteOpen({favoriteOpen:true}))
+        if(isLogin) {
+            dispatch(myPageActions.changeFavoriteOpen({favoriteOpen: true}))
+        }
+        else{
+            dispatch(loginActions.handleOpen({open:true}))
+        }
     }
 
     const handleWithdrawal = (e) => {
@@ -43,7 +53,6 @@ function MyHome(){
     }
 
     const handleLogout = (e) => {
-
         removeCookie('jwt');
 
         dispatch(mainSectorActions.changeSector({type: "home"}))
@@ -54,12 +63,14 @@ function MyHome(){
         dispatch(loginActions.handleOpen({open:true}))
     }
 
+    const handleVersion = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+    }
+
 
     return (
         <div className={classes.box}>
-            {/*<div className={classes.box}>*/}
-            {/*    <div onClick={ () => {kakao.loginWithKakao()} }>카카오로 로그인하기</div>*/}
-            {/*</div>*/}
             <div className={classes.head}>
                 <span>마이페이지</span>
             </div>
@@ -69,7 +80,7 @@ function MyHome(){
                         {!isLogin ?
                             <div>
                                 <div className={classes.logoImg}>
-                                    <img src={"/images/icons/tempLogo.png"} />
+                                    <img src={"/images/icons/logo/myPageLogo.svg"} />
                                 </div>
                                 <div className={classes.logoSpan}>
                                     <div className={classes.logoSpanHead}><span>로그인 / 회원가입</span></div>
@@ -107,7 +118,7 @@ function MyHome(){
                     </div>
                     <div className={classes.guideBody}>
                         <div onClick={handleTerms} className={classes.terms}><span>이용약관 / 개인정보 처리방침</span></div>
-                        <div className={classes.version}><span>앱 버전</span><label>1.0</label></div>
+                        <div onClick={handleVersion} className={classes.version}><span>앱 버전</span><label>1.0</label></div>
                         {isLogin ?
                             <div onClick={handleLogout} className={classes.logout}><span>로그아웃</span></div> : <div onClick={handleLogin} className={classes.logout}><span>로그인</span></div>}
                         {isLogin ? <div onClick={handleWithdrawal} className={classes.withdrawal}><span>회원탈퇴</span></div> : ""}

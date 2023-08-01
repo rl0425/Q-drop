@@ -11,9 +11,9 @@
     justify-content: space-between;
     min-height: 32px;
     height: 32px;
-    margin: 14px 24px;
+    margin: 18px 20px;
     box-sizing: border-box;
-    padding-top: env(safe-area-inset-top);
+    /*padding-top: env(safe-area-inset-top);*/
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 }
@@ -22,9 +22,9 @@
 .body{
     display: flex;
     flex-direction: column;
-    height: calc(var(--vh, 1vh) * 100 - 123px);
-    min-height: calc(var(--vh, 1vh) * 100 - 123px);
-    max-height: calc(var(--vh, 1vh) * 100 - 123px);
+    height: calc(var(--vh, 1vh) * 100 - 131px);
+    min-height: calc(var(--vh, 1vh) * 100 - 131px);
+    max-height: calc(var(--vh, 1vh) * 100 - 131px);
     box-sizing: border-box;
     position: relative;
     overflow: hidden;

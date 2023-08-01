@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import classes from "./MyInformation.module.css"
 import {myPageActions} from "../../../store/myPage-slice";
 import {useDispatch, useSelector} from "react-redux";
@@ -36,9 +36,21 @@ function MyInformation(){
 
     const handleSaveNickname = () => {
         if(change) {
+            const regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣\s]*$/; // 허용되는 문자 패턴 정규식
+
             if (searchValue === profile.nickname) {
                 dispatch(toastActions.handleToastOpt({msg:"기존 닉네임과 동일해요.", open:true}))
-            } else {
+            }
+
+            else if (searchValue.length < 2 || searchValue.length > 50) {
+                dispatch(toastActions.handleToastOpt({msg:"입력값은 2~50자 이상이어야 해요.", open:true}))
+            }
+
+            else if (!regex.test(searchValue)) {
+                dispatch(toastActions.handleToastOpt({msg:"닉네임은 특수문자를 포함하면 안돼요.", open:true}))
+            }
+
+            else {
                 fetchTasks({
                     url: `http://explorer-cat-api.p-e.kr:8080/api/v1/users/profile`,
                     type:"post",
@@ -66,38 +78,50 @@ function MyInformation(){
         }
     }
 
-    return (
-        <div className={open ? classes.box : classes.unBox}>
-            <div className={classes.head}>
-                <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
-                <span>내 정보</span>
+    if(isLoading){
+        return <div></div>
+    }
+
+    else if(error){
+        return <div>error</div>
+    }
+
+    else {
+
+        return (
+            <div className={open ? classes.box : classes.unBox}>
+                <div className={classes.head}>
+                    <img onClick={handlePrevBtn} src={"/images/icons/prevBtn.png"}/>
+                    <span>내 정보</span>
+                </div>
+                <div className={classes.body}>
+                    <div className={classes.profile}>
+                        <img src={profile.image ? profile.image : "/images/icons/noProfile.png"}/>
+                    </div>
+                    <div className={classes.nickname}>
+                        <div className={classes.nicknameHead}>
+                            <span>닉네임</span>
+                        </div>
+                        <div className={classes.nicknameContent}>
+                            <input onChange={(e) => handleContent(e)} onKeyPress={searchEvt}
+                                   placeholder={profile.nickname}/>
+                        </div>
+                    </div>
+                    <div className={classes.email}>
+                        <div className={classes.emailHead}>
+                            <span>이메일</span>
+                        </div>
+                        <div className={classes.emailContent}>
+                            <span>{profile.email}</span>
+                        </div>
+                    </div>
+                    <div onClick={handleSaveNickname} className={change ? classes.submit : classes.unChanged}>
+                        <span>저장하기</span>
+                    </div>
+                </div>
             </div>
-            <div className={classes.body}>
-                <div className={classes.profile}>
-                    <img src={profile.image ? profile.image : "/images/icons/noProfile.png"} />
-                </div>
-                <div className={classes.nickname}>
-                    <div className={classes.nicknameHead}>
-                        <span>닉네임</span>
-                    </div>
-                    <div className={classes.nicknameContent}>
-                        <input onChange={(e) => handleContent(e)} onKeyPress={searchEvt} placeholder={profile.nickname} />
-                    </div>
-                </div>
-                <div className={classes.email}>
-                    <div className={classes.emailHead}>
-                        <span>이메일</span>
-                    </div>
-                    <div className={classes.emailContent}>
-                        <span>{profile.email}</span>
-                    </div>
-                </div>
-                <div onClick={handleSaveNickname} className={change ? classes.submit : classes.unChanged}>
-                    <span>저장하기</span>
-                </div>
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default MyInformation
